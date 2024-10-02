@@ -1,16 +1,16 @@
 export default ({ env }) => ({
   auth: {
-    // secret: env('ADMIN_JWT_SECRET'),
-    secret: env('xgb5x7cdhbCNbveTtVtq2Q=='),
+    secret: env('ADMIN_JWT_SECRET'),
+    // secret: "xgb5x7cdhbCNbveTtVtq2Q==",
   },
   apiToken: {
-    // salt: env('API_TOKEN_SALT'),
-    salt: env('hR/XPb6VISQZg71UPYijWg=='),
+    salt: env('API_TOKEN_SALT'),
+    // salt: "hR/XPb6VISQZg71UPYijWg==",
   },
   transfer: {
     token: {
-      // salt: env('TRANSFER_TOKEN_SALT'),
-      salt: env('3pCV+b5ISok+iqUiZtTpQQ=='),
+      salt: env('TRANSFER_TOKEN_SALT'),
+      // salt: "3pCV+b5ISok+iqUiZtTpQQ==",
     },
   },
   flags: {
