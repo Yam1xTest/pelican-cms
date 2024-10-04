@@ -10,16 +10,6 @@ RUN npm config set fetch-retry-maxtimeout 600000 -g && npm install --only=produc
 
 RUN npm install esbuild@0.19.11 --save-exact
 
-RUN apt-get update && apt-get install -y \
-    wget \
-    apt-transport-https \
-    software-properties-common
-
-RUN wget -q "https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb" -O packages-microsoft-prod.deb && \
-    dpkg -i packages-microsoft-prod.deb
-
-RUN apt-get update && apt-get install -y powershell
-
 WORKDIR /opt/app
 COPY . .
 RUN npm run build
