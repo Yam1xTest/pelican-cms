@@ -40,13 +40,37 @@ service:
 ingress:
   enabled: true
   hostname: "pelican.tourmalinecore.com"
-  path: /admin(/|$)(.*)
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: letsencrypt 
-    nginx.ingress.kubernetes.io/rewrite-target: /admin/$2
+    cert-manager.io/cluster-issuer: letsencrypt
   ingressClassName: "nginx"
-  tls: true
+  tls:
+    - hosts:
+        - pelican.tourmalinecore.com
+      secretName: pelican-tls
+  rules:
+    - host: pelican.tourmalinecore.com
+      http:
+        paths:
+          - path: /admin/api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: strapi-service
+                port:
+                  number: 1337
+            annotations:
+              nginx.ingress.kubernetes.io/rewrite-target: /$2
+
+          - path: /admin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: strapi-service
+                port:
+                  number: 1337
+            annotations:
+              nginx.ingress.kubernetes.io/rewrite-target: /admin/$2
 
 # not needed in this setup
 serviceAccount:
