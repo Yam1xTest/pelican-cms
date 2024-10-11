@@ -52,7 +52,7 @@ ingress:
     - host: pelican.tourmalinecore.com
       http:
         paths:
-          - path: /admin/api(/|$)(.*)
+          - path: /cms/api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
@@ -62,7 +62,7 @@ ingress:
             annotations:
               nginx.ingress.kubernetes.io/rewrite-target: /api/$2
 
-          - path: /admin(/|$)(.*)
+          - path: /cms(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
