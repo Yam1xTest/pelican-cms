@@ -60,7 +60,7 @@ ingress:
                 port:
                   number: 1337
             annotations:
-              nginx.ingress.kubernetes.io/rewrite-target: /$2
+              nginx.ingress.kubernetes.io/rewrite-target: /api/$2
 
           - path: /admin(/|$)(.*)
             pathType: ImplementationSpecific
