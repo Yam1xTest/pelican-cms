@@ -1,4 +1,5 @@
 export default ({ env }) => ({
+  url: '/cms/admin',
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
     // secret: "xgb5x7cdhbCNbveTtVtq2Q==",
