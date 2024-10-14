@@ -6,9 +6,11 @@
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
+    "start:local": "run-s create-config:local vite-start",
     "build": "strapi build",
     "strapi": "strapi",
-    "deploy": "strapi deploy"
+    "deploy": "strapi deploy",
+    "create-config:local": "node local-config-builder local",
   },
   "dependencies": {
     "@strapi/plugin-cloud": "4.25.11",
