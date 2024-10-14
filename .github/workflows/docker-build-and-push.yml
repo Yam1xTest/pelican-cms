@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - feature/add-cms-app
+      - feature/fix-ingress
       
   pull_request:
 
