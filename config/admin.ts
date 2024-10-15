@@ -1,4 +1,5 @@
 export default ({ env }) => ({
+  url: env('SERVER_URL', 'http://localhost:1337'),
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
     // secret: "xgb5x7cdhbCNbveTtVtq2Q==",
