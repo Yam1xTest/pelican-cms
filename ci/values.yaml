@@ -59,7 +59,7 @@ networkPolicy:
 
 # CUSTOM: Here you store non secret env vars that will be passed to the pod's environment
 extraConfigMapEnvVars:
-  SERVER_URL: http://pelican.local.tourmalinecore.internal/cms
+
 
 
 # this is needed to tell the container to read extra env vars from the dedicated Config Map that we create in extraDeploy
