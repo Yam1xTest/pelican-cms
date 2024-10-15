@@ -2,7 +2,7 @@ export default ({ env }) => {
   const serverUrl = env('SERVER_URL', 'http://localhost:1337');
 
   if (!serverUrl) {
-    throw new Error('SERVER_URL is not set or is empty');
+    console.log('SERVER_URL is not set or is empty');
   }
 
   return {
