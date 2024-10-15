@@ -8,7 +8,7 @@ export default ({ env }) => {
   return {
     host: env('HOST', '0.0.0.0'),
     port: env.int('PORT', 1337),
-    url: serverUrl,
+    url: 'http://pelican.local.tourmalinecore.internal/cms',
     app: {
       keys: env.array('APP_KEYS'),
       // keys: "l447ZbufnsvHicHvfpMoJA==,b00dkarNr56Er5mJLMr38w==,+GhweEM/mZi8NbBpkZIpDw==,TNAQ7URlV9PVGg7+zFXr7w==",
