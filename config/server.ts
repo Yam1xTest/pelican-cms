@@ -10,6 +10,9 @@ export default ({ env }) => {
     emitErrors: false,
     url: env('PUBLIC_URL', 'http://localhost:1337'),
     proxy: env.bool('IS_PROXIED', true),
+    admin: {
+      url: '/cms/admin',
+    },
     cron: {
       enabled: env.bool('CRON_ENABLED', false),
     },
