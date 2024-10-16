@@ -2,6 +2,8 @@
 FROM node:21-alpine as build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git > /dev/null 2>&1
 ARG NODE_ENV=production
+ARG SERVER_URL
+ENV SERVER_URL=${SERVER_URL}
 
 WORKDIR /opt/
 COPY package.json package-lock.json ./
@@ -17,6 +19,8 @@ RUN npm run build
 FROM node:21-alpine
 RUN apk add --no-cache vips-dev
 ARG NODE_ENV=production
+ARG SERVER_URL
+ENV SERVER_URL=${SERVER_URL}
 WORKDIR /opt/
 COPY --from=build /opt/node_modules ./node_modules
 WORKDIR /opt/app
