@@ -9,6 +9,7 @@ RUN npm install -g node-gyp
 RUN npm config set fetch-retry-maxtimeout 600000 -g && npm install --only=production
 
 RUN npm install esbuild@0.19.11 --save-exact
+
 WORKDIR /opt/app
 COPY . .
 RUN npm run build
