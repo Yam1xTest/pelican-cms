@@ -2,7 +2,6 @@
 FROM node:21-alpine as build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git > /dev/null 2>&1
 ARG NODE_ENV=production
-ARG SERVER_URL  # Объявляем аргумент
 
 WORKDIR /opt/
 COPY package.json package-lock.json ./
@@ -13,25 +12,17 @@ RUN npm install esbuild@0.19.11 --save-exact
 
 WORKDIR /opt/app
 COPY . .
-
-# Здесь мы можем использовать SERVER_URL как переменную среды
-RUN echo "SERVER_URL=${SERVER_URL}" >> .env  # Например, создаем файл .env с SERVER_URL
-
 RUN npm run build
 
 # Creating final production image
 FROM node:21-alpine
 RUN apk add --no-cache vips-dev
 ARG NODE_ENV=production
-ARG SERVER_URL  # Объявляем аргумент для финального образа
 WORKDIR /opt/
 COPY --from=build /opt/node_modules ./node_modules
 WORKDIR /opt/app
-COPY --from=build /opt/app ./ 
+COPY --from=build /opt/app ./
 ENV PATH /opt/node_modules/.bin:$PATH
-
-# Установим SERVER_URL в качестве переменной среды
-ENV SERVER_URL=${SERVER_URL}
 
 RUN chown -R node:node /opt/app
 USER node
