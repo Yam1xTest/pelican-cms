@@ -37,3 +37,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/tourmalinecore/pelican-cms:latest
+          build-args: |
+            SERVER_URL=http://pelican.local.tourmalinecore.internal/cms
