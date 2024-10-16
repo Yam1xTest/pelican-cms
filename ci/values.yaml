@@ -40,38 +40,14 @@ service:
 ingress:
   enabled: true
   hostname: "pelican.tourmalinecore.com"
+  path: /cms(/|$)(.*)
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     cert-manager.io/cluster-issuer: letsencrypt
-
   ingressClassName: "nginx"
   tls: true
-
-  rules:
-    - host: "pelican.tourmalinecore.com"
-      http:
-        paths:
-          - path: /cms/admin(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: strapi-service
-                port:
-                  number: 1337
-            annotations:
-              nginx.ingress.kubernetes.io/rewrite-target: /admin/$2
-
-          - path: /cms(/|$)(.*)
-            pathType: Prefix
-            backend:
-              service:
-                name: strapi-service
-                port:
-                  number: 1337
-            annotations:
-              nginx.ingress.kubernetes.io/rewrite-target: /$2
-
 
 
 # not needed in this setup
@@ -84,8 +60,6 @@ networkPolicy:
 
 # CUSTOM: Here you store non secret env vars that will be passed to the pod's environment
 extraConfigMapEnvVars:
-
-
 
 # this is needed to tell the container to read extra env vars from the dedicated Config Map that we create in extraDeploy
 extraEnvVarsCM: "{{ include \"common.names.fullname\" . }}"
