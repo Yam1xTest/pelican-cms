@@ -40,7 +40,7 @@ service:
 ingress:
   enabled: true
   hostname: "pelican.tourmalinecore.com"
-  path: /cms(/|$)(.*)
+  path: ""
   annotations:
     # redirect from http to https
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
