@@ -1,5 +1,11 @@
 export default ({ env }) => {
-  const serverUrl = env('SERVER_URL', 'http://localhost:1337');
+  const environment = env('ENVIRONMENT', 'local-run');
+
+  const serverUrl = environment === 'local-env'
+    ? 'http://pelican.local.tourmalinecore.internal/cms'
+    : 'http://localhost:1337';
+
+  console.log('Environment:', environment);
   console.log('Server URL:', serverUrl);
 
   return {
