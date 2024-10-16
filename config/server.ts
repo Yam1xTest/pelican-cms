@@ -12,6 +12,8 @@ export default ({ env }) => {
     proxy: env.bool('IS_PROXIED', true),
     admin: {
       url: '/cms/admin',
+      serveAdminPanel: true,
+      path: '/cms',
     },
     cron: {
       enabled: env.bool('CRON_ENABLED', false),
