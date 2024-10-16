@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - feature/fix-ingress
+      - feature/fix-getting-variables
       
   pull_request:
 
