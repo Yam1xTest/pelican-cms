@@ -14,7 +14,7 @@ yarn build
 ### Local launch
 
 
-To further enable Strapi successfully locally, run `docker-compose up -d --profile db-only` command to enable the database in docker.
+To further enable Strapi successfully locally, run `docker-compose --profile db-only up -d` command to enable the database in docker.
 
 
 ### `start`
@@ -27,7 +27,7 @@ npm run start
 yarn start
 ```
 ### In Docker
-To enable Strapi and the database in Docker, run the command `docker-compose up -d --profile local-run`
+To enable Strapi and the database in Docker, run the command `docker-compose --profile local-run up -d`
 
 Link to full documentation: https://github.com/TourmalineCore/pelican-documentation/blob/master/README.md
 
