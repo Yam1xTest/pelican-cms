@@ -1,0 +1,29 @@
+services:
+  pelican-postgresql:
+    container_name: pelican-postgresql
+    image: postgres:14
+    profiles: ['db-only', 'local-run']
+    environment:
+      POSTGRES_DB: pelican_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - 6432:5432
+    networks:
+      - pelican-cms-network
+  
+  pelican-cms:
+    container_name: pelican-cms
+    build:
+      dockerfile: Dockerfile
+      context: .
+    profiles: ['local-run']
+    environment:
+      SERVER_URL: http://localhost:1337
+    ports:
+      - 1337:1337
+    networks:
+      - pelican-cms-network
+
+networks:
+  pelican-cms-network:
