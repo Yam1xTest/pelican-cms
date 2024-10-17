@@ -27,6 +27,10 @@ npm run start
 yarn start
 ```
 ### In Docker
+#### Profiles
+- local-run - runs cms app and the database
+- db-only - runs only database
+
 To enable Strapi and the database in Docker, run the command `docker-compose --profile local-run up -d`
 
 Link to full documentation: https://github.com/TourmalineCore/pelican-documentation/blob/master/README.md
