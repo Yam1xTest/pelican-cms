@@ -7,8 +7,6 @@ Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-
 
 ```
 npm run build
-# or
-yarn build
 ```
 
 ### Local launch
@@ -23,8 +21,6 @@ Start your Strapi application with autoReload disabled. [Learn more](https://doc
 
 ```
 npm run start
-# or
-yarn start
 ```
 ### In Docker
 #### Profiles
