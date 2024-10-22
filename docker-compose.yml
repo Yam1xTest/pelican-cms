@@ -1,6 +1,6 @@
 services:
-  pelican-postgresql:
-    container_name: pelican-postgresql
+  postgresql:
+    container_name: postgresql
     image: postgres:14
     profiles: ['db-only', 'local-run']
     environment:
@@ -20,6 +20,8 @@ services:
     profiles: ['local-run']
     environment:
       SERVER_URL: http://localhost:1337
+      DATABASE_PORT: 5432
+      DATABASE_HOST: postgresql
     ports:
       - 1337:1337
     networks:
