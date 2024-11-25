@@ -362,25 +362,45 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiPostPost extends Schema.CollectionType {
-  collectionName: 'posts';
+export interface ApiHomeHome extends Schema.SingleType {
+  collectionName: 'homes';
   info: {
-    singularName: 'post';
-    pluralName: 'posts';
-    displayName: 'Posts';
+    singularName: 'home';
+    pluralName: 'homes';
+    displayName: '\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430';
   };
   options: {
     draftAndPublish: true;
   };
+  pluginOptions: {
+    versions: {
+      versioned: true;
+    };
+  };
   attributes: {
-    Title: Attribute.String;
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
+    createdBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    updatedBy: Attribute.Relation<'api::post.post', 'oneToOne', 'admin::user'> &
+    updatedBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
       Attribute.Private;
+    versions: Attribute.Relation<
+      'api::home.home',
+      'manyToMany',
+      'api::home.home'
+    >;
+    vuid: Attribute.String;
+    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
+    versionComment: Attribute.String;
+    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
   };
 }
 
@@ -820,7 +840,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::post.post': ApiPostPost;
+      'api::home.home': ApiHomeHome;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
