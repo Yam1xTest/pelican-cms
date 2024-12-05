@@ -3,6 +3,7 @@ export default ({ env }) => ({
         config: {
             provider: 'aws-s3',
             providerOptions: {
+                baseUrl: env('AWS_PUBLIC_ENDPOINT'),
                 s3Options: {
                     credentials: {
                         accessKeyId: env('AWS_ACCESS_KEY_ID'),
