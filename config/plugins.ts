@@ -11,6 +11,7 @@ export default ({ env }) => ({
                     },
                     endpoint: env('AWS_ENDPOINT'),
                     region: env('AWS_REGION'),
+                    forcePathStyle: true,
                     params: {
                         ACL: env('AWS_ACL', 'public-read'),
                         Bucket: env('AWS_BUCKET'),
