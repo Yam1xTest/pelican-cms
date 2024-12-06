@@ -1,4 +1,4 @@
-export default ({ env }) => [
+export default () => [
   'strapi::logger',
   'strapi::errors',
   {
@@ -13,14 +13,14 @@ export default ({ env }) => [
             'data:',
             'blob:',
             'market-assets.strapi.io',
-            env('AWS_LOCAL_ENV_ENDPOINT') || env('AWS_ENDPOINT'),
+            '*',
           ],
           'media-src': [
             "'self'",
             'data:',
             'blob:',
             'market-assets.strapi.io',
-            env('AWS_LOCAL_ENV_ENDPOINT') || env('AWS_ENDPOINT'),
+            '*',
           ],
           upgradeInsecureRequests: null,
         },
