@@ -13,7 +13,9 @@ test.describe(`News tests`, () => {
   test.beforeEach(async ({
     page,
   }) => {
-    await page.goto('http://localhost:1337/admin')
+    await page.goto('http://localhost:1337/admin', {
+      waitUntil: 'networkidle'
+    })
 
     const isRegistrationPage = await page.getByRole(`textbox`, {
       name: `First name`,
