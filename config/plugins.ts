@@ -1,5 +1,6 @@
 export default ({ env }) => ({
-    upload: {
+    ...(process.env.APP_ENV !== 'no-s3' && 
+    {upload: {
         config: {
             provider: 'aws-s3',
             providerOptions: {
@@ -20,7 +21,7 @@ export default ({ env }) => ({
                 }
             },
         },
-    },
+    }}),
     'transformer': {
         enabled: true,
         config: {
