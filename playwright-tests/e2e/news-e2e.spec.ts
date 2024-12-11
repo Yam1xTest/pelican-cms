@@ -20,11 +20,11 @@ test.describe(`News tests`, () => {
     })
       .isVisible();
 
-
-    await register({
-      page,
-    });
-
+    if (isRegistrationPage) {
+      await register({
+        page,
+      });
+    }
 
     await authenticate({
       page,
