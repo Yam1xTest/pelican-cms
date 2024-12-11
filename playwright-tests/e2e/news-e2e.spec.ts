@@ -24,11 +24,11 @@ test.describe(`News tests`, () => {
       await register({
         page,
       });
-    } else {
-      await authenticate({
-        page,
-      });
     }
+
+    await authenticate({
+      page,
+    });
 
     await enableApi({
       page,
