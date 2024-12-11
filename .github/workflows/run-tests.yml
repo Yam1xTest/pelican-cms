@@ -66,6 +66,9 @@ jobs:
     - name: Log Browser Version
       run: du -hs ~/.cache/ms-playwright/*
 
+    - name: Application build
+      run: npm run build
+
     - name: Run Playwright Tests
       run: |
         npm run start:no-s3 &
