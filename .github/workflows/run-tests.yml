@@ -10,7 +10,6 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-24.04
-    need: start-postgres
 
     strategy:
       fail-fast: false
