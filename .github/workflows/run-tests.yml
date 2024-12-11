@@ -27,19 +27,20 @@ jobs:
       # Label used to access the service container
       postgres:
         # Docker Hub image
-        image: postgres
+        image: postgres:14
         # Provide the env vars for postgres
         env:
-          POSTGRES_DB: pelican_db
-          POSTGRES_PASSWORD: admin
-          POSTGRES_PORT: 5432
           POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: admin
+          POSTGRES_DB: pelican_db
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
     - name: Checkout repository
@@ -92,11 +93,3 @@ jobs:
         npm run start:no-s3 &
         npx --yes wait-on http://localhost:1337/admin & 
         npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-
-      env:
-        DATABASE_CLIENT: postgres
-        DATABASE_HOST: localhost
-        DATABASE_PORT: 5432
-        DATABASE_NAME: pelican_db
-        DATABASE_USERNAME: postgres
-        DATABASE_PASSWORD: admin
