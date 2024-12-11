@@ -93,3 +93,10 @@ jobs:
       
       env:
         DATABASE_HOST: 'localhost'
+
+        # random values
+        APP_KEYS: l117ZfffffvHicHvfpMoJA==,b60dkarNr56Er5mJLMr38w==,+GhweEM/mZi9NbBpkZIpDw==,TfGQ7URlV7PVGg7+zFXr7w==
+        API_TOKEN_SALT: l117ZfffffvHicHvfpMoJA==
+        ADMIN_JWT_SECRET: l117ZfffffvHicHvfpMoJA==
+        JWT_SECRET: l117ZfffffvHicHvfpMoJA==
+        TRANSFER_TOKEN_SALT: l117ZfffffvHicHvfpMoJA==
