@@ -8,13 +8,22 @@ on:
       - feature/*
 
 jobs:
-  start-postgres:
-    # Containers must run in Linux based operating systems
+  run-tests:
     runs-on: ubuntu-24.04
-    # Docker Hub image that `container-job` executes in
-    container: node:20-bookworm-slim
+    need: start-postgres
 
-    # Service containers to run with `container-job`
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.18.0]
+        # it is 14 because it looks like that for each shard 4 workers are used
+        # since the "ideal" number of tests per worker should be 1 we need to devide our nuber of tests on 4
+        # currently there are 54 tests / 4 workers ~ 14 shards (should cover up to 56 tests according to this logic) 
+        #shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        #shardTotal: [16]
+        shardIndex: [1]
+        shardTotal: [1]
+
     services:
       # Label used to access the service container
       postgres:
@@ -33,22 +42,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
-  run-tests:
-    runs-on: ubuntu-24.04
-    need: start-postgres
-
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [20.18.0]
-        # it is 14 because it looks like that for each shard 4 workers are used
-        # since the "ideal" number of tests per worker should be 1 we need to devide our nuber of tests on 4
-        # currently there are 54 tests / 4 workers ~ 14 shards (should cover up to 56 tests according to this logic) 
-        #shardIndex: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-        #shardTotal: [16]
-        shardIndex: [1]
-        shardTotal: [1]
 
     steps:
     - name: Checkout repository
