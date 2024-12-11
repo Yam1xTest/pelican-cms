@@ -1,11 +1,9 @@
 import { expect, Page, test } from '@playwright/test';
 import {
   authenticate,
-  clickByCheckboxAndDeleteWithConfirm,
-  deleteImages,
-  enableApi,
+  clickByCheckboxAndDeleteWithConfirm, enableApi,
   register,
-  uploadImage,
+  uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -37,17 +35,17 @@ test.describe(`News tests`, () => {
     });
   });
 
-  test.afterEach(async ({
-    page,
-  }) => {
-    await deleteNews({
-      page,
-    });
+  // test.afterEach(async ({
+  //   page,
+  // }) => {
+  //   await deleteNews({
+  //     page,
+  //   });
 
-    await deleteImages({
-      page,
-    });
-  });
+  //   await deleteImages({
+  //     page,
+  //   });
+  // });
 
   test(`
     GIVEN collection news without record
