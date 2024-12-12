@@ -94,13 +94,16 @@ jobs:
 
     - name: Application build
       if: steps.cache-build.outputs.cache-hit != 'true'
-      run: npm run build
+      run: npm run build  
 
-    - name: Run Playwright Tests
+    - name: Start application and wait for application to be ready
       run: |
         npm run start:no-s3 &
-        npx --yes wait-on http://localhost:1337/admin & 
-        npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+        chmod +x wait-for-it.sh
+        ./wait-for-it.sh http://localhost:1337/admin --timeout=30 -- echo "Application is ready!"
+
+    - name: Run Playwright Tests
+      run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
       env:
         DATABASE_HOST: 'localhost'
@@ -111,7 +114,7 @@ jobs:
         ADMIN_JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         TRANSFER_TOKEN_SALT: l117ZfffffvHicHvfpMoJA==
-        
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:
