@@ -101,6 +101,13 @@ jobs:
         npm run start:no-s3 &
         npx --yes wait-on http://localhost:1337/admin & 
         npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: blob-report-${{ matrix.shardIndex }}
+        path: blob-report
+        retention-days: 1
       
       env:
         DATABASE_HOST: 'localhost'
@@ -111,3 +118,47 @@ jobs:
         ADMIN_JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         TRANSFER_TOKEN_SALT: l117ZfffffvHicHvfpMoJA==
+
+  merge-reports:
+    if: always()
+    runs-on: ubuntu-24.04 
+    needs: [run-tests]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Cache node modules
+      id: cache-nodemodules
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Dependencies
+      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+      run: npm ci
+ 
+    - name: Download blob reports from GitHub Actions Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: all-blob-reports 
+        pattern: blob-report-*
+        merge-multiple: true
+        
+    - name: Merge into HTML Report
+      run: npx playwright merge-reports --reporter html ./all-blob-reports 
+        
+    - name: Upload HTML report
+      uses: actions/upload-artifact@v4
+      with:
+        name: html-report--attempt-${{ github.run_attempt }}
+        path: playwright-report
+        retention-days: 7
