@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import {
   authenticate,
-  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, register, uploadImage
+  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -13,22 +13,9 @@ test.describe(`News tests`, () => {
       waitUntil: 'networkidle'
     })
 
-    await page.waitForTimeout(500);
-
-    const isRegistrationPage = await page.getByRole(`textbox`, {
-      name: `First name`,
-    })
-      .isVisible();
-
-    if (isRegistrationPage) {
-      await register({
-        page,
-      });
-    } else {
-      await authenticate({
-        page,
-      });
-    }
+    await authenticate({
+      page,
+    });
 
     await enableApi({
       page,
