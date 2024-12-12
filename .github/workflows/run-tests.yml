@@ -69,6 +69,16 @@ jobs:
         path: ~/.cache/ms-playwright
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
+     # let's cache the build of the application so that we don't re-install them from scratch every time
+    - name: Cache application build
+      id: cache-build
+      uses: actions/cache@v4
+      env:
+        cache-name: cache-application-build
+      with:
+        path: dist
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
@@ -83,6 +93,7 @@ jobs:
       run: npx playwright install chromium --with-deps
 
     - name: Application build
+      if: steps.cache-build.outputs.cache-hit != 'true'
       run: npm run build
 
     - name: Run ls
