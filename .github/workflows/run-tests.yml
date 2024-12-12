@@ -102,13 +102,6 @@ jobs:
         npx --yes wait-on http://localhost:1337/admin & 
         npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
 
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 1
-      
       env:
         DATABASE_HOST: 'localhost'
 
@@ -118,6 +111,15 @@ jobs:
         ADMIN_JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         JWT_SECRET: l117ZfffffvHicHvfpMoJA==
         TRANSFER_TOKEN_SALT: l117ZfffffvHicHvfpMoJA==
+        
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: blob-report-${{ matrix.shardIndex }}
+        path: blob-report
+        retention-days: 1
+      
+
 
   merge-reports:
     if: always()
