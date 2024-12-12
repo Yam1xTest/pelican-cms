@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
 import {
-  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, uploadImage
+  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, register, uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -27,9 +27,9 @@ test.describe(`News tests`, () => {
     //   });
     // }
 
-    // await register({
-    //   page,
-    // });
+    await register({
+      page,
+    });
 
     await enableApi({
       page,
