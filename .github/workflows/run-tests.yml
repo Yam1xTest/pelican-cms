@@ -99,7 +99,7 @@ jobs:
     - name: Start application and wait for application to be ready
       run: |
         npm run start:no-s3 &
-        curl --retry 10 --retry-delay 5 --retry-connrefused http://localhost:1337/admin
+        curl --retry 5 --retry-delay 2 --retry-connrefused http://localhost:1337/admin
     
       env:
         DATABASE_HOST: 'localhost'
@@ -112,54 +112,3 @@ jobs:
 
     - name: Run Playwright Tests
       run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 1
-      
-  merge-reports:
-    if: always()
-    runs-on: ubuntu-24.04 
-    needs: [run-tests]
-
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Cache node modules
-      id: cache-nodemodules
-      uses: actions/cache@v4
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Install Dependencies
-      if: steps.cache-nodemodules.outputs.cache-hit != 'true'
-      run: npm ci
- 
-    - name: Download blob reports from GitHub Actions Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: all-blob-reports 
-        pattern: blob-report-*
-        merge-multiple: true
-        
-    - name: Merge into HTML Report
-      run: npx playwright merge-reports --reporter html ./all-blob-reports 
-        
-    - name: Upload HTML report
-      uses: actions/upload-artifact@v4
-      with:
-        name: html-report--attempt-${{ github.run_attempt }}
-        path: playwright-report
-        retention-days: 7

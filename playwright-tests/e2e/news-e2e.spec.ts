@@ -13,8 +13,6 @@ test.describe(`News tests`, () => {
       waitUntil: 'networkidle'
     })
 
-    await page.waitForTimeout(500);
-
     const isRegistrationPage = await page.getByRole(`textbox`, {
       name: `First name`,
     })
