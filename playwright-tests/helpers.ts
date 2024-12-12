@@ -1,9 +1,6 @@
 
 import { Page } from "@playwright/test";
 
-const EMAIL = `admin@init-strapi-admin.strapi.io`;
-const PASSWORD = `admin`;
-
 export async function authenticate({
   page,
 }: {
@@ -12,12 +9,12 @@ export async function authenticate({
   await page.getByRole(`textbox`, {
     name: `email`,
   })
-    .fill(EMAIL);
+    .fill(`admin@init-strapi-admin.strapi.io`);
 
   await page.getByRole(`textbox`, {
     name: `password`,
   })
-    .fill(PASSWORD)
+    .fill(`admin`)
 
   await page.getByText(`Login`)
     .click();
