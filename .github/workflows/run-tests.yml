@@ -1,7 +1,5 @@
 name: Run tests
 
-# ToDo should it be triggered only as part of an open PR?
-# currently it triggers for any commit in a FB
 on: 
   push:
     branches:
