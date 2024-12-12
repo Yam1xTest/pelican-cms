@@ -157,6 +157,7 @@ build/Release
 node_modules/
 /playwright/.cache/
 /playwright-report/
+/playwright-report/playwright-test-results
 jspm_packages/
 
 # Snowpack dependency directory (https://snowpack.dev/)

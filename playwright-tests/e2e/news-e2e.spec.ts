@@ -1,5 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
 import {
+  authenticate,
   clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, register, uploadImage
 } from '../helpers';
 import axios from 'axios';
@@ -12,24 +13,22 @@ test.describe(`News tests`, () => {
       waitUntil: 'networkidle'
     })
 
-    // const isRegistrationPage = await page.getByRole(`textbox`, {
-    //   name: `First name`,
-    // })
-    //   .isVisible();
+    await page.waitForTimeout(1000);
 
-    // if (isRegistrationPage) {
-    //   await register({
-    //     page,
-    //   });
-    // } else {
-    //   await authenticate({
-    //     page,
-    //   });
-    // }
+    const isRegistrationPage = await page.getByRole(`textbox`, {
+      name: `First name`,
+    })
+      .isVisible();
 
-    await register({
-      page,
-    });
+    if (isRegistrationPage) {
+      await register({
+        page,
+      });
+    } else {
+      await authenticate({
+        page,
+      });
+    }
 
     await enableApi({
       page,
@@ -39,6 +38,10 @@ test.describe(`News tests`, () => {
   test.afterEach(async ({
     page,
   }) => {
+    await deleteNews({
+      page,
+    });
+
     await deleteImages({
       page,
     });
@@ -97,8 +100,6 @@ async function newsResponseTest({
   await expect(response.data[0].image.url)
     .not
     .toBeNull()
-
-  await deleteNews({ page })
 }
 
 async function createNews({

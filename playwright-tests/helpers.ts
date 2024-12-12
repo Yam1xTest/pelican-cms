@@ -146,9 +146,11 @@ export async function deleteImages({
 }: {
   page: Page
 }) {
-  await page.goto(`http://localhost:1337/admin/plugins/upload`, {
-    waitUntil: 'networkidle'
-  });
+  // await page.goto(`http://localhost:1337/admin/plugins/upload`, {
+  //   waitUntil: 'networkidle'
+  // });
+  await page.getByText('Media Library')
+    .click()
 
   await clickByCheckboxAndDeleteWithConfirm({
     page,
