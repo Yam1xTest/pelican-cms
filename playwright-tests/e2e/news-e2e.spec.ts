@@ -5,7 +5,7 @@ import {
 } from '../helpers';
 import axios from 'axios';
 
-test.describe(`News tests`, () => {
+test.describe(`News response tests`, () => {
   test.beforeEach(async ({
     page,
   }) => {
