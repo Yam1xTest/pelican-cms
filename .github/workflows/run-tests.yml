@@ -85,6 +85,9 @@ jobs:
     - name: Application build
       run: npm run build
 
+    - name: Run ls
+      run: ls
+
     - name: Run Playwright Tests
       run: |
         npm run start:no-s3 &
