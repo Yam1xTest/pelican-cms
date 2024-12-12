@@ -80,9 +80,19 @@ export async function enableApi({
 }: {
   page: Page
 }) {
-  await page.goto(`http://localhost:1337/admin/settings/users-permissions/roles/2`, {
-    waitUntil: 'networkidle'
-  });
+  // await page.goto(`http://localhost:1337/admin/settings/users-permissions/roles/2`, {
+  //   waitUntil: 'networkidle'
+  // });
+
+  await page.getByText('Settings')
+    .click()
+
+  await page.getByText('Roles')
+    .last()
+    .click()
+
+  await page.getByText('Public')
+    .click()
 
   await page.getByText(`News-collection`)
     .first()
