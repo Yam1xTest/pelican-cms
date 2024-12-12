@@ -1,6 +1,5 @@
 import { expect, Page, test } from '@playwright/test';
 import {
-  authenticate,
   clickByCheckboxAndDeleteWithConfirm, enableApi,
   register,
   uploadImage
@@ -15,20 +14,24 @@ test.describe(`News tests`, () => {
       waitUntil: 'networkidle'
     })
 
-    const isRegistrationPage = await page.getByRole(`textbox`, {
-      name: `First name`,
-    })
-      .isVisible();
+    // const isRegistrationPage = await page.getByRole(`textbox`, {
+    //   name: `First name`,
+    // })
+    //   .isVisible();
 
-    if (isRegistrationPage) {
-      await register({
-        page,
-      });
-    } else {
-      await authenticate({
-        page,
-      });
-    }
+    // if (isRegistrationPage) {
+    //   await register({
+    //     page,
+    //   });
+    // } else {
+    //   await authenticate({
+    //     page,
+    //   });
+    // }
+
+    await register({
+      page,
+    });
 
     await enableApi({
       page,
