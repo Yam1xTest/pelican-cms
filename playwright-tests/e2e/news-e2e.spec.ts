@@ -39,10 +39,6 @@ test.describe(`News tests`, () => {
   test.afterEach(async ({
     page,
   }) => {
-    await deleteNews({
-      page,
-    });
-
     await deleteImages({
       page,
     });
@@ -101,6 +97,8 @@ async function newsResponseTest({
   await expect(response.data[0].image.url)
     .not
     .toBeNull()
+
+  await deleteNews({ page })
 }
 
 async function createNews({
