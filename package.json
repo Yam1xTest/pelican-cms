@@ -11,6 +11,7 @@
     "build": "strapi build",
     "strapi": "strapi",
     "deploy": "strapi deploy",
+    "test-e2e": "npx playwright test",
     "test-e2e:ui": "npx playwright test --ui"
   },
   "dependencies": {
