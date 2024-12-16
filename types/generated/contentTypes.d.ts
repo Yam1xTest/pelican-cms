@@ -429,7 +429,6 @@ export interface ApiNewsCollectionNewsCollection extends Schema.CollectionType {
         };
       }>;
     description: Attribute.Text &
-      Attribute.Required &
       Attribute.SetPluginOptions<{
         versions: {
           versioned: true;
