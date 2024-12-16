@@ -1,6 +1,25 @@
 
 import { Page } from "@playwright/test";
 
+
+export async function goto({
+  page
+}: {
+  page: Page
+}) {
+  await page.goto(getStrapiUrl({ path: '/admin' }), {
+    waitUntil: 'networkidle'
+  })
+}
+
+export function getStrapiUrl({
+  path
+}: {
+  path: string
+}) {
+  return `http://localhost:1337${path}`
+}
+
 export async function authenticate({
   page,
 }: {

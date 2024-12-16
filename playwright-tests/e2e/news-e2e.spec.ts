@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import {
   authenticate,
-  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, uploadImage
+  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, getStrapiUrl, goto, uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -9,9 +9,7 @@ test.describe(`News response tests`, () => {
   test.beforeEach(async ({
     page,
   }) => {
-    await page.goto('http://localhost:1337/admin', {
-      waitUntil: 'networkidle'
-    })
+    await goto({ page })
 
     await authenticate({
       page,
@@ -61,7 +59,7 @@ async function newsResponseTest({
     ]
   };
 
-  await createNews({
+  await createAndPublicNews({
     page,
     title,
     description,
@@ -71,7 +69,7 @@ async function newsResponseTest({
 
   await page.waitForTimeout(500);
 
-  const response = (await axios.get('http://localhost:1337/api/news?populate=*')).data;
+  const response = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
 
   await expect({
     data: [
@@ -89,7 +87,7 @@ async function newsResponseTest({
     .toBeNull()
 }
 
-async function createNews({
+async function createAndPublicNews({
   page,
   title,
   description,
