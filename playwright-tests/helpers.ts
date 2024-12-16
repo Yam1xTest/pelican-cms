@@ -39,39 +39,6 @@ export async function authenticate({
     .click();
 }
 
-export async function enableApi({
-  page,
-}: {
-  page: Page
-}) {
-  await page.getByText('Settings')
-    .click()
-
-  await page.getByText('Roles')
-    .last()
-    .click()
-
-  await page.getByText('Public')
-    .click()
-
-  await page.getByText(`News-collection`)
-    .first()
-    .click();
-
-  await page.getByText(`find`, {
-    exact: true,
-  })
-    .check();
-
-  await page.getByText(`findOne`, {
-    exact: true,
-  })
-    .check();
-
-  await page.getByText(`Save`)
-    .click();
-}
-
 export async function uploadImage({
   page,
   imagePath,

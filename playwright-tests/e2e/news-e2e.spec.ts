@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
 import {
   authenticate,
-  clickByCheckboxAndDeleteWithConfirm, deleteImages, enableApi, getStrapiUrl, goto, uploadImage
+  clickByCheckboxAndDeleteWithConfirm, deleteImages, getStrapiUrl, goto, uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -12,10 +12,6 @@ test.describe(`News response tests`, () => {
     await goto({ page })
 
     await authenticate({
-      page,
-    });
-
-    await enableApi({
       page,
     });
   });
