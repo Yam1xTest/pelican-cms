@@ -24,8 +24,8 @@ export default {
       .findOne(roles.filter((role) => role.type === "public")[0].id);
 
     Object.keys(_public.permissions)
-      .filter(permission => permission.startsWith('api'))
-      .forEach(permission => {
+      .filter((permission) => permission.startsWith('api'))
+      .forEach((permission) => {
         const controller = Object.keys(_public.permissions[permission].controllers)[0];
 
         // Enable find
@@ -35,7 +35,16 @@ export default {
         if (_public.permissions[permission].controllers[controller].findOne)
           _public.permissions[permission].controllers[controller].findOne.enabled = true;
 
+        // Enable delete
+        _public.permissions[permission].controllers[controller].delete.enabled = true;
       });
+
+    // Set permissions for upload
+    // Enable find
+    _public.permissions['plugin::upload'].controllers['content-api'].find.enabled = true;
+
+    // Enable destroy
+    _public.permissions['plugin::upload'].controllers['content-api'].destroy.enabled = true;
 
     await strapi
       .service("plugin::users-permissions.role")

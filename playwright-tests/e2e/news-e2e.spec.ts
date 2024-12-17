@@ -1,7 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
 import {
-  authenticate,
-  clickByCheckboxAndDeleteWithConfirm, deleteImages, getStrapiUrl, goto, uploadImage
+  authenticate, deleteImages, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, goto, uploadImage
 } from '../helpers';
 import axios from 'axios';
 
@@ -9,6 +8,10 @@ test.describe(`News response tests`, () => {
   test.beforeEach(async ({
     page,
   }) => {
+    await deleteNews()
+
+    await deleteImages();
+
     await goto({ page })
 
     await authenticate({
@@ -16,16 +19,10 @@ test.describe(`News response tests`, () => {
     });
   });
 
-  test.afterEach(async ({
-    page,
-  }) => {
-    await deleteNews({
-      page,
-    });
+  test.afterEach(async () => {
+    await deleteNews();
 
-    await deleteImages({
-      page,
-    });
+    await deleteImages();
   });
 
   test(`
@@ -42,15 +39,17 @@ async function newsResponseTest({
 }: {
   page: Page
 }) {
-  const title = `В зоопарке появился амурский тигр`;
+  const title = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
   const description = `На фотографии изображен амурский тигр!`;
   const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
-  const expectedResponse = {
+  const expectedNewsResponse = {
     data: [
       {
-        title,
-        description,
-        innerContent: `<p>${innerContent}</p>`,
+        attributes: {
+          title,
+          description,
+          innerContent: `<p>${innerContent}</p>`,
+        }
       }
     ]
   };
@@ -60,25 +59,28 @@ async function newsResponseTest({
     title,
     description,
     innerContent,
-    imagePath: `./playwright-tests/e2e/fixtures/tiger.png`,
+    imagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
 
   await page.waitForTimeout(500);
 
-  const response = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
+  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
 
   await expect({
     data: [
       {
-        title: response.data[0].title,
-        description: response.data[0].description,
-        innerContent: response.data[0].innerContent,
+        attributes:
+        {
+          title: newsResponse.data[0].attributes.title,
+          description: newsResponse.data[0].attributes.description,
+          innerContent: newsResponse.data[0].attributes.innerContent,
+        }
       }
     ]
   })
-    .toEqual(expectedResponse);
+    .toEqual(expectedNewsResponse);
 
-  await expect(response.data[0].image.url)
+  await expect(newsResponse.data[0].attributes.image.data.attributes.url)
     .not
     .toBeNull()
 }
@@ -130,15 +132,12 @@ async function createAndPublicNews({
 }
 
 
-async function deleteNews({
-  page,
-}: {
-  page: Page
-}) {
-  await page.getByText('Back')
-    .click()
+async function deleteNews() {
+  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
 
-  await clickByCheckboxAndDeleteWithConfirm({
-    page,
-  });
+  const newsDelete = newsResponse.data.filter((news) => news.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+
+  newsDelete.forEach(async ({ id }) => {
+    await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
+  })
 }

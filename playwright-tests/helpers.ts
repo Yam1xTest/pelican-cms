@@ -1,6 +1,9 @@
 
 import { Page } from "@playwright/test";
+import axios from "axios";
+import 'dotenv/config';
 
+export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`
 
 export async function goto({
   page
@@ -17,7 +20,7 @@ export function getStrapiUrl({
 }: {
   path: string
 }) {
-  return `http://localhost:1337${path}`
+  return `${process.env.SERVER_URL || 'http://localhost:1337'}${path}`
 }
 
 export async function authenticate({
@@ -68,17 +71,14 @@ export async function uploadImage({
     .click();
 }
 
-export async function deleteImages({
-  page,
-}: {
-  page: Page
-}) {
-  await page.getByText('Media Library')
-    .click()
+export async function deleteImages() {
+  const filesResponse = (await axios.get(getStrapiUrl({ path: '/api/upload/files' }))).data;
 
-  await clickByCheckboxAndDeleteWithConfirm({
-    page,
-  });
+  const filesDelete = filesResponse.filter((file) => file.name.startsWith(E2E_SMOKE_NAME_PREFIX));
+
+  filesDelete.forEach(async ({ id }) => {
+    await axios.delete(getStrapiUrl({ path: `/api/upload/files/${id}` }));
+  })
 }
 
 export async function clickByCheckboxAndDeleteWithConfirm({

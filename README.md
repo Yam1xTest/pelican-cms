@@ -31,6 +31,10 @@ npm run start:no-s3
 
 Go to http://localhost:1337/admin
 
+Open the swagger documentation.
+
+Go to http://localhost:1337/documentation
+
 ### In Docker
 
 #### Profiles

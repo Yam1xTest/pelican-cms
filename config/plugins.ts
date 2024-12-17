@@ -1,33 +1,40 @@
 export default ({ env }) => ({
-    ...(process.env.APP_ENV !== 'no-s3' && 
-    {upload: {
-        config: {
-            provider: 'aws-s3',
-            providerOptions: {
-                // For kubernetes local env only
-                baseUrl: env('AWS_PUBLIC_ENDPOINT'),
-                s3Options: {
-                    credentials: {
-                        accessKeyId: env('AWS_ACCESS_KEY_ID'),
-                        secretAccessKey: env('AWS_ACCESS_SECRET_KEY'),
-                    },
-                    endpoint: env('AWS_ENDPOINT'),
-                    region: env('AWS_REGION'),
-                    forcePathStyle: true,
-                    params: {
-                        ACL: env('AWS_ACL', 'public-read'),
-                        Bucket: env('AWS_BUCKET'),
-                    },
-                }
+    ...(process.env.APP_ENV !== 'no-s3' &&
+    {
+        upload: {
+            config: {
+                provider: 'aws-s3',
+                providerOptions: {
+                    // For kubernetes local env only
+                    baseUrl: env('AWS_PUBLIC_ENDPOINT'),
+                    s3Options: {
+                        credentials: {
+                            accessKeyId: env('AWS_ACCESS_KEY_ID'),
+                            secretAccessKey: env('AWS_ACCESS_SECRET_KEY'),
+                        },
+                        endpoint: env('AWS_ENDPOINT'),
+                        region: env('AWS_REGION'),
+                        forcePathStyle: true,
+                        params: {
+                            ACL: env('AWS_ACL', 'public-read'),
+                            Bucket: env('AWS_BUCKET'),
+                        },
+                    }
+                },
             },
-        },
-    }}),
-    'transformer': {
+        }
+    }),
+    documentation: {
         enabled: true,
         config: {
-            responseTransforms: {
-                removeAttributesKey: true,
-                removeDataKey: true,
+            openapi: '3.0.0',
+            info: {
+                version: '1.0.0',
+                title: 'Документация API',
+                description: '',
+            },
+            'x-strapi-config': {
+                plugins: [], // Plugins that need documentation generation
             },
         },
     },
