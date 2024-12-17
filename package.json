@@ -31,7 +31,8 @@
     "react-router-dom": "5.3.4",
     "strapi-plugin-init-admin-user": "^0.2.3",
     "strapi-plugin-preview-button": "^2.2.2",
-    "styled-components": "5.3.3"
+    "styled-components": "5.3.3",
+    "@playwright/test": "1.49.0"
   },
   "author": {
     "name": "A Strapi developer"
@@ -45,6 +46,5 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "1.49.0"
   }
 }
