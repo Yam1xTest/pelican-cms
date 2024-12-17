@@ -23,7 +23,17 @@ Start your Strapi application. [Learn more](https://docs.strapi.io/dev-docs/cli#
 ```
 npm run start
 ```
+
+Start your Strapi application without s3. To work in this mode, you do not need to specify data from s3.
+```
+npm run start:no-s3
+```
+
 Go to http://localhost:1337/admin
+
+Open the swagger documentation.
+
+Go to http://localhost:1337/documentation
 
 ### In Docker
 
