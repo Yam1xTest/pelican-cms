@@ -65,22 +65,23 @@ async function newsResponseTest({
   await page.waitForTimeout(500);
 
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
+  const newsWithPrefix = getNewsWithTestPrefix({ news: newsResponse });
 
   await expect({
     data: [
       {
         attributes:
         {
-          title: newsResponse.data[0].attributes.title,
-          description: newsResponse.data[0].attributes.description,
-          innerContent: newsResponse.data[0].attributes.innerContent,
+          title: newsWithPrefix[0].attributes.title,
+          description: newsWithPrefix[0].attributes.description,
+          innerContent: newsWithPrefix[0].attributes.innerContent,
         }
       }
     ]
   })
     .toEqual(expectedNewsResponse);
 
-  await expect(newsResponse.data[0].attributes.image.data.attributes.url)
+  await expect(newsWithPrefix[0].attributes.image.data.attributes.url)
     .not
     .toBeNull()
 }
@@ -135,9 +136,34 @@ async function createAndPublicNews({
 async function deleteNews() {
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
 
-  const newsDelete = newsResponse.data.filter((news) => news.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+  const newsDelete = getNewsWithTestPrefix({ news: newsResponse });
 
   newsDelete.forEach(async ({ id }) => {
     await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
   })
+}
+
+function getNewsWithTestPrefix({
+  news
+}: {
+  news: {
+    data: {
+      id?: number;
+      attributes?: {
+        title: string;
+        description?: string;
+        innerContent: string;
+        image: {
+          data: {
+            attributes: {
+              url: string;
+              alternativeText: string;
+            }
+          }
+        }
+      }
+    }[]
+  }
+}) {
+  return news.data.filter((news) => news?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
 }
