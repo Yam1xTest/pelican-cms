@@ -1,7 +1,9 @@
 export default () => [
   'strapi::logger',
   'strapi::errors',
-  {
+  process.env.APP_ENV === 'no-s3'
+    ? 'strapi::security'
+    : {
     name: 'strapi::security',
     config: {
       contentSecurityPolicy: {
