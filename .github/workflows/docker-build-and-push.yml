@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - feature/configure-minio-s3
+  pull_request: 
 
 env:
   GITHUB_REGISTRY: ghcr.io
