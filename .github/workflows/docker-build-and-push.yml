@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - feature/*
   pull_request: 
 
 env:
@@ -28,12 +29,26 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ghcr.io/tourmalinecore/pelican-cms
+          tags: |
+            # minimal (short sha)
+            type=sha
+            # full length sha
+            type=sha,format=long
+            # set latest tag for default branch
+            # https://github.com/docker/metadata-action/issues/171 explains how to tag latest only on default branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/tourmalinecore/pelican-cms:latest
-          build-args: |
-            SERVER_URL=http://pelican.local.tourmalinecore.internal:40110/cms
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
