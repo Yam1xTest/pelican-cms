@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
 import {
-  authenticate, deleteImages, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, goto, uploadImage
+  authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, goto, uploadFile
 } from '../helpers';
 import axios from 'axios';
 
@@ -10,7 +10,7 @@ test.describe(`News response tests`, () => {
   }) => {
     await deleteNews()
 
-    await deleteImages();
+    await deleteFiles();
 
     await goto({ page })
 
@@ -22,7 +22,7 @@ test.describe(`News response tests`, () => {
   test.afterEach(async () => {
     await deleteNews();
 
-    await deleteImages();
+    await deleteFiles();
   });
 
   test(`
@@ -59,7 +59,7 @@ async function newsResponseTest({
     title,
     description,
     innerContent,
-    imagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
 
   await page.waitForTimeout(500);
@@ -91,13 +91,13 @@ async function createAndPublicNews({
   title,
   description,
   innerContent,
-  imagePath,
+  filePath,
 }: {
   page: Page,
   title: string,
   description: string,
   innerContent: string,
-  imagePath: string
+  filePath: string
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -117,9 +117,9 @@ async function createAndPublicNews({
   await page.locator(`#description`)
     .fill(description);
 
-  await uploadImage({
+  await uploadFile({
     page,
-    imagePath,
+    filePath,
   });
 
   await page.locator(`.ck-content`)
