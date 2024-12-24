@@ -57,5 +57,5 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
           build-args: |
+            # this perfectly explains why this is needed https://github.com/strapi/strapi/issues/13889#issuecomment-1516194973
             SERVER_URL=/cms
-

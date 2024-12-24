@@ -5,6 +5,8 @@
 FROM node:18.18.2-alpine3.17 as build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git > /dev/null 2>&1
 ENV NODE_ENV=production
+
+# this perfectly explains why this is needed https://github.com/strapi/strapi/issues/13889#issuecomment-1516194973
 ARG SERVER_URL
 ENV SERVER_URL=${SERVER_URL}
 
