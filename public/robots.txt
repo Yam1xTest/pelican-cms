@@ -1,3 +1,4 @@
 # To prevent search engines from seeing the site altogether, uncomment the next two lines:
-# User-Agent: *
-# Disallow: /
+# we really don't want this to be crawled until we get into production (https://stackoverflow.com/a/4055328)
+User-Agent: *
+Disallow: /
