@@ -4,7 +4,8 @@
   "info": {
     "singularName": "document",
     "pluralName": "documents",
-    "displayName": "Документы"
+    "displayName": "Документы",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -20,24 +21,32 @@
       "type": "string",
       "required": true
     },
-    "subtitle": {
-      "type": "richtext"
-    },
-    "description": {
-      "type": "richtext"
-    },
     "files": {
-      "allowedTypes": [
-        "files"
-      ],
       "type": "media",
       "multiple": true,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "files"
+      ]
     },
     "category": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::documents-category.documents-category"
+    },
+    "subtitle": {
+      "type": "customField",
+      "options": {
+        "preset": "default"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
+    },
+    "description": {
+      "type": "customField",
+      "options": {
+        "preset": "default"
+      },
+      "customField": "plugin::ckeditor5.CKEditor"
     }
   }
 }
