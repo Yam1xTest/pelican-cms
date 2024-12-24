@@ -44,7 +44,7 @@ async function documentsCategoriesResponseTest({
 }: {
   page: Page
 }) {
-  const title = `${E2E_SMOKE_NAME_PREFIX} Тестовая категория`;
+  const title = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
   const expectedDocumentsCategoriesResponse = {
     data: [
       {
