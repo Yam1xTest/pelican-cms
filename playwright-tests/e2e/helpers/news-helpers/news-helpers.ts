@@ -1,40 +1,8 @@
-import { expect, Page, test } from '@playwright/test';
-import {
-  authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, goto, uploadFile
-} from '../helpers';
+import { expect, Page } from '@playwright/test';
 import axios from 'axios';
+import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl, saveAndPublish, uploadFile } from '../global-helpers';
 
-test.describe(`News response tests`, () => {
-  test.beforeEach(async ({
-    page,
-  }) => {
-    await deleteNews()
-
-    await deleteFiles();
-
-    await goto({ page })
-
-    await authenticate({
-      page,
-    });
-  });
-
-  test.afterEach(async () => {
-    await deleteNews();
-
-    await deleteFiles();
-  });
-
-  test(`
-    GIVEN collection news without record
-    WHEN create one news
-    SHOULD get a response with this news
-    `,
-    newsResponseTest
-  );
-});
-
-async function newsResponseTest({
+export async function newsResponseTest({
   page,
 }: {
   page: Page
@@ -86,6 +54,16 @@ async function newsResponseTest({
     .toBeNull()
 }
 
+export async function deleteNews() {
+  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
+
+  const newsDelete = getNewsWithTestPrefix({ news: newsResponse });
+
+  newsDelete.forEach(async ({ id }) => {
+    await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
+  })
+}
+
 async function createAndPublicNews({
   page,
   title,
@@ -125,45 +103,32 @@ async function createAndPublicNews({
   await page.locator(`.ck-content`)
     .fill(innerContent);
 
-  await page.getByText(`Save`)
-    .click();
-
-  await page.getByText(`Publish`)
-    .click();
-}
-
-
-async function deleteNews() {
-  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
-
-  const newsDelete = getNewsWithTestPrefix({ news: newsResponse });
-
-  newsDelete.forEach(async ({ id }) => {
-    await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
-  })
+  await saveAndPublish({ page })
 }
 
 function getNewsWithTestPrefix({
   news
 }: {
-  news: {
-    data: {
-      id?: number;
-      attributes?: {
-        title: string;
-        description?: string;
-        innerContent: string;
-        image: {
-          data: {
-            attributes: {
-              url: string;
-              alternativeText: string;
-            }
+  news: NewsResponse
+}) {
+  return news.data.filter((news) => news?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+}
+
+type NewsResponse = {
+  data: {
+    id?: number;
+    attributes?: {
+      title: string;
+      description?: string;
+      innerContent: string;
+      image: {
+        data: {
+          attributes: {
+            url: string;
+            alternativeText: string;
           }
         }
       }
-    }[]
-  }
-}) {
-  return news.data.filter((news) => news?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+    }
+  }[]
 }

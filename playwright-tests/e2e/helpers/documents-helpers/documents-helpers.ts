@@ -1,50 +1,12 @@
-import { expect, Page, test } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import {
-  authenticate,
-  deleteFiles,
   E2E_SMOKE_NAME_PREFIX,
-  getStrapiUrl,
-  goto,
-  uploadFile
-} from '../../helpers';
+  getStrapiUrl, saveAndPublish, uploadFile
+} from '../global-helpers';
 import axios from 'axios';
-import { createAndPublicDocumentsCategory, deleteDocumentsCategories } from './helpers';
+import { createAndPublicDocumentsCategory } from './documents-categories-helpers';
 
-test.describe(`Documents response tests`, () => {
-  test.beforeEach(async ({
-    page,
-  }) => {
-    await deleteDocumentsCategories();
-
-    await deleteDocuments()
-
-    await deleteFiles();
-
-    await goto({ page })
-
-    await authenticate({
-      page,
-    });
-  });
-
-  test.afterEach(async () => {
-    await deleteDocumentsCategories();
-
-    await deleteDocuments();
-
-    await deleteFiles();
-  });
-
-  test(`
-    GIVEN collection documents without record
-    WHEN create one document
-    SHOULD get a response with this document
-    `,
-    documentsResponseTest
-  );
-});
-
-async function documentsResponseTest({
+export async function documentsResponseTest({
   page,
 }: {
   page: Page
@@ -89,8 +51,7 @@ async function documentsResponseTest({
   await expect({
     data: [
       {
-        attributes:
-        {
+        attributes: {
           showDate: documentsWithPrefix[0].attributes.showDate,
           title: documentsWithPrefix[0].attributes.title,
           subtitle: documentsWithPrefix[0].attributes.subtitle,
@@ -104,6 +65,16 @@ async function documentsResponseTest({
   await expect(documentsWithPrefix[0].attributes.files.data[0].attributes.url)
     .not
     .toBeNull()
+}
+
+export async function deleteDocuments() {
+  const documentsResponse = (await axios.get(getStrapiUrl({ path: '/api/documents?populate=*' }))).data;
+
+  const documentsDelete = getDocumentsWithTestPrefix({ documents: documentsResponse });
+
+  documentsDelete.forEach(async ({ id }) => {
+    await axios.delete(getStrapiUrl({ path: `/api/documents/${id}` }));
+  })
 }
 
 async function createAndPublicDocument({
@@ -159,43 +130,32 @@ async function createAndPublicDocument({
   })
     .fill(categoryTitle);
 
-  await page.click('button:has-text("Save")');
-
-  await page.click('button:has-text("Publish")');
-}
-
-
-async function deleteDocuments() {
-  const documentsResponse = (await axios.get(getStrapiUrl({ path: '/api/documents?populate=*' }))).data;
-
-  const documentsDelete = getDocumentsWithTestPrefix({ documents: documentsResponse });
-
-  documentsDelete.forEach(async ({ id }) => {
-    await axios.delete(getStrapiUrl({ path: `/api/documents/${id}` }));
-  })
+  await saveAndPublish({ page })
 }
 
 function getDocumentsWithTestPrefix({
   documents
 }: {
-  documents: {
-    data: {
-      id?: number;
-      attributes?: {
-        showDate: boolean,
-        title: string;
-        subtitle: string;
-        description?: string;
-        files: {
-          data: {
-            attributes: {
-              url: string;
-            }
+  documents: DocumentsResponse
+}) {
+  return documents.data.filter((document) => document?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+}
+
+type DocumentsResponse = {
+  data: {
+    id?: number;
+    attributes?: {
+      showDate: boolean,
+      title: string;
+      subtitle: string;
+      description?: string;
+      files: {
+        data: {
+          attributes: {
+            url: string;
           }
         }
       }
-    }[]
-  }
-}) {
-  return documents.data.filter((document) => document?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+    }
+  }[]
 }

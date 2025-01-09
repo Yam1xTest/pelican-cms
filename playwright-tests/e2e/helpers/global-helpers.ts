@@ -101,3 +101,19 @@ export async function clickByCheckboxAndDeleteWithConfirm({
   })
     .click();
 }
+
+export async function saveAndPublish({
+  page
+}: {
+  page: Page
+}) {
+  await page.getByRole(`button`, {
+    name: 'Save'
+  })
+    .click();
+
+  await page.getByRole(`button`, {
+    name: 'Publish'
+  })
+    .click();
+}

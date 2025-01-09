@@ -1,6 +1,49 @@
-import axios from "axios";
-import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl } from "../../helpers";
-import { Page } from "@playwright/test";
+import { expect, Page } from '@playwright/test';
+import {
+  E2E_SMOKE_NAME_PREFIX,
+  getStrapiUrl,
+  saveAndPublish
+} from '../global-helpers';
+import axios from 'axios';
+
+export async function documentsCategoriesResponseTest({
+  page,
+}: {
+  page: Page
+}) {
+  const title = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
+  const expectedDocumentsCategoriesResponse = {
+    data: [
+      {
+        attributes: {
+          title,
+        }
+      }
+    ]
+  };
+
+  await createAndPublicDocumentsCategory({
+    page,
+    title,
+  });
+
+  await page.waitForTimeout(500);
+
+  const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: '/api/documents-categories?populate=*' }))).data;
+  const documentCategoriesWithPrefix = getDocumentCategoriesWithTestPrefix({ documentCategories: documentsCategoriesResponse });
+
+  await expect({
+    data: [
+      {
+        attributes:
+        {
+          title: documentCategoriesWithPrefix[0].attributes.title,
+        }
+      }
+    ]
+  })
+    .toEqual(expectedDocumentsCategoriesResponse);
+}
 
 export async function createAndPublicDocumentsCategory({
   page,
@@ -24,11 +67,7 @@ export async function createAndPublicDocumentsCategory({
   })
     .fill(title);
 
-  await page.getByText(`Save`)
-    .click();
-
-  await page.getByText(`Publish`)
-    .click();
+  await saveAndPublish({ page })
 }
 
 export async function deleteDocumentsCategories() {
@@ -41,7 +80,7 @@ export async function deleteDocumentsCategories() {
   })
 }
 
-export function getDocumentCategoriesWithTestPrefix({
+function getDocumentCategoriesWithTestPrefix({
   documentCategories
 }: {
   documentCategories: {
