@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documents_categories",
+  "info": {
+    "singularName": "documents-category",
+    "pluralName": "documents-categories",
+    "displayName": "Категории документов"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    }
+  }
+}

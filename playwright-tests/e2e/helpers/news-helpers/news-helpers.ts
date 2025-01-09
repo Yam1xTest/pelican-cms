@@ -1,40 +1,8 @@
-import { expect, Page, test } from '@playwright/test';
-import {
-  authenticate, deleteImages, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, goto, uploadImage
-} from '../helpers';
+import { expect, Page } from '@playwright/test';
 import axios from 'axios';
+import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl, saveAndPublish, uploadFile } from '../global-helpers';
 
-test.describe(`News response tests`, () => {
-  test.beforeEach(async ({
-    page,
-  }) => {
-    await deleteNews()
-
-    await deleteImages();
-
-    await goto({ page })
-
-    await authenticate({
-      page,
-    });
-  });
-
-  test.afterEach(async () => {
-    await deleteNews();
-
-    await deleteImages();
-  });
-
-  test(`
-    GIVEN collection news without record
-    WHEN create one news
-    SHOULD get a response with this news
-    `,
-    newsResponseTest
-  );
-});
-
-async function newsResponseTest({
+export async function newsResponseTest({
   page,
 }: {
   page: Page
@@ -59,7 +27,7 @@ async function newsResponseTest({
     title,
     description,
     innerContent,
-    imagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
 
   await page.waitForTimeout(500);
@@ -83,7 +51,17 @@ async function newsResponseTest({
 
   await expect(newsWithPrefix[0].attributes.image.data.attributes.url)
     .not
-    .toBeNull()
+    .toBeNull();
+}
+
+export async function deleteNews() {
+  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
+
+  const newsDelete = getNewsWithTestPrefix({ news: newsResponse });
+
+  newsDelete.forEach(async ({ id }) => {
+    await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
+  })
 }
 
 async function createAndPublicNews({
@@ -91,13 +69,13 @@ async function createAndPublicNews({
   title,
   description,
   innerContent,
-  imagePath,
+  filePath,
 }: {
   page: Page,
   title: string,
   description: string,
   innerContent: string,
-  imagePath: string
+  filePath: string
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -117,53 +95,40 @@ async function createAndPublicNews({
   await page.locator(`#description`)
     .fill(description);
 
-  await uploadImage({
+  await uploadFile({
     page,
-    imagePath,
+    filePath,
   });
 
   await page.locator(`.ck-content`)
     .fill(innerContent);
 
-  await page.getByText(`Save`)
-    .click();
-
-  await page.getByText(`Publish`)
-    .click();
-}
-
-
-async function deleteNews() {
-  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
-
-  const newsDelete = getNewsWithTestPrefix({ news: newsResponse });
-
-  newsDelete.forEach(async ({ id }) => {
-    await axios.delete(getStrapiUrl({ path: `/api/news/${id}` }));
-  })
+  await saveAndPublish({ page });
 }
 
 function getNewsWithTestPrefix({
   news
 }: {
-  news: {
-    data: {
-      id?: number;
-      attributes?: {
-        title: string;
-        description?: string;
-        innerContent: string;
-        image: {
-          data: {
-            attributes: {
-              url: string;
-              alternativeText: string;
-            }
+  news: NewsResponse
+}) {
+  return news.data.filter((news) => news?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+}
+
+type NewsResponse = {
+  data: {
+    id?: number;
+    attributes?: {
+      title: string;
+      description?: string;
+      innerContent: string;
+      image: {
+        data: {
+          attributes: {
+            url: string;
+            alternativeText: string;
           }
         }
       }
-    }[]
-  }
-}) {
-  return news.data.filter((news) => news?.attributes.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+    }
+  }[]
 }

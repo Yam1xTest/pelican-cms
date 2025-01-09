@@ -36,18 +36,18 @@ export async function authenticate({
   await page.getByRole(`textbox`, {
     name: `password`,
   })
-    .fill(`admin`)
+    .fill(`admin`);
 
   await page.getByText(`Login`)
     .click();
 }
 
-export async function uploadImage({
+export async function uploadFile({
   page,
-  imagePath,
+  filePath,
 }: {
   page: Page
-  imagePath: string,
+  filePath: string,
 }) {
   await page.getByText(`Click to add an asset or drag and drop one in this area`)
     .click();
@@ -60,7 +60,7 @@ export async function uploadImage({
   await page.getByRole(`textbox`, {
     name: `files`,
   })
-    .setInputFiles(imagePath);
+    .setInputFiles(filePath);
 
   await page.getByText(`Upload 1 asset to the library`)
     .click();
@@ -71,7 +71,7 @@ export async function uploadImage({
     .click();
 }
 
-export async function deleteImages() {
+export async function deleteFiles() {
   const filesResponse = (await axios.get(getStrapiUrl({ path: '/api/upload/files' }))).data;
 
   const filesDelete = filesResponse.filter((file) => file.name.startsWith(E2E_SMOKE_NAME_PREFIX));
@@ -98,6 +98,22 @@ export async function clickByCheckboxAndDeleteWithConfirm({
 
   await page.getByRole(`button`, {
     name: `Confirm`,
+  })
+    .click();
+}
+
+export async function saveAndPublish({
+  page
+}: {
+  page: Page
+}) {
+  await page.getByRole(`button`, {
+    name: 'Save'
+  })
+    .click();
+
+  await page.getByRole(`button`, {
+    name: 'Publish'
   })
     .click();
 }
