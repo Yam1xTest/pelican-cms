@@ -14,7 +14,7 @@ test.describe(`Response tests`, () => {
     const context = await browser.newContext();
     page = await context.newPage();
 
-    await goto({ page })
+    await goto({ page });
 
     await authenticate({
       page,
@@ -24,7 +24,7 @@ test.describe(`Response tests`, () => {
 
   test.describe(`News response tests`, () => {
     test.beforeEach(async () => {
-      await deleteNews()
+      await deleteNews();
 
       await deleteFiles();
     });
@@ -46,7 +46,7 @@ test.describe(`Response tests`, () => {
 
   test.describe(`Documents categories response tests`, () => {
     test.beforeEach(async () => {
-      await deleteDocumentsCategories()
+      await deleteDocumentsCategories();
 
       await deleteFiles();
     });
@@ -70,7 +70,7 @@ test.describe(`Response tests`, () => {
     test.beforeEach(async () => {
       await deleteDocumentsCategories();
 
-      await deleteDocuments()
+      await deleteDocuments();
 
       await deleteFiles();;
     });

@@ -64,7 +64,7 @@ export async function documentsResponseTest({
 
   await expect(documentsWithPrefix[0].attributes.files.data[0].attributes.url)
     .not
-    .toBeNull()
+    .toBeNull();
 }
 
 export async function deleteDocuments() {
@@ -130,7 +130,7 @@ async function createAndPublicDocument({
   })
     .fill(categoryTitle);
 
-  await saveAndPublish({ page })
+  await saveAndPublish({ page });
 }
 
 function getDocumentsWithTestPrefix({

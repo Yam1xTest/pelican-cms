@@ -51,7 +51,7 @@ export async function newsResponseTest({
 
   await expect(newsWithPrefix[0].attributes.image.data.attributes.url)
     .not
-    .toBeNull()
+    .toBeNull();
 }
 
 export async function deleteNews() {
@@ -103,7 +103,7 @@ async function createAndPublicNews({
   await page.locator(`.ck-content`)
     .fill(innerContent);
 
-  await saveAndPublish({ page })
+  await saveAndPublish({ page });
 }
 
 function getNewsWithTestPrefix({

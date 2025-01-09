@@ -67,7 +67,7 @@ export async function createAndPublicDocumentsCategory({
   })
     .fill(title);
 
-  await saveAndPublish({ page })
+  await saveAndPublish({ page });
 }
 
 export async function deleteDocumentsCategories() {

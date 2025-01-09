@@ -36,7 +36,7 @@ export async function authenticate({
   await page.getByRole(`textbox`, {
     name: `password`,
   })
-    .fill(`admin`)
+    .fill(`admin`);
 
   await page.getByText(`Login`)
     .click();
