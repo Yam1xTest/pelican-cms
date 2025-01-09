@@ -36,7 +36,7 @@ test.describe(`Response tests`, () => {
     });
 
     test(`
-        GIVEN collection news without record
+        GIVEN collection of news without record
         WHEN create one news
         SHOULD get a response with this news
         `,
@@ -58,7 +58,7 @@ test.describe(`Response tests`, () => {
     });
 
     test(`
-      GIVEN collection documents categories without record
+      GIVEN collection of documents categories without record
       WHEN create one category
       SHOULD get a response with this category
       `,
@@ -84,7 +84,7 @@ test.describe(`Response tests`, () => {
     });
 
     test(`
-      GIVEN collection documents without record
+      GIVEN collection of documents without record
       WHEN create one document
       SHOULD get a response with this document
       `,
