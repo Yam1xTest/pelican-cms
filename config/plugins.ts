@@ -24,6 +24,9 @@ export default ({ env }) => ({
             },
         }
     }),
+    seo: {
+        enabled: true,
+    },
     documentation: {
         enabled: true,
         config: {
