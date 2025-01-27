@@ -16,7 +16,7 @@ export async function documentsResponseTest({
   const title = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
   const subtitle = `Договор на поставку продукции животноводства (мясо говядина) для нужд муниципального бюджетного учреждения культуры «зоопарк»`;
   const description = `Контракт заключен по результатам электронного аукциона в рамках 223-ФЗ. Извещение №31907985126 в электронной форме размещены на сайте по адресу в сети Интернет: www.zakupki.gov.ru и на электронной площадке tender.otc.ru процедура №4442641 лот №7816638. Протокол №U4442641-7816638-3 от 07.07.2019 г.`;
-  const date = `2025-01-17`;
+  const date = `17/01/2025`;
   const expectedDocumentsResponse = {
     data: [
       {
@@ -25,7 +25,7 @@ export async function documentsResponseTest({
           title,
           subtitle: `<p>${subtitle}</p>`,
           description: `<p>${description}</p>`,
-          date,
+          date: `2025-01-17`,
         }
       }
     ]
@@ -135,7 +135,7 @@ async function createAndPublicDocument({
   })
     .fill(categoryTitle);
 
-  await page.getByRole(`textbox`, {
+  await page.getByRole(`combobox`, {
     name: `date`,
   })
     .fill(date);
