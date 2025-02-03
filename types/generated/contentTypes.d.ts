@@ -430,6 +430,7 @@ export interface ApiDocumentsCategoryDocumentsCategory
   };
   attributes: {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
+    isDivided: Attribute.Boolean & Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

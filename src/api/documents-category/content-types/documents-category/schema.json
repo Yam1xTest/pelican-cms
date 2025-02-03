@@ -15,6 +15,10 @@
       "type": "string",
       "required": true,
       "unique": true
+    },
+    "isDivided": {
+      "type": "boolean",
+      "default": true
     }
   }
 }
