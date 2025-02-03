@@ -68,9 +68,8 @@ jobs:
 
       - name: Wait for application to be ready and Playwright run
         run: |
-          until curl -s -o /dev/null -w "%{http_code}" http://localhost:40110/cms | grep -q "200"; do
-          echo "Ожидание загрузки страницы..."
-          sleep 30 &
+          sleep 60 &
+          curl --retry 5 --retry-delay 2 --retry-connrefused "http://localhost:40110/cms" &
           npx playwright test --reporter=html
     
         env:
