@@ -30,6 +30,8 @@ jobs:
         run: |
           curl --retry 5 --retry-delay 2 --retry-connrefused "http://localhost:40100/cms/admin" &
           npx playwright test
+        env:
+          SERVER_URL: 'http://localhost:40100/cms/admin'
 
   # run-tests:
   #   runs-on: ubuntu-24.04
