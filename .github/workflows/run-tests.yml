@@ -28,10 +28,10 @@ jobs:
 
       - name: Wait for application to be ready and Playwright run
         run: |
-          curl --retry 5 --retry-delay 2 --retry-connrefused "http://localhost:40100/cms/admin" &
+          curl --retry 5 --retry-delay 2 --retry-connrefused "http://pelican.local.tourmalinecore.internal:40110/cms" &
           npx playwright test
         env:
-          SERVER_URL: 'http://localhost:40100/cms/admin'
+          SERVER_URL: 'http://pelican.local.tourmalinecore.internal:40110/cms'
 
   # run-tests:
   #   runs-on: ubuntu-24.04
