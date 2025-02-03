@@ -68,11 +68,11 @@ jobs:
 
       - name: Wait for application to be ready and Playwright run
         run: |
-          curl --retry 5 --retry-delay 2 --retry-connrefused "http://localhost:40110/cms" &
+          curl --retry 5 --retry-delay 2 --retry-connrefused "http://pelican.local.tourmalinecore.internal:40110/cms" &
           npx playwright test --reporter=html
     
         env:
-          SERVER_URL: 'http://localhost:40110/cms'
+          SERVER_URL: 'http://pelican.local.tourmalinecore.internal:40110/cms'
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
