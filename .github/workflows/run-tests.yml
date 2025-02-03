@@ -26,14 +26,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # - name: Playwright run
-      #   uses: 
-      #   with:
-      #     wait-on: "http://localhost:40100/cms/admin" 
-      #     browser: chrome
-      #     record: true
-      #     # config-file: cypress.config.local-env.ts
-
+      - name: Wait for application to be ready and Playwright run
+        run: |
+          curl --retry 5 --retry-delay 2 --retry-connrefused "http://localhost:40100/cms/admin" &
+          npx playwright test
 
   # run-tests:
   #   runs-on: ubuntu-24.04
