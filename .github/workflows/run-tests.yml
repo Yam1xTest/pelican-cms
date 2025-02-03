@@ -4,10 +4,53 @@ on:
   push:
     branches:
       - feature/*
+  #     if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+  #     run: npm ci
 
+  #   - name: Install Playwright Browsers
+  #     if: steps.cache-playwrightbrowsers.outputs.cache-hit != 'true'
 jobs:
+  install:
+    runs-on: ubuntu-24.04
+    steps:
+      # we need to declare the same cache that they are shared among different jobs (path and key are the most important)
+      # https://stackoverflow.com/a/71895573
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+  
+      # let's cache the binaries of installed browsers that we don't re-install them every time from scratch
+      - name: Cache playwright browsers
+        id: cache-playwrightbrowsers
+        uses: actions/cache@v4
+        env:
+          cache-name: cache-playwright-browsers
+        with:
+          # caching browsers binaries
+          # this path is taken from here https://playwright.dev/docs/browsers#managing-browser-binaries
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+      - name: Install dependencies
+        if: steps.cache-nodemodules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        if: steps.cache-playwrightbrowsers.outputs.cache-hit != 'true'
+        run: npx playwright install chromium --with-deps
+
   e2e-test:
     runs-on: ubuntu-24.04
+    needs: install
     steps:
       - name: Checkout local-env
         uses: actions/checkout@v4
@@ -35,10 +78,10 @@ jobs:
 
       - name: Wait for application to be ready and Playwright run
         run: |
-          curl --retry 5 --retry-delay 2 --retry-connrefused "http://pelican.local.tourmalinecore.internal:40110/cms/admin" &
+          curl --retry 5 --retry-delay 2 --retry-connrefused "http://pelican.local.tourmalinecore.internal:40110/cms" &
           npx playwright test
         env:
-          SERVER_URL: 'http://pelican.local.tourmalinecore.internal:40110/cms/admin'
+          SERVER_URL: 'http://pelican.local.tourmalinecore.internal:40110/cms'
 
   # run-tests:
   #   runs-on: ubuntu-24.04
