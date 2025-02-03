@@ -68,14 +68,7 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install chromium --with-deps
-
+        
       - name: Wait for application to be ready and Playwright run
         run: |
           curl --retry 5 --retry-delay 2 --retry-connrefused "http://pelican.local.tourmalinecore.internal:40110/cms" &
