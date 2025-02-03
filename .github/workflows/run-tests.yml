@@ -72,7 +72,7 @@ jobs:
           npx playwright test --reporter=html
 
         env:
-        SERVER_URL: 'http://localhost:40110/cms'
+          SERVER_URL: 'http://localhost:40110/cms'
 
       - name: Upload Playwright HTML report
         if: always()
