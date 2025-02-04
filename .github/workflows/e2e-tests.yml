@@ -6,7 +6,7 @@ on:
       - feature/*
 
 jobs:
-  e2e-test:
+  e2e-tests:
     runs-on: ubuntu-24.04
 
     strategy:
@@ -70,6 +70,7 @@ jobs:
         run: npx playwright test --reporter=html
     
         env:
+          FRONTEND_URL: http://localhost:40110 
           SERVER_URL: 'http://localhost:40110/cms'
 
       - name: Upload HTML report
