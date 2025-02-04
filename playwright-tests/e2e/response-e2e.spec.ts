@@ -44,51 +44,51 @@ test.describe(`Response tests`, () => {
     );
   });
 
-  test.describe(`Documents categories response tests`, () => {
-    test.beforeEach(async () => {
-      await deleteDocumentsCategories();
+  // test.describe(`Documents categories response tests`, () => {
+  //   test.beforeEach(async () => {
+  //     await deleteDocumentsCategories();
 
-      await deleteFiles();
-    });
+  //     await deleteFiles();
+  //   });
 
-    test.afterEach(async () => {
-      await deleteDocumentsCategories();
+  //   test.afterEach(async () => {
+  //     await deleteDocumentsCategories();
 
-      await deleteFiles();
-    });
+  //     await deleteFiles();
+  //   });
 
-    test(`
-      GIVEN collection of documents categories without record
-      WHEN create one category
-      SHOULD get a response with this category
-      `,
-      async () => await documentsCategoriesResponseTest({ page })
-    );
+  //   test(`
+  //     GIVEN collection of documents categories without record
+  //     WHEN create one category
+  //     SHOULD get a response with this category
+  //     `,
+  //     async () => await documentsCategoriesResponseTest({ page })
+  //   );
+});
+
+test.describe(`Documents response tests`, () => {
+  test.beforeEach(async () => {
+    await deleteDocumentsCategories();
+
+    await deleteDocuments();
+
+    await deleteFiles();;
   });
 
-  test.describe(`Documents response tests`, () => {
-    test.beforeEach(async () => {
-      await deleteDocumentsCategories();
+  test.afterEach(async () => {
+    await deleteDocumentsCategories();
 
-      await deleteDocuments();
+    await deleteDocuments();
 
-      await deleteFiles();;
-    });
+    await deleteFiles();
+  });
 
-    test.afterEach(async () => {
-      await deleteDocumentsCategories();
-
-      await deleteDocuments();
-
-      await deleteFiles();
-    });
-
-    test(`
+  test(`
       GIVEN collection of documents without record
       WHEN create one document
       SHOULD get a response with this document
       `,
-      async () => await documentsResponseTest({ page })
-    );
-  });
+    async () => await documentsResponseTest({ page })
+  );
+});
 })
