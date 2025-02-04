@@ -6,7 +6,7 @@ import { createAndPublicNews, deleteNews, getNewsWithTestPrefix } from "./helper
 import axios from "axios";
 
 
-test.describe(`Response tests`, () => {
+test.describe(`API response tests`, () => {
   let page: Page;
 
   test.beforeAll(async ({
@@ -37,10 +37,10 @@ test.describe(`Response tests`, () => {
     });
 
     test(`
-        GIVEN collection of news without record
-        WHEN create one news
-        SHOULD get a response with this news
-        `,
+      GIVEN collection of news without record
+      WHEN create one news
+      SHOULD get a response with this news
+      `,
       async () => await newsResponseTest({ page })
     );
   });
