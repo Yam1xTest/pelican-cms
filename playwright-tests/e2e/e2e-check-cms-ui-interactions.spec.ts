@@ -37,13 +37,13 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
       WHEN create one news
       SHOULD news displayed on the UI
       `,
-      async () => await newsE2ETest({ page })
+      async () => await e2eNewsCreateAndViewTest({ page })
     );
   })
 })
 
 
-async function newsE2ETest({
+async function e2eNewsCreateAndViewTest({
   page
 }: {
   page: Page

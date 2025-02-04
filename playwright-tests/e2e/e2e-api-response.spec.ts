@@ -41,7 +41,7 @@ test.describe(`API response tests`, () => {
       WHEN create one news
       SHOULD get a response with this news
       `,
-      async () => await newsResponseTest({ page })
+      async () => await checkNewsResponseTest({ page })
     );
   });
 
@@ -63,7 +63,7 @@ test.describe(`API response tests`, () => {
       WHEN create one category
       SHOULD get a response with this category
       `,
-      async () => await documentsCategoriesResponseTest({ page })
+      async () => await checkDocumentsCategoriesResponseTest({ page })
     );
   });
 
@@ -89,13 +89,13 @@ test.describe(`API response tests`, () => {
       WHEN create one document
       SHOULD get a response with this document
       `,
-      async () => await documentsResponseTest({ page })
+      async () => await checkDocumentsResponseTest({ page })
     );
   });
 })
 
 
-async function newsResponseTest({
+async function checkNewsResponseTest({
   page,
 }: {
   page: Page
@@ -146,7 +146,7 @@ async function newsResponseTest({
     .toBeNull();
 }
 
-async function documentsResponseTest({
+async function checkDocumentsResponseTest({
   page,
 }: {
   page: Page
@@ -205,7 +205,7 @@ async function documentsResponseTest({
     .toBeNull();
 }
 
-async function documentsCategoriesResponseTest({
+async function checkDocumentsCategoriesResponseTest({
   page,
 }: {
   page: Page
