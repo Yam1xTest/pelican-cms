@@ -16,16 +16,6 @@
     }
   },
   "attributes": {
-    "title": {
-      "pluginOptions": {
-        "versions": {
-          "versioned": true
-        }
-      },
-      "type": "string",
-      "unique": false,
-      "required": true
-    },
     "seo": {
       "type": "component",
       "repeatable": false,
@@ -35,6 +25,18 @@
         }
       },
       "component": "shared.seo"
+    },
+    "blocks": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "shared.hero"
+      ],
+      "required": false
     }
   }
 }

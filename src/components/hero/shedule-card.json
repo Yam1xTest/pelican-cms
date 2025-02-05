@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_hero_shedule_cards",
+  "info": {
+    "displayName": "SheduleCard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "timetable": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shedule-card.timetable",
+      "required": true
+    }
+  }
+}

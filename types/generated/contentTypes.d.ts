@@ -464,14 +464,13 @@ export interface ApiHomeHome extends Schema.SingleType {
     };
   };
   attributes: {
-    title: Attribute.String &
-      Attribute.Required &
+    seo: Attribute.Component<'shared.seo'> &
       Attribute.SetPluginOptions<{
         versions: {
           versioned: true;
         };
       }>;
-    seo: Attribute.Component<'shared.seo'> &
+    blocks: Attribute.DynamicZone<['shared.hero']> &
       Attribute.SetPluginOptions<{
         versions: {
           versioned: true;

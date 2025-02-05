@@ -4,6 +4,7 @@ import { createAndPublishDocumentsCategory, deleteDocumentsCategories, getDocume
 import { createAndPublishDocument, deleteDocuments, getDocumentsWithTestPrefix } from "./helpers/documents-helpers/documents-helpers";
 import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
 import axios from "axios";
+import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 
 
 test.describe(`API response tests`, () => {
@@ -90,6 +91,26 @@ test.describe(`API response tests`, () => {
       SHOULD get a response with this document
       `,
       async () => await checkDocumentsResponseTest({ page })
+    );
+  });
+
+  test.describe(`Homepage response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteFiles();
+    });
+
+    test.afterEach(async () => {
+      await deleteHomepage()
+
+      await deleteFiles();
+    });
+
+    test(`
+      GIVEN collection of news without record
+      WHEN create one news
+      SHOULD get a response with this news
+      `,
+      async () => await checkHomepageResponseTest({ page })
     );
   });
 })
@@ -240,4 +261,90 @@ async function checkDocumentsCategoriesResponseTest({
     ]
   })
     .toEqual(expectedDocumentsCategoriesResponse);
+}
+
+async function checkHomepageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const title = `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`;
+  const infoCard = {
+    title: '29 октября зоопарк не работает',
+    description: 'Каждый последний понедельник месяца санитарный день.'
+  };
+  const sheduleCard = {
+    title: 'График работы',
+    timetable: [{
+      days: 'Понедельник - четверг',
+      time: '10:00-18:00',
+      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+    }]
+  };
+  const expectedHomepageResponse = {
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title,
+            __component: "shared.hero",
+            infoCard: {
+              title: infoCard.title,
+              description: infoCard.description
+            },
+            sheduleCard: {
+              title: sheduleCard.title,
+              timetable: sheduleCard.timetable
+            },
+          }
+        ]
+      }
+    }
+  };
+
+  await createAndPublishHomepage({
+    page,
+    title,
+    infoCard,
+    sheduleCard,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+  });
+
+  const homepageResponse = (await axios.get(getStrapiUrl({
+    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image'
+  }))).data;
+
+  const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
+
+  await expect({
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title: heroBlock.title,
+            __component: heroBlock.__component,
+            infoCard: {
+              title: heroBlock.infoCard.title,
+              description: heroBlock.infoCard.description
+            },
+            sheduleCard: {
+              title: heroBlock.sheduleCard.title,
+              timetable: [
+                {
+                  days: heroBlock.sheduleCard.timetable[0].days,
+                  time: heroBlock.sheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.sheduleCard.timetable[0].ticketsOfficeTime
+                }
+              ]
+            },
+          }
+        ]
+      }
+    }
+  })
+    .toEqual(expectedHomepageResponse);
+
+  await expect(heroBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
 }

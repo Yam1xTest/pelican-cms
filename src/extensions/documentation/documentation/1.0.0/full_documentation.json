@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-01-24T05:13:44.253Z"
+    "x-generation-date": "2025-02-05T05:52:04.031Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -1369,16 +1369,20 @@
         ],
         "properties": {
           "data": {
-            "required": [
-              "title"
-            ],
             "type": "object",
             "properties": {
-              "title": {
-                "type": "string"
-              },
               "seo": {
                 "$ref": "#/components/schemas/SharedSeoComponent"
+              },
+              "blocks": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/SharedHeroComponent"
+                    }
+                  ]
+                }
               },
               "versions": {
                 "type": "array",
@@ -1458,15 +1462,19 @@
       },
       "Home": {
         "type": "object",
-        "required": [
-          "title"
-        ],
         "properties": {
-          "title": {
-            "type": "string"
-          },
           "seo": {
             "$ref": "#/components/schemas/SharedSeoComponent"
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/SharedHeroComponent"
+                }
+              ]
+            }
           },
           "createdAt": {
             "type": "string",
@@ -1528,9 +1536,6 @@
                     "attributes": {
                       "type": "object",
                       "properties": {
-                        "title": {
-                          "type": "string"
-                        },
                         "seo": {
                           "type": "object",
                           "properties": {
@@ -1858,6 +1863,211 @@
                             "canonicalURL": {
                               "type": "string"
                             }
+                          }
+                        },
+                        "blocks": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "number"
+                                  },
+                                  "__component": {
+                                    "type": "string"
+                                  },
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "image": {
+                                    "type": "object",
+                                    "properties": {
+                                      "data": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "number"
+                                          },
+                                          "attributes": {
+                                            "type": "object",
+                                            "properties": {
+                                              "name": {
+                                                "type": "string"
+                                              },
+                                              "alternativeText": {
+                                                "type": "string"
+                                              },
+                                              "caption": {
+                                                "type": "string"
+                                              },
+                                              "width": {
+                                                "type": "integer"
+                                              },
+                                              "height": {
+                                                "type": "integer"
+                                              },
+                                              "formats": {},
+                                              "hash": {
+                                                "type": "string"
+                                              },
+                                              "ext": {
+                                                "type": "string"
+                                              },
+                                              "mime": {
+                                                "type": "string"
+                                              },
+                                              "size": {
+                                                "type": "number",
+                                                "format": "float"
+                                              },
+                                              "url": {
+                                                "type": "string"
+                                              },
+                                              "previewUrl": {
+                                                "type": "string"
+                                              },
+                                              "provider": {
+                                                "type": "string"
+                                              },
+                                              "provider_metadata": {},
+                                              "related": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                      "type": "object",
+                                                      "properties": {
+                                                        "id": {
+                                                          "type": "number"
+                                                        },
+                                                        "attributes": {
+                                                          "type": "object",
+                                                          "properties": {}
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "folder": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "data": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "number"
+                                                      },
+                                                      "attributes": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "folderPath": {
+                                                "type": "string"
+                                              },
+                                              "createdAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                              },
+                                              "updatedAt": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                              },
+                                              "createdBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "data": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "number"
+                                                      },
+                                                      "attributes": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "updatedBy": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "data": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "id": {
+                                                        "type": "number"
+                                                      },
+                                                      "attributes": {
+                                                        "type": "object",
+                                                        "properties": {}
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "infoCard": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number"
+                                      },
+                                      "title": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "sheduleCard": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number"
+                                      },
+                                      "title": {
+                                        "type": "string"
+                                      },
+                                      "timetable": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "number"
+                                            },
+                                            "days": {
+                                              "type": "string"
+                                            },
+                                            "time": {
+                                              "type": "string"
+                                            },
+                                            "ticketsOfficeTime": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            ]
                           }
                         },
                         "createdAt": {
@@ -2790,6 +3000,210 @@
           },
           "canonicalURL": {
             "type": "string"
+          }
+        }
+      },
+      "HeroInfoCardComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "HeroSheduleCardComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "timetable": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "days": {
+                  "type": "string"
+                },
+                "time": {
+                  "type": "string"
+                },
+                "ticketsOfficeTime": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SharedHeroComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "attributes": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "alternativeText": {
+                        "type": "string"
+                      },
+                      "caption": {
+                        "type": "string"
+                      },
+                      "width": {
+                        "type": "integer"
+                      },
+                      "height": {
+                        "type": "integer"
+                      },
+                      "formats": {},
+                      "hash": {
+                        "type": "string"
+                      },
+                      "ext": {
+                        "type": "string"
+                      },
+                      "mime": {
+                        "type": "string"
+                      },
+                      "size": {
+                        "type": "number",
+                        "format": "float"
+                      },
+                      "url": {
+                        "type": "string"
+                      },
+                      "previewUrl": {
+                        "type": "string"
+                      },
+                      "provider": {
+                        "type": "string"
+                      },
+                      "provider_metadata": {},
+                      "related": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "number"
+                                },
+                                "attributes": {
+                                  "type": "object",
+                                  "properties": {}
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "folder": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "attributes": {
+                                "type": "object",
+                                "properties": {}
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "folderPath": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "createdBy": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "attributes": {
+                                "type": "object",
+                                "properties": {}
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "updatedBy": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "number"
+                              },
+                              "attributes": {
+                                "type": "object",
+                                "properties": {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "infoCard": {
+            "$ref": "#/components/schemas/HeroInfoCardComponent"
+          },
+          "sheduleCard": {
+            "$ref": "#/components/schemas/HeroSheduleCardComponent"
           }
         }
       },

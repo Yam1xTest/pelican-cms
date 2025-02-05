@@ -1,5 +1,17 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface SheduleCardTimetable extends Schema.Component {
+  collectionName: 'components_shedule_card_timetables';
+  info: {
+    displayName: 'Timetable';
+  };
+  attributes: {
+    days: Attribute.String & Attribute.Required;
+    time: Attribute.String & Attribute.Required;
+    ticketsOfficeTime: Attribute.String;
+  };
+}
+
 export interface SharedSeo extends Schema.Component {
   collectionName: 'components_shared_seos';
   info: {
@@ -51,11 +63,54 @@ export interface SharedMetaSocial extends Schema.Component {
   };
 }
 
+export interface SharedHero extends Schema.Component {
+  collectionName: 'components_shared_heroes';
+  info: {
+    displayName: 'Hero';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    image: Attribute.Media<'images'> & Attribute.Required;
+    infoCard: Attribute.Component<'hero.info-card'> & Attribute.Required;
+    sheduleCard: Attribute.Component<'hero.shedule-card'> & Attribute.Required;
+  };
+}
+
+export interface HeroSheduleCard extends Schema.Component {
+  collectionName: 'components_hero_shedule_cards';
+  info: {
+    displayName: 'SheduleCard';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    timetable: Attribute.Component<'shedule-card.timetable', true> &
+      Attribute.Required;
+  };
+}
+
+export interface HeroInfoCard extends Schema.Component {
+  collectionName: 'components_hero_info_cards';
+  info: {
+    displayName: 'InfoCard';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String;
+    description: Attribute.Text & Attribute.Required;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'shedule-card.timetable': SheduleCardTimetable;
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
+      'shared.hero': SharedHero;
+      'hero.shedule-card': HeroSheduleCard;
+      'hero.info-card': HeroInfoCard;
     }
   }
 }
