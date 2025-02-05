@@ -1,8 +1,8 @@
 import test, { expect, Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, gotoCMS } from "./helpers/global-helpers";
-import { createAndPublicDocumentsCategory, deleteDocumentsCategories, getDocumentCategoriesWithTestPrefix } from "./helpers/documents-helpers/documents-categories-helpers";
-import { createAndPublicDocument, deleteDocuments, getDocumentsWithTestPrefix } from "./helpers/documents-helpers/documents-helpers";
-import { createAndPublicNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
+import { createAndPublishDocumentsCategory, deleteDocumentsCategories, getDocumentCategoriesWithTestPrefix } from "./helpers/documents-helpers/documents-categories-helpers";
+import { createAndPublishDocument, deleteDocuments, getDocumentsWithTestPrefix } from "./helpers/documents-helpers/documents-helpers";
+import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
 import axios from "axios";
 
 
@@ -115,7 +115,7 @@ async function checkNewsResponseTest({
     ]
   };
 
-  await createAndPublicNews({
+  await createAndPublishNews({
     page,
     title,
     description,
@@ -169,12 +169,12 @@ async function checkDocumentsResponseTest({
     ]
   };
 
-  await createAndPublicDocumentsCategory({
+  await createAndPublishDocumentsCategory({
     page,
     title: categoryTitle,
   });
 
-  await createAndPublicDocument({
+  await createAndPublishDocument({
     page,
     categoryTitle,
     title,
@@ -221,7 +221,7 @@ async function checkDocumentsCategoriesResponseTest({
     ]
   };
 
-  await createAndPublicDocumentsCategory({
+  await createAndPublishDocumentsCategory({
     page,
     title,
   });

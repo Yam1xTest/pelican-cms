@@ -15,7 +15,7 @@ export async function deleteDocuments() {
   })
 }
 
-export async function createAndPublicDocument({
+export async function createAndPublishDocument({
   page,
   categoryTitle,
   title,

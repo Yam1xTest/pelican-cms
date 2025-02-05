@@ -6,7 +6,7 @@ import {
 } from '../global-helpers';
 import axios from 'axios';
 
-export async function createAndPublicDocumentsCategory({
+export async function createAndPublishDocumentsCategory({
   page,
   title,
 }: {

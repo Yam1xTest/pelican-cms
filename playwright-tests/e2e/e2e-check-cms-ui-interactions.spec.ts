@@ -1,6 +1,6 @@
 import test, { expect, Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
-import { createAndPublicNews, deleteNews } from "./helpers/news-helpers/news-helpers";
+import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
   let page: Page;
@@ -35,7 +35,7 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
     test(`
       GIVEN collection of news without record
       WHEN create one news
-      SHOULD news displayed on the UI
+      SHOULD see news displayed on the UI
       `,
       async () => await e2eNewsCreateAndViewTest({ page })
     );
@@ -52,7 +52,7 @@ async function e2eNewsCreateAndViewTest({
   const description = `На фотографии изображен амурский тигр!`;
   const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
 
-  await createAndPublicNews({
+  await createAndPublishNews({
     page,
     title,
     description,
