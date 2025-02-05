@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import {
   E2E_SMOKE_NAME_PREFIX,
   getStrapiUrl,
@@ -6,46 +6,7 @@ import {
 } from '../global-helpers';
 import axios from 'axios';
 
-export async function documentsCategoriesResponseTest({
-  page,
-}: {
-  page: Page
-}) {
-  const title = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
-  const expectedDocumentsCategoriesResponse = {
-    data: [
-      {
-        attributes: {
-          title,
-        }
-      }
-    ]
-  };
-
-  await createAndPublicDocumentsCategory({
-    page,
-    title,
-  });
-
-  await page.waitForTimeout(500);
-
-  const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: '/api/documents-categories?populate=*' }))).data;
-  const documentCategoriesWithPrefix = getDocumentCategoriesWithTestPrefix({ documentCategories: documentsCategoriesResponse });
-
-  await expect({
-    data: [
-      {
-        attributes:
-        {
-          title: documentCategoriesWithPrefix[0].attributes.title,
-        }
-      }
-    ]
-  })
-    .toEqual(expectedDocumentsCategoriesResponse);
-}
-
-export async function createAndPublicDocumentsCategory({
+export async function createAndPublishDocumentsCategory({
   page,
   title,
 }: {
@@ -80,7 +41,7 @@ export async function deleteDocumentsCategories() {
   })
 }
 
-function getDocumentCategoriesWithTestPrefix({
+export function getDocumentCategoriesWithTestPrefix({
   documentCategories
 }: {
   documentCategories: {
