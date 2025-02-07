@@ -32,6 +32,7 @@
     "category": {
       "type": "relation",
       "relation": "oneToOne",
+      "required": true,
       "target": "api::documents-category.documents-category"
     },
     "subtitle": {
