@@ -35,4 +35,4 @@ jobs:
           push: true
           tags: ghcr.io/tourmalinecore/pelican-cms:latest
           build-args: |
-            SERVER_URL=http://pelican.local.tourmalinecore.internal:40110/cms
+            SERVER_URL=http://localhost:40110/cms

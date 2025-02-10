@@ -1,58 +1,6 @@
-import { expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import axios from 'axios';
 import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl, saveAndPublish, uploadFile } from '../global-helpers';
-
-export async function newsResponseTest({
-  page,
-}: {
-  page: Page
-}) {
-  const title = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
-  const description = `На фотографии изображен амурский тигр!`;
-  const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
-  const expectedNewsResponse = {
-    data: [
-      {
-        attributes: {
-          title,
-          description,
-          innerContent: `<p>${innerContent}</p>`,
-        }
-      }
-    ]
-  };
-
-  await createAndPublicNews({
-    page,
-    title,
-    description,
-    innerContent,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
-  });
-
-  await page.waitForTimeout(500);
-
-  const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
-  const newsWithPrefix = getNewsWithTestPrefix({ news: newsResponse });
-
-  await expect({
-    data: [
-      {
-        attributes:
-        {
-          title: newsWithPrefix[0].attributes.title,
-          description: newsWithPrefix[0].attributes.description,
-          innerContent: newsWithPrefix[0].attributes.innerContent,
-        }
-      }
-    ]
-  })
-    .toEqual(expectedNewsResponse);
-
-  await expect(newsWithPrefix[0].attributes.image.data.attributes.url)
-    .not
-    .toBeNull();
-}
 
 export async function deleteNews() {
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
@@ -64,7 +12,7 @@ export async function deleteNews() {
   })
 }
 
-async function createAndPublicNews({
+export async function createAndPublishNews({
   page,
   title,
   description,
@@ -104,7 +52,7 @@ async function createAndPublicNews({
   await saveAndPublish({ page });
 }
 
-function getNewsWithTestPrefix({
+export function getNewsWithTestPrefix({
   news
 }: {
   news: NewsResponse

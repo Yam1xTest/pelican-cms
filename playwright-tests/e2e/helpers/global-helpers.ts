@@ -5,12 +5,24 @@ import 'dotenv/config';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`
 
-export async function goto({
+export async function gotoCMS({
   page
 }: {
   page: Page
 }) {
   await page.goto(getStrapiUrl({ path: '/admin' }), {
+    waitUntil: 'networkidle'
+  })
+}
+
+export async function gotoUI({
+  page,
+  path,
+}: {
+  page: Page
+  path?: string
+}) {
+  await page.goto(`${process.env.FRONTEND_URL}/${path}` || `http://localhost:40110/${path}`, {
     waitUntil: 'networkidle'
   })
 }
@@ -116,4 +128,6 @@ export async function saveAndPublish({
     name: 'Publish'
   })
     .click();
+
+  await page.waitForTimeout(500);
 }

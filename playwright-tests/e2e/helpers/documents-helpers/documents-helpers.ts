@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import {
   E2E_SMOKE_NAME_PREFIX,
   getStrapiUrl, saveAndPublish, uploadFile
@@ -80,7 +80,7 @@ export async function deleteDocuments() {
   })
 }
 
-async function createAndPublicDocument({
+export async function createAndPublishDocument({
   page,
   categoryTitle,
   title,
@@ -137,7 +137,7 @@ async function createAndPublicDocument({
   await saveAndPublish({ page });
 }
 
-function getDocumentsWithTestPrefix({
+export function getDocumentsWithTestPrefix({
   documents
 }: {
   documents: DocumentsResponse
