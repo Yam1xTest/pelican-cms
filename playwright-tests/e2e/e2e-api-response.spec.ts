@@ -298,7 +298,7 @@ async function checkHomepageResponseTest({
     title: '29 октября зоопарк не работает',
     description: 'Каждый последний понедельник месяца санитарный день.'
   };
-  const sheduleCard = {
+  const scheduleCard = {
     title: 'График работы',
     timetable: [{
       days: 'Понедельник - четверг',
@@ -321,9 +321,9 @@ async function checkHomepageResponseTest({
               title: infoCard.title,
               description: infoCard.description
             },
-            sheduleCard: {
-              title: sheduleCard.title,
-              timetable: sheduleCard.timetable
+            scheduleCard: {
+              title: scheduleCard.title,
+              timetable: scheduleCard.timetable
             },
           }
         ],
@@ -336,13 +336,13 @@ async function checkHomepageResponseTest({
     page,
     title,
     infoCard,
-    sheduleCard,
+    scheduleCard,
     seo,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
   });
 
   const homepageResponse = (await axios.get(getStrapiUrl({
-    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
   }))).data;
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
@@ -358,13 +358,13 @@ async function checkHomepageResponseTest({
               title: heroBlock.infoCard.title,
               description: heroBlock.infoCard.description
             },
-            sheduleCard: {
-              title: heroBlock.sheduleCard.title,
+            scheduleCard: {
+              title: heroBlock.scheduleCard.title,
               timetable: [
                 {
-                  days: heroBlock.sheduleCard.timetable[0].days,
-                  time: heroBlock.sheduleCard.timetable[0].time,
-                  ticketsOfficeTime: heroBlock.sheduleCard.timetable[0].ticketsOfficeTime
+                  days: heroBlock.scheduleCard.timetable[0].days,
+                  time: heroBlock.scheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
                 }
               ]
             },
@@ -394,7 +394,7 @@ async function checkContactZooPageResponseTest({
     title: 'Погодные условия',
     description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
   };
-  const sheduleCard = {
+  const scheduleCard = {
     title: 'График работы',
     timetable: [{
       days: 'Понедельник - четверг',
@@ -417,9 +417,9 @@ async function checkContactZooPageResponseTest({
               title: infoCard.title,
               description: infoCard.description
             },
-            sheduleCard: {
-              title: sheduleCard.title,
-              timetable: sheduleCard.timetable,
+            scheduleCard: {
+              title: scheduleCard.title,
+              timetable: scheduleCard.timetable,
             },
           }
         ],
@@ -432,13 +432,13 @@ async function checkContactZooPageResponseTest({
     page,
     title,
     infoCard,
-    sheduleCard,
+    scheduleCard,
     seo,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
   });
 
   const contactZooPageResponse = (await axios.get(getStrapiUrl({
-    path: '/api/contact-zoo?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+    path: '/api/contact-zoo?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
   }))).data;
 
   const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
@@ -454,13 +454,13 @@ async function checkContactZooPageResponseTest({
               title: heroBlock.infoCard.title,
               description: heroBlock.infoCard.description
             },
-            sheduleCard: {
-              title: heroBlock.sheduleCard.title,
+            scheduleCard: {
+              title: heroBlock.scheduleCard.title,
               timetable: [
                 {
-                  days: heroBlock.sheduleCard.timetable[0].days,
-                  time: heroBlock.sheduleCard.timetable[0].time,
-                  ticketsOfficeTime: heroBlock.sheduleCard.timetable[0].ticketsOfficeTime
+                  days: heroBlock.scheduleCard.timetable[0].days,
+                  time: heroBlock.scheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
                 }
               ]
             },

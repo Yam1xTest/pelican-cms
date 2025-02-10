@@ -62,7 +62,8 @@ export interface SharedHero extends Schema.Component {
     title: Attribute.String & Attribute.Required;
     image: Attribute.Media<'images'> & Attribute.Required;
     infoCard: Attribute.Component<'hero.info-card'> & Attribute.Required;
-    sheduleCard: Attribute.Component<'hero.shedule-card'> & Attribute.Required;
+    scheduleCard: Attribute.Component<'hero.schedule-card'> &
+      Attribute.Required;
   };
 }
 
@@ -79,10 +80,10 @@ export interface ScheduleCardTimetable extends Schema.Component {
   };
 }
 
-export interface HeroSheduleCard extends Schema.Component {
-  collectionName: 'components_hero_shedule_cards';
+export interface HeroScheduleCard extends Schema.Component {
+  collectionName: 'components_hero_schedule_cards';
   info: {
-    displayName: 'SheduleCard';
+    displayName: 'ScheduleCard';
     description: '';
   };
   attributes: {
@@ -111,7 +112,7 @@ declare module '@strapi/types' {
       'shared.meta-social': SharedMetaSocial;
       'shared.hero': SharedHero;
       'schedule-card.timetable': ScheduleCardTimetable;
-      'hero.shedule-card': HeroSheduleCard;
+      'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;
     }
   }

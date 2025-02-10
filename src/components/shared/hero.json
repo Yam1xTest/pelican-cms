@@ -24,10 +24,10 @@
       "component": "hero.info-card",
       "required": true
     },
-    "sheduleCard": {
+    "scheduleCard": {
       "type": "component",
       "repeatable": false,
-      "component": "hero.shedule-card",
+      "component": "hero.schedule-card",
       "required": true
     }
   }

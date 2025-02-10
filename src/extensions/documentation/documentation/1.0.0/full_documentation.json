@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-10T05:57:42.957Z"
+    "x-generation-date": "2025-02-10T06:40:55.636Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -426,7 +426,7 @@
                                       }
                                     }
                                   },
-                                  "sheduleCard": {
+                                  "scheduleCard": {
                                     "type": "object",
                                     "properties": {
                                       "id": {
@@ -926,7 +926,7 @@
           }
         }
       },
-      "HeroSheduleCardComponent": {
+      "HeroScheduleCardComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -1594,8 +1594,8 @@
           "infoCard": {
             "$ref": "#/components/schemas/HeroInfoCardComponent"
           },
-          "sheduleCard": {
-            "$ref": "#/components/schemas/HeroSheduleCardComponent"
+          "scheduleCard": {
+            "$ref": "#/components/schemas/HeroScheduleCardComponent"
           }
         }
       },
@@ -1978,6 +1978,10 @@
               },
               "description": {
                 "type": "string"
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
               }
             }
           }
@@ -2740,6 +2744,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
           },
           "createdAt": {
             "type": "string",
@@ -3550,7 +3558,7 @@
                                       }
                                     }
                                   },
-                                  "sheduleCard": {
+                                  "scheduleCard": {
                                     "type": "object",
                                     "properties": {
                                       "id": {

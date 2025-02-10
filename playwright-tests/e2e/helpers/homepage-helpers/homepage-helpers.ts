@@ -6,7 +6,7 @@ export async function createAndPublishHomepage({
   page,
   title,
   infoCard,
-  sheduleCard,
+  scheduleCard,
   seo,
   filePath,
 }: {
@@ -16,7 +16,7 @@ export async function createAndPublishHomepage({
     title: string,
     description: string
   },
-  sheduleCard: {
+  scheduleCard: {
     title: string,
     timetable: {
       days: string,
@@ -62,17 +62,17 @@ export async function createAndPublishHomepage({
     .first()
     .click();
 
-  await page.locator('id=blocks.0.sheduleCard.title')
-    .fill(sheduleCard.title);
+  await page.locator('id=blocks.0.scheduleCard.title')
+    .fill(scheduleCard.title);
 
-  await page.locator('id=blocks.0.sheduleCard.timetable.0.days')
-    .fill(sheduleCard.timetable[0].days);
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.days')
+    .fill(scheduleCard.timetable[0].days);
 
-  await page.locator('id=blocks.0.sheduleCard.timetable.0.time')
-    .fill(sheduleCard.timetable[0].time);
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.time')
+    .fill(scheduleCard.timetable[0].time);
 
-  await page.locator('id=blocks.0.sheduleCard.timetable.0.ticketsOfficeTime')
-    .fill(sheduleCard.timetable[0].ticketsOfficeTime);
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.ticketsOfficeTime')
+    .fill(scheduleCard.timetable[0].ticketsOfficeTime);
 
   await page.getByText('No entry yet. Click on the button below to add one.')
     .last()
@@ -80,7 +80,6 @@ export async function createAndPublishHomepage({
 
   await page.locator('id=seo.metaTitle')
     .fill(seo.metaTitle);
-
 
   await page.locator('id=seo.metaDescription')
     .fill(seo.metaDescription);

@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_hero_shedule_cards",
+  "collectionName": "components_hero_schedule_cards",
   "info": {
-    "displayName": "SheduleCard",
+    "displayName": "ScheduleCard",
     "description": ""
   },
   "options": {},
