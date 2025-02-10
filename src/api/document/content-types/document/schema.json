@@ -32,8 +32,8 @@
     "category": {
       "type": "relation",
       "relation": "oneToOne",
-      "required": true,
-      "target": "api::documents-category.documents-category"
+      "target": "api::documents-category.documents-category",
+      "required": true
     },
     "subtitle": {
       "type": "customField",
@@ -51,7 +51,7 @@
     },
     "date": {
       "type": "date",
-      "required": true
+      "required": false
     }
   }
 }

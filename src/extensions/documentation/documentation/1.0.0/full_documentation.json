@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-07T03:16:42.440Z"
+    "x-generation-date": "2025-02-10T03:37:40.194Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -94,8 +94,7 @@
               "showDate",
               "title",
               "files",
-              "category",
-              "date"
+              "category"
             ],
             "type": "object",
             "properties": {
@@ -196,8 +195,7 @@
           "showDate",
           "title",
           "files",
-          "category",
-          "date"
+          "category"
         ],
         "properties": {
           "showDate": {
