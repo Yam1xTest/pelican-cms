@@ -362,211 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiDocumentDocument extends Schema.CollectionType {
-  collectionName: 'documents';
-  info: {
-    singularName: 'document';
-    pluralName: 'documents';
-    displayName: '\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    showDate: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<true>;
-    title: Attribute.String & Attribute.Required;
-    files: Attribute.Media<'files', true> & Attribute.Required;
-    category: Attribute.Relation<
-      'api::document.document',
-      'oneToOne',
-      'api::documents-category.documents-category'
-    >;
-    subtitle: Attribute.RichText &
-      Attribute.CustomField<
-        'plugin::ckeditor5.CKEditor',
-        {
-          preset: 'default';
-        }
-      >;
-    description: Attribute.RichText &
-      Attribute.CustomField<
-        'plugin::ckeditor5.CKEditor',
-        {
-          preset: 'default';
-        }
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::document.document',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::document.document',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiDocumentsCategoryDocumentsCategory
-  extends Schema.CollectionType {
-  collectionName: 'documents_categories';
-  info: {
-    singularName: 'documents-category';
-    pluralName: 'documents-categories';
-    displayName: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u043E\u0432';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    title: Attribute.String & Attribute.Required & Attribute.Unique;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::documents-category.documents-category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::documents-category.documents-category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiHomeHome extends Schema.SingleType {
-  collectionName: 'homes';
-  info: {
-    singularName: 'home';
-    pluralName: 'homes';
-    displayName: '\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
-  };
-  attributes: {
-    seo: Attribute.Component<'shared.seo'> &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-      }>;
-    blocks: Attribute.DynamicZone<['shared.hero']> &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-      }>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    versions: Attribute.Relation<
-      'api::home.home',
-      'manyToMany',
-      'api::home.home'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
-  };
-}
-
-export interface ApiNewsCollectionNewsCollection extends Schema.CollectionType {
-  collectionName: 'news';
-  info: {
-    singularName: 'news-collection';
-    pluralName: 'news';
-    displayName: '\u041D\u043E\u0432\u043E\u0441\u0442\u0438';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
-  };
-  attributes: {
-    title: Attribute.String &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-      }>;
-    description: Attribute.Text &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-      }>;
-    image: Attribute.Media<'images'> &
-      Attribute.Required &
-      Attribute.SetPluginOptions<{
-        versions: {
-          versioned: true;
-        };
-      }>;
-    innerContent: Attribute.RichText &
-      Attribute.Required &
-      Attribute.CustomField<
-        'plugin::ckeditor5.CKEditor',
-        {
-          preset: 'default';
-        }
-      >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::news-collection.news-collection',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::news-collection.news-collection',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    versions: Attribute.Relation<
-      'api::news-collection.news-collection',
-      'manyToMany',
-      'api::news-collection.news-collection'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -993,6 +788,267 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiContactZooContactZoo extends Schema.SingleType {
+  collectionName: 'contact_zoo_page';
+  info: {
+    singularName: 'contact-zoo';
+    pluralName: 'contact-zoo-page';
+    displayName: '\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 \u043A\u043E\u043D\u0442\u0430\u043A\u0442\u043D\u043E\u0433\u043E \u0437\u043E\u043E\u043F\u0430\u0440\u043A\u0430';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    versions: {
+      versioned: true;
+    };
+  };
+  attributes: {
+    blocks: Attribute.DynamicZone<['shared.hero']> &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    seo: Attribute.Component<'shared.seo'> &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::contact-zoo.contact-zoo',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::contact-zoo.contact-zoo',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    versions: Attribute.Relation<
+      'api::contact-zoo.contact-zoo',
+      'manyToMany',
+      'api::contact-zoo.contact-zoo'
+    >;
+    vuid: Attribute.String;
+    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
+    versionComment: Attribute.String;
+    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
+  };
+}
+
+export interface ApiDocumentDocument extends Schema.CollectionType {
+  collectionName: 'documents';
+  info: {
+    singularName: 'document';
+    pluralName: 'documents';
+    displayName: '\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    showDate: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<true>;
+    title: Attribute.String & Attribute.Required;
+    files: Attribute.Media<'files', true> & Attribute.Required;
+    category: Attribute.Relation<
+      'api::document.document',
+      'oneToOne',
+      'api::documents-category.documents-category'
+    >;
+    subtitle: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'default';
+        }
+      >;
+    description: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'default';
+        }
+      >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::document.document',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::document.document',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiDocumentsCategoryDocumentsCategory
+  extends Schema.CollectionType {
+  collectionName: 'documents_categories';
+  info: {
+    singularName: 'documents-category';
+    pluralName: 'documents-categories';
+    displayName: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u043E\u0432';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required & Attribute.Unique;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::documents-category.documents-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::documents-category.documents-category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiHomeHome extends Schema.SingleType {
+  collectionName: 'home-page';
+  info: {
+    singularName: 'home';
+    pluralName: 'home-page';
+    displayName: '\u0413\u043B\u0430\u0432\u043D\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    versions: {
+      versioned: true;
+    };
+  };
+  attributes: {
+    blocks: Attribute.DynamicZone<['shared.hero']> &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    seo: Attribute.Component<'shared.seo'> &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    versions: Attribute.Relation<
+      'api::home.home',
+      'manyToMany',
+      'api::home.home'
+    >;
+    vuid: Attribute.String;
+    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
+    versionComment: Attribute.String;
+    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
+  };
+}
+
+export interface ApiNewsCollectionNewsCollection extends Schema.CollectionType {
+  collectionName: 'news';
+  info: {
+    singularName: 'news-collection';
+    pluralName: 'news';
+    displayName: '\u041D\u043E\u0432\u043E\u0441\u0442\u0438';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    versions: {
+      versioned: true;
+    };
+  };
+  attributes: {
+    title: Attribute.String &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    description: Attribute.Text &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    image: Attribute.Media<'images'> &
+      Attribute.Required &
+      Attribute.SetPluginOptions<{
+        versions: {
+          versioned: true;
+        };
+      }>;
+    innerContent: Attribute.RichText &
+      Attribute.Required &
+      Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'default';
+        }
+      >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::news-collection.news-collection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::news-collection.news-collection',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    versions: Attribute.Relation<
+      'api::news-collection.news-collection',
+      'manyToMany',
+      'api::news-collection.news-collection'
+    >;
+    vuid: Attribute.String;
+    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
+    versionComment: Attribute.String;
+    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1003,10 +1059,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::document.document': ApiDocumentDocument;
-      'api::documents-category.documents-category': ApiDocumentsCategoryDocumentsCategory;
-      'api::home.home': ApiHomeHome;
-      'api::news-collection.news-collection': ApiNewsCollectionNewsCollection;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -1015,6 +1067,11 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::contact-zoo.contact-zoo': ApiContactZooContactZoo;
+      'api::document.document': ApiDocumentDocument;
+      'api::documents-category.documents-category': ApiDocumentsCategoryDocumentsCategory;
+      'api::home.home': ApiHomeHome;
+      'api::news-collection.news-collection': ApiNewsCollectionNewsCollection;
     }
   }
 }

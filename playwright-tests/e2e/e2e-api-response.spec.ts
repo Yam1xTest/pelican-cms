@@ -5,6 +5,7 @@ import { createAndPublishDocument, deleteDocuments, getDocumentsWithTestPrefix }
 import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
 import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
+import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 
 
 test.describe(`API response tests`, () => {
@@ -96,6 +97,8 @@ test.describe(`API response tests`, () => {
 
   test.describe(`Homepage response tests`, () => {
     test.beforeEach(async () => {
+      await deleteHomepage()
+
       await deleteFiles();
     });
 
@@ -106,11 +109,33 @@ test.describe(`API response tests`, () => {
     });
 
     test(`
-      GIVEN collection of news without record
-      WHEN create one news
-      SHOULD get a response with this news
+      GIVEN empty home page
+      WHEN fill out the home page
+      SHOULD get a response home page
       `,
       async () => await checkHomepageResponseTest({ page })
+    );
+  });
+
+  test.describe(`ContactZoo response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteContactZooPage();
+
+      await deleteFiles();
+    });
+
+    test.afterEach(async () => {
+      await deleteContactZooPage();
+
+      await deleteFiles();
+    });
+
+    test(`
+      GIVEN empty contact zoo page
+      WHEN fill out the contact zoo page
+      SHOULD get a response contact zoo page
+      `,
+      async () => await checkContactZooPageResponseTest({ page })
     );
   });
 })
@@ -281,6 +306,10 @@ async function checkHomepageResponseTest({
       ticketsOfficeTime: '(вход и касса 10:00-17:00)'
     }]
   };
+  const seo = {
+    metaTitle: "Челябинский зоопарк",
+    metaDescription: "Описание челябинского зоопарка, приглашаем взрослых и детей, у нас много животных!",
+  }
   const expectedHomepageResponse = {
     data: {
       attributes: {
@@ -297,7 +326,8 @@ async function checkHomepageResponseTest({
               timetable: sheduleCard.timetable
             },
           }
-        ]
+        ],
+        seo
       }
     }
   };
@@ -307,11 +337,12 @@ async function checkHomepageResponseTest({
     title,
     infoCard,
     sheduleCard,
+    seo,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
   });
 
   const homepageResponse = (await axios.get(getStrapiUrl({
-    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image'
+    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
   }))).data;
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
@@ -338,11 +369,111 @@ async function checkHomepageResponseTest({
               ]
             },
           }
-        ]
+        ],
+        seo: {
+          metaTitle: homepageResponse.data.attributes.seo.metaTitle,
+          metaDescription: homepageResponse.data.attributes.seo.metaDescription,
+        }
       }
     }
   })
     .toEqual(expectedHomepageResponse);
+
+  await expect(heroBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
+}
+
+async function checkContactZooPageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const title = `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`;
+  const infoCard = {
+    title: 'Погодные условия',
+    description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
+  };
+  const sheduleCard = {
+    title: 'График работы',
+    timetable: [{
+      days: 'Понедельник - четверг',
+      time: 'Выходной',
+      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+    }]
+  };
+  const seo = {
+    metaTitle: "Контактный зоопарк",
+    metaDescription: "Описание контактного зоопарка, приглашаем взрослых и детей, у нас много животных!",
+  };
+  const expectedConcatZooPageResponse = {
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title,
+            __component: "shared.hero",
+            infoCard: {
+              title: infoCard.title,
+              description: infoCard.description
+            },
+            sheduleCard: {
+              title: sheduleCard.title,
+              timetable: sheduleCard.timetable,
+            },
+          }
+        ],
+        seo
+      }
+    }
+  };
+
+  await createAndPublishContactZooPage({
+    page,
+    title,
+    infoCard,
+    sheduleCard,
+    seo,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+  });
+
+  const contactZooPageResponse = (await axios.get(getStrapiUrl({
+    path: '/api/contact-zoo?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.sheduleCard&populate[3]=blocks.sheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+  }))).data;
+
+  const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
+
+  await expect({
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title: heroBlock.title,
+            __component: heroBlock.__component,
+            infoCard: {
+              title: heroBlock.infoCard.title,
+              description: heroBlock.infoCard.description
+            },
+            sheduleCard: {
+              title: heroBlock.sheduleCard.title,
+              timetable: [
+                {
+                  days: heroBlock.sheduleCard.timetable[0].days,
+                  time: heroBlock.sheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.sheduleCard.timetable[0].ticketsOfficeTime
+                }
+              ]
+            },
+          }
+        ],
+        seo: {
+          metaTitle: contactZooPageResponse.data.attributes.seo.metaTitle,
+          metaDescription: contactZooPageResponse.data.attributes.seo.metaDescription,
+        }
+      }
+    }
+  })
+    .toEqual(expectedConcatZooPageResponse);
 
   await expect(heroBlock.image.data.attributes.url)
     .not

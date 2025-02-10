@@ -2,7 +2,7 @@ import { Page } from "@playwright/test";
 import { getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
 import axios from "axios";
 
-export async function createAndPublishHomepage({
+export async function createAndPublishContactZooPage({
   page,
   title,
   infoCard,
@@ -13,7 +13,7 @@ export async function createAndPublishHomepage({
   page: Page,
   title: string,
   infoCard: {
-    title: string,
+    title?: string,
     description: string
   },
   sheduleCard: {
@@ -21,7 +21,7 @@ export async function createAndPublishHomepage({
     timetable: {
       days: string,
       time: string,
-      ticketsOfficeTime: string
+      ticketsOfficeTime?: string
     }[]
   }
   seo: {
@@ -33,7 +33,7 @@ export async function createAndPublishHomepage({
   await page.getByText(`Content Manager`)
     .click();
 
-  await page.getByText(`Главная страница`)
+  await page.getByText(`Страница контактного зоопарка`)
     .click();
 
   await page.getByRole('button', {
@@ -88,8 +88,8 @@ export async function createAndPublishHomepage({
   await saveAndPublish({ page });
 }
 
-export async function deleteHomepage() {
+export async function deleteContactZooPage() {
   try {
-    await axios.delete(getStrapiUrl({ path: `/api/home` }));
+    await axios.delete(getStrapiUrl({ path: `/api/contact-zoo` }));
   } catch { }
 }
