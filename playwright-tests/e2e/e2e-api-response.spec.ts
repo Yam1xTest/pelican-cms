@@ -4,6 +4,8 @@ import { createAndPublishDocumentsCategory, deleteDocumentsCategories, getDocume
 import { createAndPublishDocument, deleteDocuments, getDocumentsWithTestPrefix } from "./helpers/documents-helpers/documents-helpers";
 import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
 import axios from "axios";
+import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
+import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 
 
 test.describe(`API response tests`, () => {
@@ -92,6 +94,50 @@ test.describe(`API response tests`, () => {
       async () => await checkDocumentsResponseTest({ page })
     );
   });
+
+  test.describe(`Homepage response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteHomepage()
+
+      await deleteFiles();
+    });
+
+    test.afterEach(async () => {
+      await deleteHomepage()
+
+      await deleteFiles();
+    });
+
+    test(`
+      GIVEN empty home page
+      WHEN fill out the home page
+      SHOULD get a response home page
+      `,
+      async () => await checkHomepageResponseTest({ page })
+    );
+  });
+
+  test.describe(`ContactZoo response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteContactZooPage();
+
+      await deleteFiles();
+    });
+
+    test.afterEach(async () => {
+      await deleteContactZooPage();
+
+      await deleteFiles();
+    });
+
+    test(`
+      GIVEN empty contact zoo page
+      WHEN fill out the contact zoo page
+      SHOULD get a response contact zoo page
+      `,
+      async () => await checkContactZooPageResponseTest({ page })
+    );
+  });
 })
 
 
@@ -156,10 +202,12 @@ async function checkDocumentsResponseTest({
   const title = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
   const subtitle = `Договор на поставку продукции животноводства (мясо говядина) для нужд муниципального бюджетного учреждения культуры «зоопарк»`;
   const description = `Контракт заключен по результатам электронного аукциона в рамках 223-ФЗ. Извещение №31907985126 в электронной форме размещены на сайте по адресу в сети Интернет: www.zakupki.gov.ru и на электронной площадке tender.otc.ru процедура №4442641 лот №7816638. Протокол №U4442641-7816638-3 от 07.07.2019 г.`;
+  const date = new Date();
   const expectedDocumentsResponse = {
     data: [
       {
         attributes: {
+          date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`,
           showDate,
           title,
           subtitle: `<p>${subtitle}</p>`,
@@ -183,6 +231,8 @@ async function checkDocumentsResponseTest({
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-new-document.pdf`,
   });
 
+  await page.waitForTimeout(500);
+
   const documentsResponse = (await axios.get(getStrapiUrl({ path: '/api/documents?populate=*' }))).data;
   const documentsWithPrefix = getDocumentsWithTestPrefix({ documents: documentsResponse });
 
@@ -190,6 +240,7 @@ async function checkDocumentsResponseTest({
     data: [
       {
         attributes: {
+          date: documentsWithPrefix[0].attributes.date,
           showDate: documentsWithPrefix[0].attributes.showDate,
           title: documentsWithPrefix[0].attributes.title,
           subtitle: documentsWithPrefix[0].attributes.subtitle,
@@ -240,4 +291,196 @@ async function checkDocumentsCategoriesResponseTest({
     ]
   })
     .toEqual(expectedDocumentsCategoriesResponse);
+}
+
+async function checkHomepageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const title = `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`;
+  const infoCard = {
+    title: '29 октября зоопарк не работает',
+    description: 'Каждый последний понедельник месяца санитарный день.'
+  };
+  const scheduleCard = {
+    title: 'График работы',
+    timetable: [{
+      days: 'Понедельник - четверг',
+      time: '10:00-18:00',
+      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+    }]
+  };
+  const seo = {
+    metaTitle: "Челябинский зоопарк",
+    metaDescription: "Описание челябинского зоопарка, приглашаем взрослых и детей, у нас много животных!",
+  }
+  const expectedHomepageResponse = {
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title,
+            __component: "shared.hero",
+            infoCard: {
+              title: infoCard.title,
+              description: infoCard.description
+            },
+            scheduleCard: {
+              title: scheduleCard.title,
+              timetable: scheduleCard.timetable
+            },
+          }
+        ],
+        seo
+      }
+    }
+  };
+
+  await createAndPublishHomepage({
+    page,
+    title,
+    infoCard,
+    scheduleCard,
+    seo,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+  });
+
+  const homepageResponse = (await axios.get(getStrapiUrl({
+    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+  }))).data;
+
+  const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
+
+  await expect({
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title: heroBlock.title,
+            __component: heroBlock.__component,
+            infoCard: {
+              title: heroBlock.infoCard.title,
+              description: heroBlock.infoCard.description
+            },
+            scheduleCard: {
+              title: heroBlock.scheduleCard.title,
+              timetable: [
+                {
+                  days: heroBlock.scheduleCard.timetable[0].days,
+                  time: heroBlock.scheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
+                }
+              ]
+            },
+          }
+        ],
+        seo: {
+          metaTitle: homepageResponse.data.attributes.seo.metaTitle,
+          metaDescription: homepageResponse.data.attributes.seo.metaDescription,
+        }
+      }
+    }
+  })
+    .toEqual(expectedHomepageResponse);
+
+  await expect(heroBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
+}
+
+async function checkContactZooPageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const title = `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`;
+  const infoCard = {
+    title: 'Погодные условия',
+    description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
+  };
+  const scheduleCard = {
+    title: 'График работы',
+    timetable: [{
+      days: 'Понедельник - четверг',
+      time: 'Выходной',
+      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+    }]
+  };
+  const seo = {
+    metaTitle: "Контактный зоопарк",
+    metaDescription: "Описание контактного зоопарка, приглашаем взрослых и детей, у нас много животных!",
+  };
+  const expectedConcatZooPageResponse = {
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title,
+            __component: "shared.hero",
+            infoCard: {
+              title: infoCard.title,
+              description: infoCard.description
+            },
+            scheduleCard: {
+              title: scheduleCard.title,
+              timetable: scheduleCard.timetable,
+            },
+          }
+        ],
+        seo
+      }
+    }
+  };
+
+  await createAndPublishContactZooPage({
+    page,
+    title,
+    infoCard,
+    scheduleCard,
+    seo,
+    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+  });
+
+  const contactZooPageResponse = (await axios.get(getStrapiUrl({
+    path: '/api/contact-zoo?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+  }))).data;
+
+  const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
+
+  await expect({
+    data: {
+      attributes: {
+        blocks: [
+          {
+            title: heroBlock.title,
+            __component: heroBlock.__component,
+            infoCard: {
+              title: heroBlock.infoCard.title,
+              description: heroBlock.infoCard.description
+            },
+            scheduleCard: {
+              title: heroBlock.scheduleCard.title,
+              timetable: [
+                {
+                  days: heroBlock.scheduleCard.timetable[0].days,
+                  time: heroBlock.scheduleCard.timetable[0].time,
+                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
+                }
+              ]
+            },
+          }
+        ],
+        seo: {
+          metaTitle: contactZooPageResponse.data.attributes.seo.metaTitle,
+          metaDescription: contactZooPageResponse.data.attributes.seo.metaDescription,
+        }
+      }
+    }
+  })
+    .toEqual(expectedConcatZooPageResponse);
+
+  await expect(heroBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
 }

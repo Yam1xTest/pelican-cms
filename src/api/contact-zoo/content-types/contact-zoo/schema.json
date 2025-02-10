@@ -1,10 +1,10 @@
 {
   "kind": "singleType",
-  "collectionName": "home-page",
+  "collectionName": "contact_zoo_page",
   "info": {
-    "singularName": "home",
-    "pluralName": "home-page",
-    "displayName": "Главная страница",
+    "singularName": "contact-zoo",
+    "pluralName": "contact-zoo-page",
+    "displayName": "Страница контактного зоопарка",
     "description": ""
   },
   "options": {
@@ -25,7 +25,8 @@
       "type": "dynamiczone",
       "components": [
         "shared.hero"
-      ]
+      ],
+      "required": false
     },
     "seo": {
       "type": "component",

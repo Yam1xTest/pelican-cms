@@ -38,7 +38,7 @@ export async function createAndPublishNews({
   await page.locator(`id=title`)
     .fill(title);
 
-  await page.locator(`#description`)
+  await page.locator(`id=description`)
     .fill(description);
 
   await uploadFile({
