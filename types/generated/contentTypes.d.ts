@@ -399,7 +399,7 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
           preset: 'default';
         }
       >;
-    date: Attribute.Date;
+    date: Attribute.Date & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

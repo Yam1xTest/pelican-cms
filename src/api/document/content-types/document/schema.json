@@ -51,7 +51,7 @@
     },
     "date": {
       "type": "date",
-      "required": false
+      "required": true
     }
   }
 }
