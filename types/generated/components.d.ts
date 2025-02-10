@@ -1,17 +1,5 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
-export interface SheduleCardTimetable extends Schema.Component {
-  collectionName: 'components_shedule_card_timetables';
-  info: {
-    displayName: 'Timetable';
-  };
-  attributes: {
-    days: Attribute.String & Attribute.Required;
-    time: Attribute.String & Attribute.Required;
-    ticketsOfficeTime: Attribute.String;
-  };
-}
-
 export interface SharedSeo extends Schema.Component {
   collectionName: 'components_shared_seos';
   info: {
@@ -78,6 +66,19 @@ export interface SharedHero extends Schema.Component {
   };
 }
 
+export interface ScheduleCardTimetable extends Schema.Component {
+  collectionName: 'components_shedule_card_timetables';
+  info: {
+    displayName: 'Timetable';
+    description: '';
+  };
+  attributes: {
+    days: Attribute.String & Attribute.Required;
+    time: Attribute.String & Attribute.Required;
+    ticketsOfficeTime: Attribute.String;
+  };
+}
+
 export interface HeroSheduleCard extends Schema.Component {
   collectionName: 'components_hero_shedule_cards';
   info: {
@@ -86,7 +87,7 @@ export interface HeroSheduleCard extends Schema.Component {
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
-    timetable: Attribute.Component<'shedule-card.timetable', true> &
+    timetable: Attribute.Component<'schedule-card.timetable', true> &
       Attribute.Required;
   };
 }
@@ -106,10 +107,10 @@ export interface HeroInfoCard extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
-      'shedule-card.timetable': SheduleCardTimetable;
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
       'shared.hero': SharedHero;
+      'schedule-card.timetable': ScheduleCardTimetable;
       'hero.shedule-card': HeroSheduleCard;
       'hero.info-card': HeroInfoCard;
     }

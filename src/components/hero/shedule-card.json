@@ -13,7 +13,7 @@
     "timetable": {
       "type": "component",
       "repeatable": true,
-      "component": "shedule-card.timetable",
+      "component": "schedule-card.timetable",
       "required": true
     }
   }
