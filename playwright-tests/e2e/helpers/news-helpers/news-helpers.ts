@@ -35,12 +35,10 @@ export async function createAndPublishNews({
     .first()
     .click();
 
-  await page.getByRole(`textbox`, {
-    name: `title`,
-  })
+  await page.locator('id=title')
     .fill(title);
 
-  await page.locator(`#description`)
+  await page.locator(`id=description`)
     .fill(description);
 
   await uploadFile({

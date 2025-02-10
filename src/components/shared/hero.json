@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_shared_heroes",
+  "info": {
+    "displayName": "Hero",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "infoCard": {
+      "type": "component",
+      "repeatable": false,
+      "component": "hero.info-card",
+      "required": true
+    },
+    "scheduleCard": {
+      "type": "component",
+      "repeatable": false,
+      "component": "hero.schedule-card",
+      "required": true
+    }
+  }
+}

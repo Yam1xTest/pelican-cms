@@ -45,9 +45,7 @@ export async function createAndPublishDocument({
   })
     .click();
 
-  await page.getByRole(`textbox`, {
-    name: `title`,
-  })
+  await page.locator('id=title')
     .fill(title);
 
   await page.locator(`.ck-content`)
@@ -63,9 +61,7 @@ export async function createAndPublishDocument({
     filePath,
   });
 
-  await page.getByRole(`combobox`, {
-    name: `category`,
-  })
+  await page.locator('id=category')
     .fill(categoryTitle);
 
   await saveAndPublish({ page });
