@@ -62,9 +62,7 @@ export async function createAndPublicDocumentsCategory({
     .first()
     .click();
 
-  await page.getByRole(`textbox`, {
-    name: `title`,
-  })
+  await page.locator(`id=title`)
     .fill(title);
 
   await saveAndPublish({ page });

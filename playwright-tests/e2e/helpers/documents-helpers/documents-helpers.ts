@@ -16,16 +16,16 @@ export async function documentsResponseTest({
   const title = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
   const subtitle = `Договор на поставку продукции животноводства (мясо говядина) для нужд муниципального бюджетного учреждения культуры «зоопарк»`;
   const description = `Контракт заключен по результатам электронного аукциона в рамках 223-ФЗ. Извещение №31907985126 в электронной форме размещены на сайте по адресу в сети Интернет: www.zakupki.gov.ru и на электронной площадке tender.otc.ru процедура №4442641 лот №7816638. Протокол №U4442641-7816638-3 от 07.07.2019 г.`;
-  const date = `17/01/2025`;
+  const date = new Date();
   const expectedDocumentsResponse = {
     data: [
       {
         attributes: {
+          date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`,
           showDate,
           title,
           subtitle: `<p>${subtitle}</p>`,
           description: `<p>${description}</p>`,
-          date: `2025-01-17`,
         }
       }
     ]
@@ -43,7 +43,6 @@ export async function documentsResponseTest({
     subtitle,
     description,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-new-document.pdf`,
-    date,
   });
 
   await page.waitForTimeout(500);
@@ -55,6 +54,7 @@ export async function documentsResponseTest({
     data: [
       {
         attributes: {
+          date: documentsWithPrefix[0].attributes.date,
           showDate: documentsWithPrefix[0].attributes.showDate,
           title: documentsWithPrefix[0].attributes.title,
           subtitle: documentsWithPrefix[0].attributes.subtitle,
@@ -87,7 +87,6 @@ async function createAndPublicDocument({
   subtitle,
   description,
   filePath,
-  date,
 }: {
   page: Page,
   categoryTitle: string,
@@ -95,7 +94,6 @@ async function createAndPublicDocument({
   subtitle: string,
   description: string,
   filePath: string,
-  date: string
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -112,9 +110,7 @@ async function createAndPublicDocument({
   })
     .click();
 
-  await page.getByRole(`textbox`, {
-    name: `title`,
-  })
+  await page.locator(`id=title`)
     .fill(title);
 
   await page.locator(`.ck-content`)
@@ -130,15 +126,12 @@ async function createAndPublicDocument({
     filePath,
   });
 
-  await page.getByRole(`combobox`, {
-    name: `category`,
-  })
-    .fill(categoryTitle);
+  await page.locator(`id=category`)
+    .click();
 
-  await page.getByRole(`combobox`, {
-    name: `date`,
-  })
-    .fill(date);
+  await page.getByText(categoryTitle)
+    .first()
+    .click();
 
 
   await saveAndPublish({ page });
@@ -156,6 +149,7 @@ type DocumentsResponse = {
   data: {
     id?: number;
     attributes?: {
+      date: string,
       showDate: boolean,
       title: string;
       subtitle: string;
