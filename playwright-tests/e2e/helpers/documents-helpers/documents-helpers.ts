@@ -28,7 +28,7 @@ export async function createAndPublishDocument({
   title: string,
   subtitle: string,
   description: string,
-  filePath: string
+  filePath: string,
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -45,7 +45,7 @@ export async function createAndPublishDocument({
   })
     .click();
 
-  await page.locator('id=title')
+  await page.locator(`id=title`)
     .fill(title);
 
   await page.locator(`.ck-content`)
@@ -61,8 +61,13 @@ export async function createAndPublishDocument({
     filePath,
   });
 
-  await page.locator('id=category')
-    .fill(categoryTitle);
+  await page.locator(`id=category`)
+    .click();
+
+  await page.getByText(categoryTitle)
+    .first()
+    .click();
+
 
   await saveAndPublish({ page });
 }
@@ -79,6 +84,7 @@ type DocumentsResponse = {
   data: {
     id?: number;
     attributes?: {
+      date: string,
       showDate: boolean,
       title: string;
       subtitle: string;

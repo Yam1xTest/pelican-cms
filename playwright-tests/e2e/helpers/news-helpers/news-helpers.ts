@@ -35,7 +35,7 @@ export async function createAndPublishNews({
     .first()
     .click();
 
-  await page.locator('id=title')
+  await page.locator(`id=title`)
     .fill(title);
 
   await page.locator(`id=description`)

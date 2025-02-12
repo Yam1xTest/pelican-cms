@@ -865,7 +865,8 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
       'api::document.document',
       'oneToOne',
       'api::documents-category.documents-category'
-    >;
+    > &
+      Attribute.Required;
     subtitle: Attribute.RichText &
       Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
@@ -880,6 +881,7 @@ export interface ApiDocumentDocument extends Schema.CollectionType {
           preset: 'default';
         }
       >;
+    date: Attribute.Date & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -905,12 +907,14 @@ export interface ApiDocumentsCategoryDocumentsCategory
     singularName: 'documents-category';
     pluralName: 'documents-categories';
     displayName: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u043E\u0432';
+    description: '';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
     title: Attribute.String & Attribute.Required & Attribute.Unique;
+    hasTabs: Attribute.Boolean & Attribute.DefaultTo<true>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
