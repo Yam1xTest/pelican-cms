@@ -202,10 +202,12 @@ async function checkDocumentsResponseTest({
   const title = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
   const subtitle = `Договор на поставку продукции животноводства (мясо говядина) для нужд муниципального бюджетного учреждения культуры «зоопарк»`;
   const description = `Контракт заключен по результатам электронного аукциона в рамках 223-ФЗ. Извещение №31907985126 в электронной форме размещены на сайте по адресу в сети Интернет: www.zakupki.gov.ru и на электронной площадке tender.otc.ru процедура №4442641 лот №7816638. Протокол №U4442641-7816638-3 от 07.07.2019 г.`;
+  const date = new Date();
   const expectedDocumentsResponse = {
     data: [
       {
         attributes: {
+          date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`,
           showDate,
           title,
           subtitle: `<p>${subtitle}</p>`,
@@ -229,6 +231,8 @@ async function checkDocumentsResponseTest({
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-new-document.pdf`,
   });
 
+  await page.waitForTimeout(500);
+
   const documentsResponse = (await axios.get(getStrapiUrl({ path: '/api/documents?populate=*' }))).data;
   const documentsWithPrefix = getDocumentsWithTestPrefix({ documents: documentsResponse });
 
@@ -236,6 +240,7 @@ async function checkDocumentsResponseTest({
     data: [
       {
         attributes: {
+          date: documentsWithPrefix[0].attributes.date,
           showDate: documentsWithPrefix[0].attributes.showDate,
           title: documentsWithPrefix[0].attributes.title,
           subtitle: documentsWithPrefix[0].attributes.subtitle,

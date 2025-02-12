@@ -23,7 +23,7 @@ export async function createAndPublishDocumentsCategory({
     .first()
     .click();
 
-  await page.locator('id=title')
+  await page.locator(`id=title`)
     .fill(title);
 
   await saveAndPublish({ page });
