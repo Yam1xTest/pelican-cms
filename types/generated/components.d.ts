@@ -11,6 +11,17 @@ export interface SharedTextAndMedia extends Schema.Component {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text & Attribute.Required;
     media: Attribute.Media<'images' | 'videos'> & Attribute.Required;
+    contentOrder: Attribute.Enumeration<
+      [
+        '\u0422\u0435\u043A\u0441\u0442 \u0441\u043B\u0435\u0432\u0430, \u0432\u0438\u0434\u0435\u043E/\u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u043F\u0440\u0430\u0432\u0430',
+        '\u0412\u0438\u0434\u0435\u043E/\u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u043B\u0435\u0432\u0430, \u0442\u0435\u043A\u0441\u0442 \u0441\u043F\u0440\u0430\u0432\u0430'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'\u0422\u0435\u043A\u0441\u0442 \u0441\u043B\u0435\u0432\u0430, \u0432\u0438\u0434\u0435\u043E/\u0438\u0437\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u0435 \u0441\u043F\u0440\u0430\u0432\u0430'>;
+    viewFootsteps: Attribute.Boolean &
+      Attribute.Required &
+      Attribute.DefaultTo<false>;
   };
 }
 

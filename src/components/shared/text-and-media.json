@@ -16,12 +16,26 @@
       "required": true
     },
     "media": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
       "allowedTypes": [
         "images",
         "videos"
+      ]
+    },
+    "contentOrder": {
+      "type": "enumeration",
+      "enum": [
+        "Текст слева, видео/изображение справа",
+        "Видео/изображение слева, текст справа"
       ],
-      "type": "media",
-      "multiple": false,
+      "default": "Текст слева, видео/изображение справа",
+      "required": true
+    },
+    "viewFootsteps": {
+      "type": "boolean",
+      "default": false,
       "required": true
     }
   }

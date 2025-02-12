@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-12T04:01:09.645Z"
+    "x-generation-date": "2025-02-12T09:11:04.619Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -1938,7 +1938,9 @@
             "required": [
               "showDate",
               "title",
-              "files"
+              "files",
+              "category",
+              "date"
             ],
             "type": "object",
             "properties": {
@@ -1978,6 +1980,10 @@
               },
               "description": {
                 "type": "string"
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
               }
             }
           }
@@ -2034,7 +2040,9 @@
         "required": [
           "showDate",
           "title",
-          "files"
+          "files",
+          "category",
+          "date"
         ],
         "properties": {
           "showDate": {
@@ -2683,6 +2691,9 @@
                       "title": {
                         "type": "string"
                       },
+                      "hasTabs": {
+                        "type": "boolean"
+                      },
                       "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -2740,6 +2751,10 @@
           },
           "description": {
             "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
           },
           "createdAt": {
             "type": "string",
@@ -2825,6 +2840,9 @@
             "properties": {
               "title": {
                 "type": "string"
+              },
+              "hasTabs": {
+                "type": "boolean"
               }
             }
           }
@@ -2884,6 +2902,9 @@
         "properties": {
           "title": {
             "type": "string"
+          },
+          "hasTabs": {
+            "type": "boolean"
           },
           "createdAt": {
             "type": "string",
@@ -3742,6 +3763,16 @@
                                         }
                                       }
                                     }
+                                  },
+                                  "contentOrder": {
+                                    "type": "string",
+                                    "enum": [
+                                      "Текст слева, видео/изображение справа",
+                                      "Видео/изображение слева, текст справа"
+                                    ]
+                                  },
+                                  "viewFootsteps": {
+                                    "type": "boolean"
                                   }
                                 }
                               }
@@ -4351,6 +4382,16 @@
                 }
               }
             }
+          },
+          "contentOrder": {
+            "type": "string",
+            "enum": [
+              "Текст слева, видео/изображение справа",
+              "Видео/изображение слева, текст справа"
+            ]
+          },
+          "viewFootsteps": {
+            "type": "boolean"
           }
         }
       },
