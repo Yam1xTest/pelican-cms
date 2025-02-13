@@ -4,39 +4,32 @@ import axios from "axios";
 
 export async function createAndPublishHomepage({
   page,
-  title,
-  infoCard,
-  scheduleCard,
-  cards,
+  hero,
+  services,
   seo,
   filePath,
 }: {
   page: Page,
-  title: string,
-  infoCard: {
-    title: string,
-    description: string
+  hero: HeroBlock,
+  services: {
+    phone: string,
+    email: string,
+    cards: {
+      title: string,
+      cards: {
+        title: string,
+        description: string,
+        link: string,
+        labels: {
+          text: string
+        }[]
+      }[]
+    }
   },
-  cards: {
-    title: string,
-    description: string,
-    link: string,
-    labels: {
-      text: string
-    }[]
-  }[],
-  scheduleCard: {
-    title: string,
-    timetable: {
-      days: string,
-      time: string,
-      ticketsOfficeTime: string
-    }[]
-  }
   seo: {
     metaTitle: string,
     metaDescription: string
-  }
+  },
   filePath: string
 }) {
   await page.getByText(`Content Manager`)
@@ -47,18 +40,23 @@ export async function createAndPublishHomepage({
 
   await createHeroBlock({
     page,
-    title,
-    infoCard,
-    scheduleCard,
+    title: hero.title,
+    infoCard: hero.infoCard,
+    scheduleCard: hero.scheduleCard,
     filePath
   });
 
-  await createCardsBlock({
+  await createServicesBlock({
     page,
-    title: cards[0].title,
-    description: cards[0].description,
-    link: cards[0].link,
-    labels: cards[0].labels[0],
+    phone: services.phone,
+    email: services.email,
+    title: services.cards.title,
+    card: {
+      title: services.cards.cards[0].title,
+      description: services.cards.cards[0].description,
+      link: services.cards.cards[0].link,
+      labels: services.cards.cards[0].labels[0],
+    },
     filePath,
   });
 
@@ -75,21 +73,26 @@ export async function createAndPublishHomepage({
   await saveAndPublish({ page });
 }
 
-async function createCardsBlock({
+async function createServicesBlock({
   page,
   title,
-  description,
-  link,
-  labels,
+  card,
+  email,
+  phone,
   filePath
 }: {
   page: Page,
   title: string,
-  description: string,
-  link: string,
-  labels: {
-    text: string
-  },
+  phone: string,
+  email: string,
+  card: {
+    title: string,
+    description: string,
+    link: string,
+    labels: {
+      text: string
+    },
+  }
   filePath: string
 }) {
   await page.getByRole('button', {
@@ -97,33 +100,46 @@ async function createCardsBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'Cards'
+    name: 'home'
   }).click();
+
+  await page.getByRole('button', {
+    name: 'Services'
+  }).click();
+
+  await page.locator('id=blocks.1.cards.title')
+    .fill(title);
 
   await page.getByText('No entry yet. Click on the button below to add one.')
     .first()
     .click();
 
-  await page.locator('id=blocks.1.cards.0.title')
-    .fill(title);
+  await page.locator('id=blocks.1.cards.cards.0.title')
+    .fill(card.title);
 
-  await page.locator('id=blocks.1.cards.0.description')
-    .fill(description);
+  await page.locator('id=blocks.1.cards.cards.0.description')
+    .fill(card.description);
 
   await uploadFile({
     page,
     filePath,
   });
 
-  await page.locator('id=blocks.1.cards.0.link')
-    .fill(link);
+  await page.locator('id=blocks.1.cards.cards.0.link')
+    .fill(card.link);
+
+  await page.locator('id=blocks.1.phone')
+    .fill(phone);
+
+  await page.locator('id=blocks.1.email')
+    .fill(email);
 
   await page.getByText('No entry yet. Click on the button below to add one.')
     .first()
     .click();
 
-  await page.locator('id=blocks.1.cards.0.labels.0.text')
-    .fill(labels.text);
+  await page.locator('id=blocks.1.cards.cards.0.labels.0.text')
+    .fill(card.labels.text);
 }
 
 export async function deleteHomepage() {

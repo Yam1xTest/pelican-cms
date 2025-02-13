@@ -299,32 +299,43 @@ async function checkHomepageResponseTest({
 }: {
   page: Page
 }) {
-  const title = `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`;
-  const infoCard = {
-    title: '29 октября зоопарк не работает',
-    description: 'Каждый последний понедельник месяца санитарный день.'
-  };
-  const scheduleCard = {
-    title: 'График работы',
-    timetable: [{
-      days: 'Понедельник - четверг',
-      time: '10:00-18:00',
-      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
-    }]
+  const hero = {
+    __component: "shared.hero",
+    title: `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`,
+    infoCard: {
+      title: '29 октября зоопарк не работает',
+      description: 'Каждый последний понедельник месяца санитарный день.'
+    },
+    scheduleCard: {
+      title: 'График работы',
+      timetable: [{
+        days: 'Понедельник - четверг',
+        time: '10:00-18:00',
+        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+      }]
+    }
   };
 
-  const cards = [
-    {
-      title: "Услуга 1",
-      description: "Описание услуги 1",
-      link: 'ссылка',
-      labels: [
+  const services = {
+    __component: "home.services",
+    email: 'test@test.ru',
+    phone: '+9 (999) 999-99-99',
+    cards: {
+      title: "Наши услуги",
+      cards: [
         {
-          text: "от 5 человек"
+          title: "Услуга 1",
+          description: "Описание услуги 1",
+          link: 'ссылка',
+          labels: [
+            {
+              text: "от 5 человек"
+            }
+          ]
         }
       ]
     }
-  ];
+  };
 
   const seo = {
     metaTitle: "Челябинский зоопарк",
@@ -335,16 +346,8 @@ async function checkHomepageResponseTest({
     data: {
       attributes: {
         blocks: [
-          {
-            title,
-            __component: "shared.hero",
-            infoCard,
-            scheduleCard,
-          },
-          {
-            __component: "shared.cards",
-            cards,
-          }
+          hero,
+          services
         ],
         seo
       }
@@ -353,10 +356,8 @@ async function checkHomepageResponseTest({
 
   await createAndPublishHomepage({
     page,
-    title,
-    infoCard,
-    scheduleCard,
-    cards,
+    hero,
+    services,
     seo,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
   });
@@ -368,7 +369,8 @@ async function checkHomepageResponseTest({
       `blocks.scheduleCard.timetable`,
       `blocks.image`,
       `blocks.cards`,
-      `blocks.cards.labels`,
+      `blocks.cards.cards`,
+      `blocks.cards.cards.labels`,
       `seo`,
     ],
   };
@@ -378,7 +380,7 @@ async function checkHomepageResponseTest({
   }))).data;
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
-  const cardsBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.cards');
+  const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
 
   await expect({
     data: {
@@ -403,17 +405,22 @@ async function checkHomepageResponseTest({
             },
           },
           {
-            __component: "shared.cards",
-            cards: [
-              {
-                title: cardsBlock.cards[0].title,
-                description: cardsBlock.cards[0].description,
-                link: cardsBlock.cards[0].link,
-                labels: [{
-                  text: cardsBlock.cards[0].labels[0].text
-                }]
-              }
-            ],
+            __component: servicesBlock.__component,
+            phone: servicesBlock.phone,
+            email: servicesBlock.email,
+            cards: {
+              title: servicesBlock.cards.title,
+              cards: [
+                {
+                  title: servicesBlock.cards.cards[0].title,
+                  description: servicesBlock.cards.cards[0].description,
+                  link: servicesBlock.cards.cards[0].link,
+                  labels: [{
+                    text: servicesBlock.cards.cards[0].labels[0].text
+                  }]
+                }
+              ],
+            }
           }
         ],
         seo: {
@@ -435,33 +442,33 @@ async function checkContactZooPageResponseTest({
 }: {
   page: Page
 }) {
-  const title = `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`;
-  const infoCard = {
-    title: 'Погодные условия',
-    description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
+  const hero = {
+    __component: "shared.hero",
+    title: `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`,
+    infoCard: {
+      title: 'Погодные условия',
+      description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
+    },
+    scheduleCard: {
+      title: 'График работы',
+      timetable: [{
+        days: 'Понедельник - четверг',
+        time: 'Выходной',
+        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+      }]
+    }
   };
-  const scheduleCard = {
-    title: 'График работы',
-    timetable: [{
-      days: 'Понедельник - четверг',
-      time: 'Выходной',
-      ticketsOfficeTime: '(вход и касса 10:00-17:00)'
-    }]
-  };
+
   const seo = {
     metaTitle: "Контактный зоопарк",
     metaDescription: "Описание контактного зоопарка, приглашаем взрослых и детей, у нас много животных!",
   };
+
   const expectedConcatZooPageResponse = {
     data: {
       attributes: {
         blocks: [
-          {
-            title,
-            __component: "shared.hero",
-            infoCard,
-            scheduleCard,
-          }
+          hero
         ],
         seo
       }
@@ -470,9 +477,7 @@ async function checkContactZooPageResponseTest({
 
   await createAndPublishContactZooPage({
     page,
-    title,
-    infoCard,
-    scheduleCard,
+    hero,
     seo,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
   });

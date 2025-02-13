@@ -4,26 +4,12 @@ import axios from "axios";
 
 export async function createAndPublishContactZooPage({
   page,
-  title,
-  infoCard,
-  scheduleCard,
+  hero,
   seo,
   filePath,
 }: {
   page: Page,
-  title: string,
-  infoCard: {
-    title: string,
-    description: string
-  },
-  scheduleCard: {
-    title: string,
-    timetable: {
-      days: string,
-      time: string,
-      ticketsOfficeTime: string
-    }[]
-  }
+  hero: HeroBlock,
   seo: {
     metaTitle: string,
     metaDescription: string
@@ -38,9 +24,9 @@ export async function createAndPublishContactZooPage({
 
   await createHeroBlock({
     page,
-    title,
-    infoCard,
-    scheduleCard,
+    title: hero.title,
+    infoCard: hero.infoCard,
+    scheduleCard: hero.scheduleCard,
     filePath
   });
 

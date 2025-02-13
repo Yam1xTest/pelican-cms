@@ -25,7 +25,7 @@
       "type": "dynamiczone",
       "components": [
         "shared.hero",
-        "shared.cards"
+        "home.services"
       ]
     },
     "seo": {

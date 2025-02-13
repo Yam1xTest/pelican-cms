@@ -138,21 +138,8 @@ export async function createHeroBlock({
   infoCard,
   scheduleCard,
   filePath,
-}: {
+}: HeroBlock & {
   page: Page;
-  title: string,
-  infoCard: {
-    title: string,
-    description: string
-  },
-  scheduleCard: {
-    title: string,
-    timetable: {
-      days: string,
-      time: string,
-      ticketsOfficeTime: string
-    }[]
-  }
   filePath: string
 }) {
   await page.getByRole('button', {

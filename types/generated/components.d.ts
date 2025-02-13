@@ -74,7 +74,20 @@ export interface SharedCards extends Schema.Component {
     description: '';
   };
   attributes: {
-    cards: Attribute.Component<'card.card', true>;
+    title: Attribute.String & Attribute.Required;
+    cards: Attribute.Component<'card.card', true> & Attribute.Required;
+  };
+}
+
+export interface HomeServices extends Schema.Component {
+  collectionName: 'components_home_services';
+  info: {
+    displayName: 'Services';
+  };
+  attributes: {
+    cards: Attribute.Component<'shared.cards'> & Attribute.Required;
+    phone: Attribute.Text & Attribute.Required;
+    email: Attribute.Text & Attribute.Required;
   };
 }
 
@@ -149,6 +162,7 @@ declare module '@strapi/types' {
       'shared.meta-social': SharedMetaSocial;
       'shared.hero': SharedHero;
       'shared.cards': SharedCards;
+      'home.services': HomeServices;
       'schedule-card.timetable': ScheduleCardTimetable;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;
