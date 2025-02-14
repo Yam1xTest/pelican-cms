@@ -950,7 +950,9 @@ export interface ApiHomeHome extends Schema.SingleType {
     };
   };
   attributes: {
-    blocks: Attribute.DynamicZone<['shared.hero', 'shared.text-and-media']> &
+    blocks: Attribute.DynamicZone<
+      ['shared.hero', 'shared.text-and-media', 'home.services']
+    > &
       Attribute.SetPluginOptions<{
         versions: {
           versioned: true;

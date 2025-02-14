@@ -1,39 +1,19 @@
 import { Page } from "@playwright/test";
-import { getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
+import { createHeroBlock, createSeo, getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
 import axios from "axios";
 
 export async function createAndPublishHomepage({
   page,
   hero,
+  services,
   textAndMedia,
   seo,
 }: {
   page: Page,
-  hero: {
-    title: string,
-    infoCard: {
-      title: string,
-      description: string
-    },
-    scheduleCard: {
-      title: string,
-      timetable: {
-        days: string,
-        time: string,
-        ticketsOfficeTime: string
-      }[]
-    }
-    filePath: string,
-  },
-  textAndMedia: {
-    title,
-    description,
-    filePath: string,
-  }
-  seo: {
-    metaTitle: string,
-    metaDescription: string
-  }
+  hero: HeroBlock,
+  services: ServicesBlock,
+  textAndMedia: TextAndMediaBlock,
+  seo: SeoBlock
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -41,44 +21,55 @@ export async function createAndPublishHomepage({
   await page.getByText(`Главная страница`)
     .click();
 
-  await page.getByRole('button', {
-    name: 'Add a component to blocks'
-  }).click();
-
-  await page.getByRole('button', {
-    name: 'Hero'
-  }).click();
-
-  await page.locator('id=blocks.0.title')
-    .fill(hero.title);
-
-  await uploadFile({
+  await createHeroBlock({
     page,
-    filePath: hero.filePath,
+    title: hero.title,
+    infoCard: hero.infoCard,
+    scheduleCard: hero.scheduleCard,
+    filePath: hero.filePath
   });
 
-  await page.locator('id=blocks.0.infoCard.title')
-    .fill(hero.infoCard.title);
+  await createTextAndMediaBlock({
+    page,
+    title: textAndMedia.title,
+    description: textAndMedia.description,
+    filePath: textAndMedia.filePath
+  })
 
-  await page.locator('id=blocks.0.infoCard.description')
-    .fill(hero.infoCard.description);
+  await createServicesBlock({
+    page,
+    phone: services.phone,
+    email: services.email,
+    title: services.cards.title,
+    card: {
+      title: services.cards.cards[0].title,
+      description: services.cards.cards[0].description,
+      link: services.cards.cards[0].link,
+      labels: services.cards.cards[0].labels[0],
+    },
+    filePath: services.filePath,
+  });
 
-  await page.getByText('No entry yet. Click on the button below to add one.')
-    .first()
-    .click();
+  await createSeo({
+    page,
+    metaTitle: seo.metaTitle,
+    metaDescription: seo.metaDescription
+  })
 
-  await page.locator('id=blocks.0.scheduleCard.title')
-    .fill(hero.scheduleCard.title);
+  await saveAndPublish({ page });
+}
 
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.days')
-    .fill(hero.scheduleCard.timetable[0].days);
-
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.time')
-    .fill(hero.scheduleCard.timetable[0].time);
-
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.ticketsOfficeTime')
-    .fill(hero.scheduleCard.timetable[0].ticketsOfficeTime);
-
+async function createTextAndMediaBlock({
+  page,
+  title,
+  description,
+  filePath
+}: {
+  page: Page,
+  title: TextAndMediaBlock['title'],
+  description: TextAndMediaBlock['description'],
+  filePath: TextAndMediaBlock['filePath']
+}) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();
@@ -88,27 +79,84 @@ export async function createAndPublishHomepage({
   }).click();
 
   await page.locator('id=blocks.1.title')
-    .fill(textAndMedia.title);
+    .fill(title);
 
   await page.locator('id=blocks.1.description')
-    .fill(textAndMedia.description);
+    .fill(description);
 
   await uploadFile({
     page,
-    filePath: textAndMedia.filePath,
+    filePath,
   });
+}
+
+async function createServicesBlock({
+  page,
+  title,
+  card,
+  email,
+  phone,
+  filePath
+}: {
+  page: Page,
+  title: string,
+  phone: ServicesBlock['phone'],
+  email: ServicesBlock['email'],
+  card: {
+    title: string,
+    description: string,
+    link: string,
+    labels: {
+      text: string
+    },
+  }
+  filePath: ServicesBlock['filePath']
+}) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'home'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Services'
+  }).click();
+
+  await page.locator('id=blocks.2.cards.title')
+    .fill(title);
 
   await page.getByText('No entry yet. Click on the button below to add one.')
-    .last()
+    .first()
     .click();
 
-  await page.locator('id=seo.metaTitle')
-    .fill(seo.metaTitle);
+  await page.locator('id=blocks.2.cards.cards.0.title')
+    .fill(card.title);
 
-  await page.locator('id=seo.metaDescription')
-    .fill(seo.metaDescription);
+  await page.locator('id=blocks.2.cards.cards.0.description')
+    .fill(card.description);
 
-  await saveAndPublish({ page });
+  await uploadFile({
+    page,
+    filePath,
+  });
+
+  await page.locator('id=blocks.2.cards.cards.0.link')
+    .fill(card.link);
+
+  await page.locator('id=blocks.2.phone')
+    .fill(phone);
+
+  await page.locator('id=blocks.2.email')
+    .fill(email);
+
+  await page.getByText('No entry yet. Click on the button below to add one.')
+    .first()
+    .click();
+
+  await page.locator('id=blocks.2.cards.cards.0.labels.0.text')
+    .fill(card.labels.text);
 }
 
 export async function deleteHomepage() {

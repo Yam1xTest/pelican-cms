@@ -92,6 +92,18 @@ export interface SharedHero extends Schema.Component {
   };
 }
 
+export interface SharedCards extends Schema.Component {
+  collectionName: 'components_shared_cards';
+  info: {
+    displayName: 'Cards';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    cards: Attribute.Component<'card.card', true> & Attribute.Required;
+  };
+}
+
 export interface ScheduleCardTimetable extends Schema.Component {
   collectionName: 'components_shedule_card_timetables';
   info: {
@@ -102,6 +114,18 @@ export interface ScheduleCardTimetable extends Schema.Component {
     days: Attribute.String & Attribute.Required;
     time: Attribute.String & Attribute.Required;
     ticketsOfficeTime: Attribute.String;
+  };
+}
+
+export interface HomeServices extends Schema.Component {
+  collectionName: 'components_home_services';
+  info: {
+    displayName: 'Services';
+  };
+  attributes: {
+    cards: Attribute.Component<'shared.cards'> & Attribute.Required;
+    phone: Attribute.Text & Attribute.Required;
+    email: Attribute.Text & Attribute.Required;
   };
 }
 
@@ -130,6 +154,32 @@ export interface HeroInfoCard extends Schema.Component {
   };
 }
 
+export interface CardLabel extends Schema.Component {
+  collectionName: 'components_card_labels';
+  info: {
+    displayName: 'label';
+    description: '';
+  };
+  attributes: {
+    text: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface CardCard extends Schema.Component {
+  collectionName: 'components_card_cards';
+  info: {
+    displayName: 'card';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    image: Attribute.Media<'images'> & Attribute.Required;
+    labels: Attribute.Component<'card.label', true>;
+    link: Attribute.String;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
@@ -137,9 +187,13 @@ declare module '@strapi/types' {
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
       'shared.hero': SharedHero;
+      'shared.cards': SharedCards;
       'schedule-card.timetable': ScheduleCardTimetable;
+      'home.services': HomeServices;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;
+      'card.label': CardLabel;
+      'card.card': CardCard;
     }
   }
 }

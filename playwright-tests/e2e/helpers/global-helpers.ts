@@ -130,3 +130,70 @@ export async function saveAndPublish({
 
   await page.waitForTimeout(500);
 }
+
+export async function createSeo({
+  page,
+  metaTitle,
+  metaDescription
+}: {
+  page: Page,
+  metaTitle: SeoBlock['metaTitle'],
+  metaDescription: SeoBlock['metaDescription']
+}) {
+  await page.getByText('No entry yet. Click on the button below to add one.')
+    .last()
+    .click();
+
+  await page.locator('id=seo.metaTitle')
+    .fill(metaTitle);
+
+
+  await page.locator('id=seo.metaDescription')
+    .fill(metaDescription);
+}
+
+export async function createHeroBlock({
+  page,
+  title,
+  infoCard,
+  scheduleCard,
+  filePath,
+}: { page: Page } & HeroBlock) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Hero'
+  }).click();
+
+  await page.locator('id=blocks.0.title')
+    .fill(title);
+
+  await uploadFile({
+    page,
+    filePath,
+  });
+
+  await page.locator('id=blocks.0.infoCard.title')
+    .fill(infoCard.title);
+
+  await page.locator('id=blocks.0.infoCard.description')
+    .fill(infoCard.description);
+
+  await page.getByText('No entry yet. Click on the button below to add one.')
+    .first()
+    .click();
+
+  await page.locator('id=blocks.0.scheduleCard.title')
+    .fill(scheduleCard.title);
+
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.days')
+    .fill(scheduleCard.timetable[0].days);
+
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.time')
+    .fill(scheduleCard.timetable[0].time);
+
+  await page.locator('id=blocks.0.scheduleCard.timetable.0.ticketsOfficeTime')
+    .fill(scheduleCard.timetable[0].ticketsOfficeTime);
+}
