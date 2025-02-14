@@ -6,9 +6,7 @@ import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpe
 import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
-import { SHARED_HERO_HOMEPAGE_DATA } from "./mocks/home-page-mock/blocks/hero-mock";
-import { SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA } from "./mocks/home-page-mock/blocks/text-and-media-mock";
-import { SHARED_HERO_CONTACT_ZOO_DATA } from "./mocks/home-page-mock/contact-zoo-page-mock/hero-mock";
+import qs from "qs";
 
 
 test.describe(`API response tests`, () => {
@@ -301,6 +299,29 @@ async function checkHomepageResponseTest({
 }: {
   page: Page
 }) {
+  const hero = {
+    title: `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`,
+    infoCard: {
+      title: '29 октября зоопарк не работает',
+      description: 'Каждый последний понедельник месяца санитарный день.'
+    },
+    scheduleCard: {
+      title: 'График работы',
+      timetable: [{
+        days: 'Понедельник - четверг',
+        time: '10:00-18:00',
+        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+      }]
+    },
+  }
+
+  const textAndMedia = {
+    title: `${E2E_SMOKE_NAME_PREFIX} В зоопарке 141 вид животных`,
+    description: `Снежные барсы, ленивцы, росомахи, гепард и другие редкие животные, которые вас удивят.`,
+    contentOrder: `Текст слева, видео/изображение справа`,
+    viewFootsteps: false,
+  }
+
   const seo = {
     metaTitle: "Челябинский зоопарк",
     metaDescription: "Описание челябинского зоопарка, приглашаем взрослых и детей, у нас много животных!",
@@ -312,22 +333,22 @@ async function checkHomepageResponseTest({
         blocks: [
           {
             __component: "shared.hero",
-            title: SHARED_HERO_HOMEPAGE_DATA.title,
+            title: hero.title,
             infoCard: {
-              title: SHARED_HERO_HOMEPAGE_DATA.infoCard.title,
-              description: SHARED_HERO_HOMEPAGE_DATA.infoCard.description
+              title: hero.infoCard.title,
+              description: hero.infoCard.description
             },
             scheduleCard: {
-              title: SHARED_HERO_HOMEPAGE_DATA.scheduleCard.title,
-              timetable: SHARED_HERO_HOMEPAGE_DATA.scheduleCard.timetable
+              title: hero.scheduleCard.title,
+              timetable: hero.scheduleCard.timetable
             },
           },
           {
             __component: "shared.text-and-media",
-            title: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.title,
-            description: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.description,
-            contentOrder: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.contentOrder,
-            viewFootsteps: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.viewFootsteps,
+            title: textAndMedia.title,
+            description: textAndMedia.description,
+            contentOrder: textAndMedia.contentOrder,
+            viewFootsteps: textAndMedia.viewFootsteps,
           },
         ],
         seo
@@ -338,21 +359,32 @@ async function checkHomepageResponseTest({
   await createAndPublishHomepage({
     page,
     hero: {
-      title: SHARED_HERO_HOMEPAGE_DATA.title,
-      infoCard: SHARED_HERO_HOMEPAGE_DATA.infoCard,
-      scheduleCard: SHARED_HERO_HOMEPAGE_DATA.scheduleCard,
+      title: hero.title,
+      infoCard: hero.infoCard,
+      scheduleCard: hero.scheduleCard,
       filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
     },
     textAndMedia: {
-      title: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.title,
-      description: SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA.description,
+      title: textAndMedia.title,
+      description: textAndMedia.description,
       filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-text-and-media-video.mp4`
     },
     seo,
   });
 
+  const queryParams = {
+    populate: [
+      `blocks.infoCard`,
+      `blocks.scheduleCard`,
+      `blocks.scheduleCard.timetable`,
+      `blocks.image`,
+      `blocks.media`,
+      `seo`,
+    ],
+  };
+
   const homepageResponse = (await axios.get(getStrapiUrl({
-    path: '/api/home?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=blocks.media&populate[6]=seo'
+    path: `/api/home?${qs.stringify(queryParams)}`
   }))).data;
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
@@ -412,6 +444,22 @@ async function checkContactZooPageResponseTest({
 }: {
   page: Page
 }) {
+  const hero = {
+    title: `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`,
+    infoCard: {
+      title: 'Погодные условия',
+      description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных',
+    },
+    scheduleCard: {
+      title: 'График работы',
+      timetable: [{
+        days: 'Понедельник - четверг',
+        time: 'Выходной',
+        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
+      }],
+    },
+  }
+
   const seo = {
     metaTitle: "Контактный зоопарк",
     metaDescription: "Описание контактного зоопарка, приглашаем взрослых и детей, у нас много животных!",
@@ -423,14 +471,14 @@ async function checkContactZooPageResponseTest({
         blocks: [
           {
             __component: "shared.hero",
-            title: SHARED_HERO_CONTACT_ZOO_DATA.title,
+            title: hero.title,
             infoCard: {
-              title: SHARED_HERO_CONTACT_ZOO_DATA.infoCard.title,
-              description: SHARED_HERO_CONTACT_ZOO_DATA.infoCard.description
+              title: hero.infoCard.title,
+              description: hero.infoCard.description
             },
             scheduleCard: {
-              title: SHARED_HERO_CONTACT_ZOO_DATA.scheduleCard.title,
-              timetable: SHARED_HERO_CONTACT_ZOO_DATA.scheduleCard.timetable,
+              title: hero.scheduleCard.title,
+              timetable: hero.scheduleCard.timetable,
             },
           },
         ],
@@ -442,16 +490,26 @@ async function checkContactZooPageResponseTest({
   await createAndPublishContactZooPage({
     page,
     hero: {
-      title: SHARED_HERO_CONTACT_ZOO_DATA.title,
-      infoCard: SHARED_HERO_CONTACT_ZOO_DATA.infoCard,
-      scheduleCard: SHARED_HERO_CONTACT_ZOO_DATA.scheduleCard,
+      title: hero.title,
+      infoCard: hero.infoCard,
+      scheduleCard: hero.scheduleCard,
       filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
     },
     seo,
   });
 
+  const queryParams = {
+    populate: [
+      `blocks.infoCard`,
+      `blocks.scheduleCard`,
+      `blocks.scheduleCard.timetable`,
+      `blocks.image`,
+      `seo`,
+    ],
+  };
+
   const contactZooPageResponse = (await axios.get(getStrapiUrl({
-    path: '/api/contact-zoo?populate[0]=blocks&populate[1]=blocks.infoCard&populate[2]=blocks.scheduleCard&populate[3]=blocks.scheduleCard.timetable&populate[4]=blocks.image&populate[5]=seo'
+    path: `/api/contact-zoo?${qs.stringify(queryParams)}`
   }))).data;
 
   const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
