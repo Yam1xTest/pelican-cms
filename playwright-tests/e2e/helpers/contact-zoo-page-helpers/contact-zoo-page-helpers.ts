@@ -6,15 +6,10 @@ export async function createAndPublishContactZooPage({
   page,
   hero,
   seo,
-  filePath,
 }: {
   page: Page,
   hero: HeroBlock,
-  seo: {
-    metaTitle: string,
-    metaDescription: string
-  }
-  filePath: string
+  seo: SeoBlock,
 }) {
   await page.getByText(`Content Manager`)
     .click();
@@ -27,7 +22,7 @@ export async function createAndPublishContactZooPage({
     title: hero.title,
     infoCard: hero.infoCard,
     scheduleCard: hero.scheduleCard,
-    filePath
+    filePath: hero.filePath
   });
 
   await createSeo({

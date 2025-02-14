@@ -1,9 +1,8 @@
-
 import { Page } from "@playwright/test";
 import axios from "axios";
 import 'dotenv/config';
 
-export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`
+export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
 export async function gotoCMS({
   page
@@ -138,8 +137,8 @@ export async function createSeo({
   metaDescription
 }: {
   page: Page,
-  metaTitle: string,
-  metaDescription: string
+  metaTitle: SeoBlock['metaTitle'],
+  metaDescription: SeoBlock['metaDescription']
 }) {
   await page.getByText('No entry yet. Click on the button below to add one.')
     .last()
@@ -159,10 +158,7 @@ export async function createHeroBlock({
   infoCard,
   scheduleCard,
   filePath,
-}: HeroBlock & {
-  page: Page;
-  filePath: string
-}) {
+}: { page: Page } & HeroBlock) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();

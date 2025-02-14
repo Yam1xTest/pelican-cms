@@ -7,6 +7,7 @@ import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import qs from "qs";
+import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA } from "./helpers/mocks";
 
 
 test.describe(`API response tests`, () => {
@@ -299,67 +300,29 @@ async function checkHomepageResponseTest({
 }: {
   page: Page
 }) {
-  const hero = {
-    __component: "shared.hero",
-    title: `${E2E_SMOKE_NAME_PREFIX} Челябинский зоопарк`,
-    infoCard: {
-      title: '29 октября зоопарк не работает',
-      description: 'Каждый последний понедельник месяца санитарный день.'
-    },
-    scheduleCard: {
-      title: 'График работы',
-      timetable: [{
-        days: 'Понедельник - четверг',
-        time: '10:00-18:00',
-        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
-      }]
-    }
-  };
-
-  const services = {
-    __component: "home.services",
-    email: 'test@test.ru',
-    phone: '+9 (999) 999-99-99',
-    cards: {
-      title: "Наши услуги",
-      cards: [
-        {
-          title: "Услуга 1",
-          description: "Описание услуги 1",
-          link: 'ссылка',
-          labels: [
-            {
-              text: "от 5 человек"
-            }
-          ]
-        }
-      ]
-    }
-  };
-
-  const seo = {
-    metaTitle: "Челябинский зоопарк",
-    metaDescription: "Описание челябинского зоопарка, приглашаем взрослых и детей, у нас много животных!",
-  };
+  const { filePath, ...expectedHero } = MOCK_HERO;
+  const { filePath: servicesFilePath, ...expectedServices } = MOCK_HOME_SERVICES;
+  const { filePath: textAndMediaFilePath, ...expectedTextAndMedia } = MOCK_TEXT_AND_MEDIA;
 
   const expectedHomepageResponse = {
     data: {
       attributes: {
         blocks: [
-          hero,
-          services
+          expectedHero,
+          expectedServices,
+          expectedTextAndMedia
         ],
-        seo
+        seo: MOCK_SEO
       }
     }
   };
 
   await createAndPublishHomepage({
     page,
-    hero,
-    services,
-    seo,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+    hero: MOCK_HERO,
+    services: MOCK_HOME_SERVICES,
+    textAndMedia: MOCK_TEXT_AND_MEDIA,
+    seo: MOCK_SEO,
   });
 
   const queryParams = {
@@ -371,6 +334,7 @@ async function checkHomepageResponseTest({
       `blocks.cards`,
       `blocks.cards.cards`,
       `blocks.cards.cards.labels`,
+      `blocks.media`,
       `seo`,
     ],
   };
@@ -381,6 +345,7 @@ async function checkHomepageResponseTest({
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
   const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
+  const textAndMediaBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
 
   await expect({
     data: {
@@ -421,7 +386,14 @@ async function checkHomepageResponseTest({
                 }
               ],
             }
-          }
+          },
+          {
+            __component: textAndMediaBlock.__component,
+            title: textAndMediaBlock.title,
+            description: textAndMediaBlock.description,
+            contentOrder: textAndMediaBlock.contentOrder,
+            viewFootsteps: textAndMediaBlock.viewFootsteps,
+          },
         ],
         seo: {
           metaTitle: homepageResponse.data.attributes.seo.metaTitle,
@@ -435,6 +407,14 @@ async function checkHomepageResponseTest({
   await expect(heroBlock.image.data.attributes.url)
     .not
     .toBeNull();
+
+  await expect(servicesBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(textAndMediaBlock.media.data.attributes.url)
+    .not
+    .toBeNull();
 }
 
 async function checkContactZooPageResponseTest({
@@ -442,44 +422,23 @@ async function checkContactZooPageResponseTest({
 }: {
   page: Page
 }) {
-  const hero = {
-    __component: "shared.hero",
-    title: `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`,
-    infoCard: {
-      title: 'Погодные условия',
-      description: 'При дожде, снегопаде, граде, метели детский контактный зоопарк временно закрывается для безопасности животных'
-    },
-    scheduleCard: {
-      title: 'График работы',
-      timetable: [{
-        days: 'Понедельник - четверг',
-        time: 'Выходной',
-        ticketsOfficeTime: '(вход и касса 10:00-17:00)'
-      }]
-    }
-  };
-
-  const seo = {
-    metaTitle: "Контактный зоопарк",
-    metaDescription: "Описание контактного зоопарка, приглашаем взрослых и детей, у нас много животных!",
-  };
+  const { filePath, ...expectedHero } = MOCK_HERO;
 
   const expectedConcatZooPageResponse = {
     data: {
       attributes: {
         blocks: [
-          hero
+          expectedHero
         ],
-        seo
+        seo: MOCK_SEO
       }
     }
   };
 
   await createAndPublishContactZooPage({
     page,
-    hero,
-    seo,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
+    hero: MOCK_HERO,
+    seo: MOCK_SEO,
   });
 
   const queryParams = {
@@ -519,7 +478,7 @@ async function checkContactZooPageResponseTest({
                 }
               ]
             },
-          }
+          },
         ],
         seo: {
           metaTitle: contactZooPageResponse.data.attributes.seo.metaTitle,

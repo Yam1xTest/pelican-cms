@@ -25,6 +25,7 @@
       "type": "dynamiczone",
       "components": [
         "shared.hero",
+        "shared.text-and-media",
         "home.services"
       ]
     },
