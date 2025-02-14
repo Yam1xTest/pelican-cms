@@ -333,6 +333,7 @@ async function checkHomepageResponseTest({
       `blocks.image`,
       `blocks.cards`,
       `blocks.cards.cards`,
+      `blocks.cards.cards.image`,
       `blocks.cards.cards.labels`,
       `blocks.media`,
       `seo`,
@@ -408,7 +409,7 @@ async function checkHomepageResponseTest({
     .not
     .toBeNull();
 
-  await expect(servicesBlock.image.data.attributes.url)
+  await expect(servicesBlock.cards.cards[0].image.data.attributes.url)
     .not
     .toBeNull();
 
