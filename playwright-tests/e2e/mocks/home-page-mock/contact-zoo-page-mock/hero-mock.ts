@@ -1,4 +1,4 @@
-import { E2E_SMOKE_NAME_PREFIX } from "../../../consts";
+import { E2E_SMOKE_NAME_PREFIX } from "../../../helpers/global-helpers";
 
 export const SHARED_HERO_CONTACT_ZOO_DATA = {
   title: `${E2E_SMOKE_NAME_PREFIX} Контактный зоопарк`,

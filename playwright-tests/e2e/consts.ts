@@ -1,1 +1,0 @@
-export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;

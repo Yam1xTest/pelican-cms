@@ -1,8 +1,8 @@
-
 import { Page } from "@playwright/test";
 import axios from "axios";
 import 'dotenv/config';
-import { E2E_SMOKE_NAME_PREFIX } from "../consts";
+
+export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
 export async function gotoCMS({
   page

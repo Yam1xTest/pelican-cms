@@ -1,5 +1,5 @@
 import test, { expect, Page } from "@playwright/test";
-import { authenticate, deleteFiles, getStrapiUrl, gotoCMS } from "./helpers/global-helpers";
+import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, gotoCMS } from "./helpers/global-helpers";
 import { createAndPublishDocumentsCategory, deleteDocumentsCategories, getDocumentCategoriesWithTestPrefix } from "./helpers/documents-helpers/documents-categories-helpers";
 import { createAndPublishDocument, deleteDocuments, getDocumentsWithTestPrefix } from "./helpers/documents-helpers/documents-helpers";
 import { createAndPublishNews, deleteNews, getNewsWithTestPrefix } from "./helpers/news-helpers/news-helpers";
@@ -7,7 +7,6 @@ import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import { SHARED_HERO_HOMEPAGE_DATA } from "./mocks/home-page-mock/blocks/hero-mock";
-import { E2E_SMOKE_NAME_PREFIX } from "./consts";
 import { SHARED_TEXT_AND_MEDIA_HOMEPAGE_DATA } from "./mocks/home-page-mock/blocks/text-and-media-mock";
 import { SHARED_HERO_CONTACT_ZOO_DATA } from "./mocks/home-page-mock/contact-zoo-page-mock/hero-mock";
 
