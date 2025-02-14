@@ -79,18 +79,6 @@ export interface SharedCards extends Schema.Component {
   };
 }
 
-export interface HomeServices extends Schema.Component {
-  collectionName: 'components_home_services';
-  info: {
-    displayName: 'Services';
-  };
-  attributes: {
-    cards: Attribute.Component<'shared.cards'> & Attribute.Required;
-    phone: Attribute.Text & Attribute.Required;
-    email: Attribute.Text & Attribute.Required;
-  };
-}
-
 export interface ScheduleCardTimetable extends Schema.Component {
   collectionName: 'components_shedule_card_timetables';
   info: {
@@ -101,6 +89,18 @@ export interface ScheduleCardTimetable extends Schema.Component {
     days: Attribute.String & Attribute.Required;
     time: Attribute.String & Attribute.Required;
     ticketsOfficeTime: Attribute.String;
+  };
+}
+
+export interface HomeServices extends Schema.Component {
+  collectionName: 'components_home_services';
+  info: {
+    displayName: 'Services';
+  };
+  attributes: {
+    cards: Attribute.Component<'shared.cards'> & Attribute.Required;
+    phone: Attribute.Text & Attribute.Required;
+    email: Attribute.Text & Attribute.Required;
   };
 }
 
@@ -162,8 +162,8 @@ declare module '@strapi/types' {
       'shared.meta-social': SharedMetaSocial;
       'shared.hero': SharedHero;
       'shared.cards': SharedCards;
-      'home.services': HomeServices;
       'schedule-card.timetable': ScheduleCardTimetable;
+      'home.services': HomeServices;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;
       'card.label': CardLabel;

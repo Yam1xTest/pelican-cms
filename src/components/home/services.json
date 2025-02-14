@@ -14,7 +14,7 @@
     },
     "phone": {
       "type": "text",
-      "required": true  
+      "required": true
     },
     "email": {
       "type": "text",

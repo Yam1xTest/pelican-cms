@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { createHeroBlock, getStrapiUrl, saveAndPublish } from "../global-helpers";
+import { createHeroBlock, createSeo, getStrapiUrl, saveAndPublish } from "../global-helpers";
 import axios from "axios";
 
 export async function createAndPublishContactZooPage({
@@ -30,16 +30,11 @@ export async function createAndPublishContactZooPage({
     filePath
   });
 
-  await page.getByText('No entry yet. Click on the button below to add one.')
-    .last()
-    .click();
-
-  await page.locator('id=seo.metaTitle')
-    .fill(seo.metaTitle);
-
-
-  await page.locator('id=seo.metaDescription')
-    .fill(seo.metaDescription);
+  await createSeo({
+    page,
+    metaTitle: seo.metaTitle,
+    metaDescription: seo.metaDescription
+  })
 
   await saveAndPublish({ page });
 }

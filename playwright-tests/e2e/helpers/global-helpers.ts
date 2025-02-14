@@ -132,6 +132,27 @@ export async function saveAndPublish({
   await page.waitForTimeout(500);
 }
 
+export async function createSeo({
+  page,
+  metaTitle,
+  metaDescription
+}: {
+  page: Page,
+  metaTitle: string,
+  metaDescription: string
+}) {
+  await page.getByText('No entry yet. Click on the button below to add one.')
+    .last()
+    .click();
+
+  await page.locator('id=seo.metaTitle')
+    .fill(metaTitle);
+
+
+  await page.locator('id=seo.metaDescription')
+    .fill(metaDescription);
+}
+
 export async function createHeroBlock({
   page,
   title,
