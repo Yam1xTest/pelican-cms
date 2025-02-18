@@ -7,7 +7,7 @@ import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import qs from "qs";
-import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA } from "./helpers/mocks";
+import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID } from "./helpers/mocks";
 
 
 test.describe(`API response tests`, () => {
@@ -303,6 +303,11 @@ async function checkHomepageResponseTest({
   const { filePath, ...expectedHero } = MOCK_HERO;
   const { filePath: servicesFilePath, ...expectedServices } = MOCK_HOME_SERVICES;
   const { filePath: textAndMediaFilePath, ...expectedTextAndMedia } = MOCK_TEXT_AND_MEDIA;
+  const {
+    largeImagePath: imageWithButtonGridLargeImagePath,
+    smallImagePath: imageWithButtonGridSmallImagePath,
+    ...expectedImageWithButtonGrid
+  } = MOCK_IMAGE_WITH_BUTTON_GRID;
 
   const expectedHomepageResponse = {
     data: {
@@ -310,7 +315,8 @@ async function checkHomepageResponseTest({
         blocks: [
           expectedHero,
           expectedServices,
-          expectedTextAndMedia
+          expectedTextAndMedia,
+          expectedImageWithButtonGrid,
         ],
         seo: MOCK_SEO
       }
@@ -322,6 +328,7 @@ async function checkHomepageResponseTest({
     hero: MOCK_HERO,
     services: MOCK_HOME_SERVICES,
     textAndMedia: MOCK_TEXT_AND_MEDIA,
+    imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
     seo: MOCK_SEO,
   });
 
@@ -336,6 +343,9 @@ async function checkHomepageResponseTest({
       `blocks.cards.cards.image`,
       `blocks.cards.cards.labels`,
       `blocks.media`,
+      `blocks.button`,
+      `blocks.largeImage`,
+      `blocks.smallImage`,
       `seo`,
     ],
   };
@@ -347,6 +357,7 @@ async function checkHomepageResponseTest({
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
   const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
   const textAndMediaBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
+  const imageWithButtonGridBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
 
   await expect({
     data: {
@@ -395,6 +406,13 @@ async function checkHomepageResponseTest({
             contentOrder: textAndMediaBlock.contentOrder,
             viewFootsteps: textAndMediaBlock.viewFootsteps,
           },
+          {
+            __component: imageWithButtonGridBlock.__component,
+            title: imageWithButtonGridBlock.title,
+            description: imageWithButtonGridBlock.description,
+            link: imageWithButtonGridBlock.button.link,
+            label: imageWithButtonGridBlock.button.label,
+          },
         ],
         seo: {
           metaTitle: homepageResponse.data.attributes.seo.metaTitle,
@@ -416,6 +434,14 @@ async function checkHomepageResponseTest({
   await expect(textAndMediaBlock.media.data.attributes.url)
     .not
     .toBeNull();
+
+  await expect(imageWithButtonGridBlock.largeImage.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(imageWithButtonGridBlock.smallImage.data.attributes.url)
+    .not
+    .toBeNull();
 }
 
 async function checkContactZooPageResponseTest({
@@ -424,12 +450,20 @@ async function checkContactZooPageResponseTest({
   page: Page
 }) {
   const { filePath, ...expectedHero } = MOCK_HERO;
+  const { filePath: textAndMediaFilePath, ...expectedTextAndMedia } = MOCK_TEXT_AND_MEDIA;
+  const {
+    largeImagePath: imageWithButtonGridLargeImagePath,
+    smallImagePath: imageWithButtonGridSmallImagePath,
+    ...expectedImageWithButtonGrid
+  } = MOCK_IMAGE_WITH_BUTTON_GRID;
 
   const expectedConcatZooPageResponse = {
     data: {
       attributes: {
         blocks: [
-          expectedHero
+          expectedHero,
+          expectedTextAndMedia,
+          expectedImageWithButtonGrid,
         ],
         seo: MOCK_SEO
       }
@@ -439,6 +473,8 @@ async function checkContactZooPageResponseTest({
   await createAndPublishContactZooPage({
     page,
     hero: MOCK_HERO,
+    textAndMedia: MOCK_TEXT_AND_MEDIA,
+    imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
     seo: MOCK_SEO,
   });
 
@@ -448,6 +484,10 @@ async function checkContactZooPageResponseTest({
       `blocks.scheduleCard`,
       `blocks.scheduleCard.timetable`,
       `blocks.image`,
+      `blocks.media`,
+      `blocks.button`,
+      `blocks.largeImage`,
+      `blocks.smallImage`,
       `seo`,
     ],
   };
@@ -457,6 +497,8 @@ async function checkContactZooPageResponseTest({
   }))).data;
 
   const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
+  const textAndMediaBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
+  const imageWithButtonGridBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
 
   await expect({
     data: {
@@ -480,6 +522,20 @@ async function checkContactZooPageResponseTest({
               ]
             },
           },
+          {
+            __component: textAndMediaBlock.__component,
+            title: textAndMediaBlock.title,
+            description: textAndMediaBlock.description,
+            contentOrder: textAndMediaBlock.contentOrder,
+            viewFootsteps: textAndMediaBlock.viewFootsteps,
+          },
+          {
+            __component: imageWithButtonGridBlock.__component,
+            title: imageWithButtonGridBlock.title,
+            description: imageWithButtonGridBlock.description,
+            link: imageWithButtonGridBlock.button.link,
+            label: imageWithButtonGridBlock.button.label,
+          },
         ],
         seo: {
           metaTitle: contactZooPageResponse.data.attributes.seo.metaTitle,
@@ -491,6 +547,18 @@ async function checkContactZooPageResponseTest({
     .toEqual(expectedConcatZooPageResponse);
 
   await expect(heroBlock.image.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(textAndMediaBlock.media.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(imageWithButtonGridBlock.largeImage.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(imageWithButtonGridBlock.smallImage.data.attributes.url)
     .not
     .toBeNull();
 }

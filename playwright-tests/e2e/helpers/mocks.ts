@@ -53,3 +53,13 @@ export const MOCK_HOME_SERVICES = {
   },
   filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
 };
+
+export const MOCK_IMAGE_WITH_BUTTON_GRID = {
+  __component: "shared.image-with-button-grid",
+  title: `${E2E_SMOKE_NAME_PREFIX} Один из первых и самых больших контактных зоопарков`,
+  description: `В этой части зоопарка вы почувствуете себя вдали от городской суеты в компании кур, гусей, коз и многих других животных. `,
+  link: `#`,
+  label: `Подробнее`,
+  largeImagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+  smallImagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+};

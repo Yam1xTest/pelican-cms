@@ -61,6 +61,7 @@ export async function uploadFile({
   filePath: string,
 }) {
   await page.getByText(`Click to add an asset or drag and drop one in this area`)
+    .first()
     .click();
 
   await page.getByRole(`button`, {
@@ -154,11 +155,15 @@ export async function createSeo({
 
 export async function createHeroBlock({
   page,
+  id,
   title,
   infoCard,
   scheduleCard,
   filePath,
-}: { page: Page } & HeroBlock) {
+}: {
+  page: Page,
+  id: number
+} & HeroBlock) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();
@@ -167,7 +172,7 @@ export async function createHeroBlock({
     name: 'Hero'
   }).click();
 
-  await page.locator('id=blocks.0.title')
+  await page.locator(`id=blocks.${id}.title`)
     .fill(title);
 
   await uploadFile({
@@ -175,25 +180,99 @@ export async function createHeroBlock({
     filePath,
   });
 
-  await page.locator('id=blocks.0.infoCard.title')
+  await page.locator(`id=blocks.${id}.infoCard.title`)
     .fill(infoCard.title);
 
-  await page.locator('id=blocks.0.infoCard.description')
+  await page.locator(`id=blocks.${id}.infoCard.description`)
     .fill(infoCard.description);
 
   await page.getByText('No entry yet. Click on the button below to add one.')
     .first()
     .click();
 
-  await page.locator('id=blocks.0.scheduleCard.title')
+  await page.locator(`id=blocks.${id}.scheduleCard.title`)
     .fill(scheduleCard.title);
 
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.days')
+  await page.locator(`id=blocks.${id}.scheduleCard.timetable.0.days`)
     .fill(scheduleCard.timetable[0].days);
 
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.time')
+  await page.locator(`id=blocks.${id}.scheduleCard.timetable.0.time`)
     .fill(scheduleCard.timetable[0].time);
 
-  await page.locator('id=blocks.0.scheduleCard.timetable.0.ticketsOfficeTime')
+  await page.locator(`id=blocks.${id}.scheduleCard.timetable.0.ticketsOfficeTime`)
     .fill(scheduleCard.timetable[0].ticketsOfficeTime);
+}
+
+export async function createTextAndMediaBlock({
+  page,
+  id,
+  title,
+  description,
+  filePath
+}: {
+  page: Page,
+  id: number
+} & TextAndMediaBlock) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'TextAndMedia'
+  }).click();
+
+  await page.locator(`id=blocks.${id}.title`)
+    .fill(title);
+
+  await page.locator(`id=blocks.${id}.description`)
+    .fill(description);
+
+  await uploadFile({
+    page,
+    filePath,
+  });
+}
+
+export async function createImageWithButtonGridBlock({
+  page,
+  id,
+  title,
+  description,
+  link,
+  label,
+  largeImagePath,
+  smallImagePath,
+}: {
+  page: Page,
+  id: number
+} & ImageWithButtonGridBlock) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'ImageWithButtonGrid'
+  }).click();
+
+  await page.locator(`id=blocks.${id}.title`)
+    .fill(title);
+
+  await page.locator(`id=blocks.${id}.description`)
+    .fill(description);
+
+  await page.locator(`id=blocks.${id}.button.link`)
+    .fill(link);
+
+  await page.locator(`id=blocks.${id}.button.label`)
+    .fill(label);
+
+  await uploadFile({
+    page,
+    filePath: largeImagePath,
+  });
+
+  await uploadFile({
+    page,
+    filePath: smallImagePath,
+  });
 }
