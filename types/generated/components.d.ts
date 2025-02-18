@@ -4,11 +4,10 @@ export interface SharedTextAndMedia extends Schema.Component {
   collectionName: 'components_shared_text_and_medias';
   info: {
     displayName: 'TextAndMedia';
-    icon: 'landscape';
+    icon: 'cube';
     description: '';
   };
   attributes: {
-    title: Attribute.String & Attribute.Required;
     description: Attribute.Text & Attribute.Required;
     media: Attribute.Media<'images' | 'videos'> & Attribute.Required;
     contentOrder: Attribute.Enumeration<
@@ -22,6 +21,7 @@ export interface SharedTextAndMedia extends Schema.Component {
     viewFootsteps: Attribute.Boolean &
       Attribute.Required &
       Attribute.DefaultTo<false>;
+    title: Attribute.Text & Attribute.Required;
   };
 }
 
@@ -74,6 +74,22 @@ export interface SharedMetaSocial extends Schema.Component {
         maxLength: 65;
       }>;
     image: Attribute.Media<'images' | 'files' | 'videos'>;
+  };
+}
+
+export interface SharedImageWithButtonGrid extends Schema.Component {
+  collectionName: 'components_shared_image_with_button_grids';
+  info: {
+    displayName: 'ImageWithButtonGrid';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    button: Attribute.Component<'button.button'> & Attribute.Required;
+    largeImage: Attribute.Media<'images'> & Attribute.Required;
+    smallImage: Attribute.Media<'images'>;
   };
 }
 
@@ -180,12 +196,25 @@ export interface CardCard extends Schema.Component {
   };
 }
 
+export interface ButtonButton extends Schema.Component {
+  collectionName: 'components_button_buttons';
+  info: {
+    displayName: 'Button';
+    icon: 'cube';
+  };
+  attributes: {
+    label: Attribute.String & Attribute.Required;
+    link: Attribute.String & Attribute.Required;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
       'shared.text-and-media': SharedTextAndMedia;
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
+      'shared.image-with-button-grid': SharedImageWithButtonGrid;
       'shared.hero': SharedHero;
       'shared.cards': SharedCards;
       'schedule-card.timetable': ScheduleCardTimetable;
@@ -194,6 +223,7 @@ declare module '@strapi/types' {
       'hero.info-card': HeroInfoCard;
       'card.label': CardLabel;
       'card.card': CardCard;
+      'button.button': ButtonButton;
     }
   }
 }

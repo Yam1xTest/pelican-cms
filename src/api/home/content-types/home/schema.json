@@ -26,7 +26,8 @@
       "components": [
         "shared.hero",
         "shared.text-and-media",
-        "home.services"
+        "home.services",
+        "shared.image-with-button-grid"
       ]
     },
     "seo": {
