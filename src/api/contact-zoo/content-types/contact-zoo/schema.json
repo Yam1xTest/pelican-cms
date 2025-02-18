@@ -24,7 +24,9 @@
       },
       "type": "dynamiczone",
       "components": [
-        "shared.hero"
+        "shared.hero",
+        "shared.text-and-media",
+        "shared.image-with-button-grid"
       ],
       "required": false
     },

@@ -42,3 +42,12 @@ type ServicesBlock = {
   },
   filePath: string
 }
+
+type ImageWithButtonGridBlock = {
+  title: string,
+  description: string,
+  link: string,
+  label: string,
+  largeImagePath: string,
+  smallImagePath: string,
+}

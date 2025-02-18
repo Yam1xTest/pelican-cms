@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { createHeroBlock, createSeo, getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
+import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
 import axios from "axios";
 
 export async function createAndPublishHomepage({
@@ -7,12 +7,14 @@ export async function createAndPublishHomepage({
   hero,
   services,
   textAndMedia,
+  imageWithButtonGrid,
   seo,
 }: {
   page: Page,
   hero: HeroBlock,
   services: ServicesBlock,
   textAndMedia: TextAndMediaBlock,
+  imageWithButtonGrid: ImageWithButtonGridBlock,
   seo: SeoBlock
 }) {
   await page.getByText(`Content Manager`)
@@ -23,6 +25,7 @@ export async function createAndPublishHomepage({
 
   await createHeroBlock({
     page,
+    id: 0,
     title: hero.title,
     infoCard: hero.infoCard,
     scheduleCard: hero.scheduleCard,
@@ -31,10 +34,11 @@ export async function createAndPublishHomepage({
 
   await createTextAndMediaBlock({
     page,
+    id: 1,
     title: textAndMedia.title,
     description: textAndMedia.description,
     filePath: textAndMedia.filePath
-  })
+  });
 
   await createServicesBlock({
     page,
@@ -50,44 +54,24 @@ export async function createAndPublishHomepage({
     filePath: services.filePath,
   });
 
+  await createImageWithButtonGridBlock({
+    page,
+    id: 3,
+    title: imageWithButtonGrid.title,
+    description: imageWithButtonGrid.description,
+    link: imageWithButtonGrid.link,
+    label: imageWithButtonGrid.label,
+    largeImagePath: imageWithButtonGrid.largeImagePath,
+    smallImagePath: imageWithButtonGrid.smallImagePath,
+  });
+
   await createSeo({
     page,
     metaTitle: seo.metaTitle,
     metaDescription: seo.metaDescription
-  })
+  });
 
   await saveAndPublish({ page });
-}
-
-async function createTextAndMediaBlock({
-  page,
-  title,
-  description,
-  filePath
-}: {
-  page: Page,
-  title: TextAndMediaBlock['title'],
-  description: TextAndMediaBlock['description'],
-  filePath: TextAndMediaBlock['filePath']
-}) {
-  await page.getByRole('button', {
-    name: 'Add a component to blocks'
-  }).click();
-
-  await page.getByRole('button', {
-    name: 'TextAndMedia'
-  }).click();
-
-  await page.locator('id=blocks.1.title')
-    .fill(title);
-
-  await page.locator('id=blocks.1.description')
-    .fill(description);
-
-  await uploadFile({
-    page,
-    filePath,
-  });
 }
 
 async function createServicesBlock({
