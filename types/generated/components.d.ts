@@ -1,5 +1,33 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface TicketTicket extends Schema.Component {
+  collectionName: 'components_ticket_tickets';
+  info: {
+    displayName: 'Ticket';
+    icon: 'cube';
+  };
+  attributes: {
+    category: Attribute.Text & Attribute.Required;
+    description: Attribute.Text;
+    price: Attribute.String & Attribute.Required;
+    frequency: Attribute.String;
+  };
+}
+
+export interface SharedTickets extends Schema.Component {
+  collectionName: 'components_shared_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    tickets: Attribute.Component<'ticket.ticket', true> & Attribute.Required;
+  };
+}
+
 export interface SharedTextAndMedia extends Schema.Component {
   collectionName: 'components_shared_text_and_medias';
   info: {
@@ -133,6 +161,19 @@ export interface ScheduleCardTimetable extends Schema.Component {
   };
 }
 
+export interface HomeTickets extends Schema.Component {
+  collectionName: 'components_home_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    tickets: Attribute.Component<'ticket.ticket', true> & Attribute.Required;
+  };
+}
+
 export interface HomeServices extends Schema.Component {
   collectionName: 'components_home_services';
   info: {
@@ -211,6 +252,8 @@ export interface ButtonButton extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'ticket.ticket': TicketTicket;
+      'shared.tickets': SharedTickets;
       'shared.text-and-media': SharedTextAndMedia;
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
@@ -218,6 +261,7 @@ declare module '@strapi/types' {
       'shared.hero': SharedHero;
       'shared.cards': SharedCards;
       'schedule-card.timetable': ScheduleCardTimetable;
+      'home.tickets': HomeTickets;
       'home.services': HomeServices;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;

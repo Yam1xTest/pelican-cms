@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-18T06:45:50.662Z"
+    "x-generation-date": "2025-02-18T08:37:40.669Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -104,6 +104,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/SharedImageWithButtonGridComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/SharedTicketsComponent"
                     }
                   ]
                 }
@@ -202,6 +205,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/SharedImageWithButtonGridComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/SharedTicketsComponent"
                 }
               ]
             }
@@ -940,6 +946,46 @@
                                               }
                                             }
                                           }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "number"
+                                  },
+                                  "__component": {
+                                    "type": "string"
+                                  },
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  },
+                                  "tickets": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "number"
+                                        },
+                                        "category": {
+                                          "type": "string"
+                                        },
+                                        "description": {
+                                          "type": "string"
+                                        },
+                                        "price": {
+                                          "type": "string"
+                                        },
+                                        "frequency": {
+                                          "type": "string"
                                         }
                                       }
                                     }
@@ -2560,6 +2606,49 @@
                   }
                 }
               }
+            }
+          }
+        }
+      },
+      "TicketTicketComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "string"
+          }
+        }
+      },
+      "SharedTicketsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketTicketComponent"
             }
           }
         }
@@ -4217,6 +4306,9 @@
                     },
                     {
                       "$ref": "#/components/schemas/SharedImageWithButtonGridComponent"
+                    },
+                    {
+                      "$ref": "#/components/schemas/HomeTicketsComponent"
                     }
                   ]
                 }
@@ -4318,6 +4410,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/SharedImageWithButtonGridComponent"
+                },
+                {
+                  "$ref": "#/components/schemas/HomeTicketsComponent"
                 }
               ]
             }
@@ -5262,6 +5357,43 @@
                                     }
                                   }
                                 }
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "number"
+                                  },
+                                  "__component": {
+                                    "type": "string"
+                                  },
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "tickets": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "id": {
+                                          "type": "number"
+                                        },
+                                        "category": {
+                                          "type": "string"
+                                        },
+                                        "description": {
+                                          "type": "string"
+                                        },
+                                        "price": {
+                                          "type": "string"
+                                        },
+                                        "frequency": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
                               }
                             ]
                           }
@@ -5917,6 +6049,26 @@
           },
           "email": {
             "type": "string"
+          }
+        }
+      },
+      "HomeTicketsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "__component": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "tickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketTicketComponent"
+            }
           }
         }
       },
