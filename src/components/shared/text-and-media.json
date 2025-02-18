@@ -2,15 +2,11 @@
   "collectionName": "components_shared_text_and_medias",
   "info": {
     "displayName": "TextAndMedia",
-    "icon": "landscape",
+    "icon": "cube",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "description": {
       "type": "text",
       "required": true
@@ -36,6 +32,10 @@
     "viewFootsteps": {
       "type": "boolean",
       "default": false,
+      "required": true
+    },
+    "title": {
+      "type": "text",
       "required": true
     }
   }
