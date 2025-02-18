@@ -160,7 +160,10 @@ export async function createHeroBlock({
   infoCard,
   scheduleCard,
   filePath,
-}: { page: Page, id: number } & HeroBlock) {
+}: {
+  page: Page,
+  id: number
+} & HeroBlock) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();
@@ -206,7 +209,10 @@ export async function createTextAndMediaBlock({
   title,
   description,
   filePath
-}: { page: Page, id: number } & TextAndMediaBlock) {
+}: {
+  page: Page,
+  id: number
+} & TextAndMediaBlock) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();
@@ -236,7 +242,10 @@ export async function createImageWithButtonGridBlock({
   label,
   largeImagePath,
   smallImagePath,
-}: { page: Page, id: number } & ImageWithButtonGridBlock) {
+}: {
+  page: Page,
+  id: number
+} & ImageWithButtonGridBlock) {
   await page.getByRole('button', {
     name: 'Add a component to blocks'
   }).click();
