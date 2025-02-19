@@ -163,6 +163,7 @@ export interface HomeMapCard extends Schema.Component {
       >;
     image: Attribute.Media<'images'> & Attribute.Required;
     note: Attribute.RichText &
+      Attribute.Required &
       Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
