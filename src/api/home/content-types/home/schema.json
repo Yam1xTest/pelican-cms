@@ -28,7 +28,8 @@
         "shared.text-and-media",
         "home.services",
         "shared.image-with-button-grid",
-        "home.map-card"
+        "home.map-card",
+        "home.tickets"
       ]
     },
     "seo": {
