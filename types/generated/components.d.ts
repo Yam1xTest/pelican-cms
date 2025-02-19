@@ -1,16 +1,42 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
-export interface TicketTicket extends Schema.Component {
+export interface TicketsTickets extends Schema.Component {
+  collectionName: 'components_tickets_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    ticketsList: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    link: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface TicketsTicket extends Schema.Component {
   collectionName: 'components_ticket_tickets';
   info: {
     displayName: 'Ticket';
     icon: 'cube';
+    description: '';
   };
   attributes: {
     category: Attribute.Text & Attribute.Required;
     description: Attribute.Text;
     price: Attribute.String & Attribute.Required;
     frequency: Attribute.String;
+    theme: Attribute.Enumeration<
+      [
+        '\u0417\u0435\u043B\u0451\u043D\u044B\u0439',
+        '\u041A\u043E\u0440\u0438\u0447\u043D\u0435\u0432\u044B\u0439'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'\u0417\u0435\u043B\u0451\u043D\u044B\u0439'>;
+    link: Attribute.String;
   };
 }
 
@@ -24,7 +50,9 @@ export interface SharedTickets extends Schema.Component {
   attributes: {
     title: Attribute.String & Attribute.Required;
     description: Attribute.Text & Attribute.Required;
-    tickets: Attribute.Component<'ticket.ticket', true> & Attribute.Required;
+    subsidizedTickets: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    note: Attribute.Text;
   };
 }
 
@@ -170,7 +198,10 @@ export interface HomeTickets extends Schema.Component {
   };
   attributes: {
     title: Attribute.String & Attribute.Required;
-    tickets: Attribute.Component<'ticket.ticket', true> & Attribute.Required;
+    generalTickets: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    subsidizedTickets: Attribute.Component<'tickets.tickets'> &
+      Attribute.Required;
   };
 }
 
@@ -252,7 +283,8 @@ export interface ButtonButton extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
-      'ticket.ticket': TicketTicket;
+      'tickets.tickets': TicketsTickets;
+      'tickets.ticket': TicketsTicket;
       'shared.tickets': SharedTickets;
       'shared.text-and-media': SharedTextAndMedia;
       'shared.seo': SharedSeo;

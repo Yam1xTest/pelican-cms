@@ -11,10 +11,15 @@
       "type": "string",
       "required": true
     },
-    "tickets": {
+    "generalTickets": {
       "type": "component",
       "repeatable": true,
-      "component": "ticket.ticket",
+      "component": "tickets.ticket",
+      "required": true
+    },
+    "subsidizedTickets": {
+      "type": "component",
+      "component": "tickets.tickets",
       "required": true
     }
   }

@@ -1,5 +1,5 @@
 {
-  "collectionName": "components_shared_tickets",
+  "collectionName": "components_tickets_tickets",
   "info": {
     "displayName": "Tickets",
     "icon": "cube",
@@ -12,17 +12,17 @@
       "required": true
     },
     "description": {
-      "type": "text",
-      "required": true
+      "type": "text"
     },
-    "subsidizedTickets": {
+    "ticketsList": {
       "type": "component",
       "repeatable": true,
       "component": "tickets.ticket",
       "required": true
     },
-    "note": {
-      "type": "text"
+    "link": {
+      "type": "string",
+      "required": true
     }
   }
 }

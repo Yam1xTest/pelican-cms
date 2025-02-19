@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-18T08:37:40.669Z"
+    "x-generation-date": "2025-02-19T09:58:05.494Z"
   },
   "x-strapi-config": {
     "plugins": [],
@@ -967,7 +967,7 @@
                                   "description": {
                                     "type": "string"
                                   },
-                                  "tickets": {
+                                  "subsidizedTickets": {
                                     "type": "array",
                                     "items": {
                                       "type": "object",
@@ -986,9 +986,22 @@
                                         },
                                         "frequency": {
                                           "type": "string"
+                                        },
+                                        "theme": {
+                                          "type": "string",
+                                          "enum": [
+                                            "Зелёный",
+                                            "Коричневый"
+                                          ]
+                                        },
+                                        "link": {
+                                          "type": "string"
                                         }
                                       }
                                     }
+                                  },
+                                  "note": {
+                                    "type": "string"
                                   }
                                 }
                               }
@@ -2610,7 +2623,7 @@
           }
         }
       },
-      "TicketTicketComponent": {
+      "TicketsTicketComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -2626,6 +2639,16 @@
             "type": "string"
           },
           "frequency": {
+            "type": "string"
+          },
+          "theme": {
+            "type": "string",
+            "enum": [
+              "Зелёный",
+              "Коричневый"
+            ]
+          },
+          "link": {
             "type": "string"
           }
         }
@@ -2645,11 +2668,14 @@
           "description": {
             "type": "string"
           },
-          "tickets": {
+          "subsidizedTickets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketTicketComponent"
+              "$ref": "#/components/schemas/TicketsTicketComponent"
             }
+          },
+          "note": {
+            "type": "string"
           }
         }
       },
@@ -5370,7 +5396,7 @@
                                   "title": {
                                     "type": "string"
                                   },
-                                  "tickets": {
+                                  "generalTickets": {
                                     "type": "array",
                                     "items": {
                                       "type": "object",
@@ -5389,7 +5415,67 @@
                                         },
                                         "frequency": {
                                           "type": "string"
+                                        },
+                                        "theme": {
+                                          "type": "string",
+                                          "enum": [
+                                            "Зелёный",
+                                            "Коричневый"
+                                          ]
+                                        },
+                                        "link": {
+                                          "type": "string"
                                         }
+                                      }
+                                    }
+                                  },
+                                  "subsidizedTickets": {
+                                    "type": "object",
+                                    "properties": {
+                                      "id": {
+                                        "type": "number"
+                                      },
+                                      "title": {
+                                        "type": "string"
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
+                                      "ticketsList": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "id": {
+                                              "type": "number"
+                                            },
+                                            "category": {
+                                              "type": "string"
+                                            },
+                                            "description": {
+                                              "type": "string"
+                                            },
+                                            "price": {
+                                              "type": "string"
+                                            },
+                                            "frequency": {
+                                              "type": "string"
+                                            },
+                                            "theme": {
+                                              "type": "string",
+                                              "enum": [
+                                                "Зелёный",
+                                                "Коричневый"
+                                              ]
+                                            },
+                                            "link": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "link": {
+                                        "type": "string"
                                       }
                                     }
                                   }
@@ -6052,6 +6138,56 @@
           }
         }
       },
+      "TicketsTicketsComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ticketsList": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "string"
+                },
+                "frequency": {
+                  "type": "string"
+                },
+                "theme": {
+                  "type": "string",
+                  "enum": [
+                    "Зелёный",
+                    "Коричневый"
+                  ]
+                },
+                "link": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "link": {
+            "type": "string"
+          }
+        }
+      },
       "HomeTicketsComponent": {
         "type": "object",
         "properties": {
@@ -6064,11 +6200,14 @@
           "title": {
             "type": "string"
           },
-          "tickets": {
+          "generalTickets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketTicketComponent"
+              "$ref": "#/components/schemas/TicketsTicketComponent"
             }
+          },
+          "subsidizedTickets": {
+            "$ref": "#/components/schemas/TicketsTicketsComponent"
           }
         }
       },
