@@ -799,11 +799,6 @@ export interface ApiContactZooContactZoo extends Schema.SingleType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
-  };
   attributes: {
     blocks: Attribute.DynamicZone<
       [
@@ -839,15 +834,6 @@ export interface ApiContactZooContactZoo extends Schema.SingleType {
       'admin::user'
     > &
       Attribute.Private;
-    versions: Attribute.Relation<
-      'api::contact-zoo.contact-zoo',
-      'manyToMany',
-      'api::contact-zoo.contact-zoo'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
   };
 }
 
@@ -951,11 +937,6 @@ export interface ApiHomeHome extends Schema.SingleType {
   options: {
     draftAndPublish: true;
   };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
-  };
   attributes: {
     blocks: Attribute.DynamicZone<
       [
@@ -985,15 +966,6 @@ export interface ApiHomeHome extends Schema.SingleType {
       Attribute.Private;
     updatedBy: Attribute.Relation<'api::home.home', 'oneToOne', 'admin::user'> &
       Attribute.Private;
-    versions: Attribute.Relation<
-      'api::home.home',
-      'manyToMany',
-      'api::home.home'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
   };
 }
 
@@ -1007,11 +979,6 @@ export interface ApiNewsCollectionNewsCollection extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: true;
-  };
-  pluginOptions: {
-    versions: {
-      versioned: true;
-    };
   };
   attributes: {
     title: Attribute.String &
@@ -1057,15 +1024,6 @@ export interface ApiNewsCollectionNewsCollection extends Schema.CollectionType {
       'admin::user'
     > &
       Attribute.Private;
-    versions: Attribute.Relation<
-      'api::news-collection.news-collection',
-      'manyToMany',
-      'api::news-collection.news-collection'
-    >;
-    vuid: Attribute.String;
-    versionNumber: Attribute.Integer & Attribute.DefaultTo<1>;
-    versionComment: Attribute.String;
-    isVisibleInListView: Attribute.Boolean & Attribute.DefaultTo<true>;
   };
 }
 
