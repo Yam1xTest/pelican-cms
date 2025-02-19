@@ -217,6 +217,34 @@ export interface HomeServices extends Schema.Component {
   };
 }
 
+export interface HomeMapCard extends Schema.Component {
+  collectionName: 'components_home_map_cards';
+  info: {
+    displayName: 'MapCard';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.RichText &
+      Attribute.Required &
+      Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'default';
+        }
+      >;
+    image: Attribute.Media<'images'> & Attribute.Required;
+    note: Attribute.RichText &
+      Attribute.Required &
+      Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'default';
+        }
+      >;
+  };
+}
+
 export interface HeroScheduleCard extends Schema.Component {
   collectionName: 'components_hero_schedule_cards';
   info: {
@@ -295,6 +323,7 @@ declare module '@strapi/types' {
       'schedule-card.timetable': ScheduleCardTimetable;
       'home.tickets': HomeTickets;
       'home.services': HomeServices;
+      'home.map-card': HomeMapCard;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;
       'card.label': CardLabel;

@@ -963,6 +963,7 @@ export interface ApiHomeHome extends Schema.SingleType {
         'shared.text-and-media',
         'home.services',
         'shared.image-with-button-grid',
+        'home.map-card',
         'home.tickets'
       ]
     > &

@@ -7,7 +7,7 @@ import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import qs from "qs";
-import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID } from "./helpers/mocks";
+import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD } from "./helpers/mocks";
 
 
 test.describe(`API response tests`, () => {
@@ -308,6 +308,10 @@ async function checkHomepageResponseTest({
     smallImagePath: imageWithButtonGridSmallImagePath,
     ...expectedImageWithButtonGrid
   } = MOCK_IMAGE_WITH_BUTTON_GRID;
+  const {
+    imagePath: mapCardImagePath,
+    ...expectedMapCard
+  } = MOCK_HOME_MAP_CARD;
 
   const expectedHomepageResponse = {
     data: {
@@ -317,6 +321,11 @@ async function checkHomepageResponseTest({
           expectedServices,
           expectedTextAndMedia,
           expectedImageWithButtonGrid,
+          {
+            ...expectedMapCard,
+            description: `<p>${expectedMapCard.description}</p>`,
+            note: `<p>${expectedMapCard.note}</p>`
+          }
         ],
         seo: MOCK_SEO
       }
@@ -329,6 +338,7 @@ async function checkHomepageResponseTest({
     services: MOCK_HOME_SERVICES,
     textAndMedia: MOCK_TEXT_AND_MEDIA,
     imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
+    mapCard: MOCK_HOME_MAP_CARD,
     seo: MOCK_SEO,
   });
 
@@ -355,9 +365,10 @@ async function checkHomepageResponseTest({
   }))).data;
 
   const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
-  const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
   const textAndMediaBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
   const imageWithButtonGridBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
+  const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
+  const mapCardBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.map-card');
 
   await expect({
     data: {
@@ -413,6 +424,12 @@ async function checkHomepageResponseTest({
             link: imageWithButtonGridBlock.button.link,
             label: imageWithButtonGridBlock.button.label,
           },
+          {
+            __component: mapCardBlock.__component,
+            title: mapCardBlock.title,
+            description: mapCardBlock.description,
+            note: mapCardBlock.note
+          }
         ],
         seo: {
           metaTitle: homepageResponse.data.attributes.seo.metaTitle,
@@ -440,6 +457,10 @@ async function checkHomepageResponseTest({
     .toBeNull();
 
   await expect(imageWithButtonGridBlock.smallImage.data.attributes.url)
+    .not
+    .toBeNull();
+
+  await expect(mapCardBlock.image.data.attributes.url)
     .not
     .toBeNull();
 }
