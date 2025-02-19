@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
 import axios from "axios";
+import { HeroBlock, ImageWithButtonGridBlock, MapCardBlock, SeoBlock, ServicesBlock, TextAndMediaBlock } from "../types";
 
 export async function createAndPublishHomepage({
   page,
@@ -8,6 +9,7 @@ export async function createAndPublishHomepage({
   services,
   textAndMedia,
   imageWithButtonGrid,
+  mapCard,
   seo,
 }: {
   page: Page,
@@ -15,6 +17,7 @@ export async function createAndPublishHomepage({
   services: ServicesBlock,
   textAndMedia: TextAndMediaBlock,
   imageWithButtonGrid: ImageWithButtonGridBlock,
+  mapCard: MapCardBlock,
   seo: SeoBlock
 }) {
   await page.getByText(`Content Manager`)
@@ -63,6 +66,14 @@ export async function createAndPublishHomepage({
     label: imageWithButtonGrid.label,
     largeImagePath: imageWithButtonGrid.largeImagePath,
     smallImagePath: imageWithButtonGrid.smallImagePath,
+  });
+
+  await createMapCardBlock({
+    page,
+    title: mapCard.title,
+    description: mapCard.description,
+    note: mapCard.note,
+    imagePath: mapCard.imagePath,
   });
 
   await createSeo({
@@ -141,6 +152,48 @@ async function createServicesBlock({
 
   await page.locator('id=blocks.2.cards.cards.0.labels.0.text')
     .fill(card.labels.text);
+}
+
+async function createMapCardBlock({
+  page,
+  title,
+  description,
+  note,
+  imagePath
+}: {
+  page: Page,
+  title: MapCardBlock['title'],
+  description: MapCardBlock['description'],
+  note: MapCardBlock['note'],
+  imagePath: MapCardBlock['imagePath']
+}) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'home'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'MapCard'
+  }).click();
+
+  await page.locator('id=blocks.4.title')
+    .fill(title);
+
+  await page.locator(`.ck-content`)
+    .first()
+    .fill(description);
+
+  await page.locator(`.ck-content`)
+    .last()
+    .fill(note);
+
+  await uploadFile({
+    page,
+    filePath: imagePath
+  })
 }
 
 export async function deleteHomepage() {

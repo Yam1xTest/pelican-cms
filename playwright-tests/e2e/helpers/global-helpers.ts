@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import axios from "axios";
 import 'dotenv/config';
+import { HeroBlock, ImageWithButtonGridBlock, SeoBlock, TextAndMediaBlock } from "./types";
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 

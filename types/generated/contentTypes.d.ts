@@ -957,7 +957,8 @@ export interface ApiHomeHome extends Schema.SingleType {
         'shared.hero',
         'shared.text-and-media',
         'home.services',
-        'shared.image-with-button-grid'
+        'shared.image-with-button-grid',
+        'home.map-card'
       ]
     > &
       Attribute.SetPluginOptions<{

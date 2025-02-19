@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
 import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, getStrapiUrl, saveAndPublish } from "../global-helpers";
 import axios from "axios";
+import { HeroBlock, TextAndMediaBlock, ImageWithButtonGridBlock, SeoBlock } from "../types";
 
 export async function createAndPublishContactZooPage({
   page,

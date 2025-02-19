@@ -1,4 +1,4 @@
-type HeroBlock = {
+export type HeroBlock = {
   title: string,
   infoCard: {
     title: string,
@@ -15,18 +15,18 @@ type HeroBlock = {
   filePath: string
 }
 
-type SeoBlock = {
+export type SeoBlock = {
   metaTitle: string,
   metaDescription: string
 }
 
-type TextAndMediaBlock = {
+export type TextAndMediaBlock = {
   title: string,
   description: string,
   filePath: string,
 }
 
-type ServicesBlock = {
+export type ServicesBlock = {
   phone: string,
   email: string,
   cards: {
@@ -43,11 +43,18 @@ type ServicesBlock = {
   filePath: string
 }
 
-type ImageWithButtonGridBlock = {
+export type ImageWithButtonGridBlock = {
   title: string,
   description: string,
   link: string,
   label: string,
   largeImagePath: string,
   smallImagePath: string,
+}
+
+export type MapCardBlock = {
+  note: string,
+  title: string,
+  description: string,
+  imagePath: string,
 }
