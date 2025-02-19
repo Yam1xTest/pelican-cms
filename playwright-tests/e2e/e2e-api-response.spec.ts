@@ -309,7 +309,7 @@ async function checkHomepageResponseTest({
     ...expectedImageWithButtonGrid
   } = MOCK_IMAGE_WITH_BUTTON_GRID;
   const {
-    imagePath: mapCardImage,
+    imagePath: mapCardImagePath,
     ...expectedMapCard
   } = MOCK_HOME_MAP_CARD;
 
