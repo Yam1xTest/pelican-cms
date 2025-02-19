@@ -1,5 +1,61 @@
 import type { Schema, Attribute } from '@strapi/strapi';
 
+export interface TicketsTickets extends Schema.Component {
+  collectionName: 'components_tickets_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text;
+    ticketsList: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    link: Attribute.String & Attribute.Required;
+  };
+}
+
+export interface TicketsTicket extends Schema.Component {
+  collectionName: 'components_ticket_tickets';
+  info: {
+    displayName: 'Ticket';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    category: Attribute.Text & Attribute.Required;
+    description: Attribute.Text;
+    price: Attribute.String & Attribute.Required;
+    frequency: Attribute.String;
+    theme: Attribute.Enumeration<
+      [
+        '\u0417\u0435\u043B\u0451\u043D\u044B\u0439',
+        '\u041A\u043E\u0440\u0438\u0447\u043D\u0435\u0432\u044B\u0439'
+      ]
+    > &
+      Attribute.Required &
+      Attribute.DefaultTo<'\u0417\u0435\u043B\u0451\u043D\u044B\u0439'>;
+    link: Attribute.String;
+  };
+}
+
+export interface SharedTickets extends Schema.Component {
+  collectionName: 'components_shared_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    subsidizedTickets: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    note: Attribute.Text;
+  };
+}
+
 export interface SharedTextAndMedia extends Schema.Component {
   collectionName: 'components_shared_text_and_medias';
   info: {
@@ -133,6 +189,22 @@ export interface ScheduleCardTimetable extends Schema.Component {
   };
 }
 
+export interface HomeTickets extends Schema.Component {
+  collectionName: 'components_home_tickets';
+  info: {
+    displayName: 'Tickets';
+    icon: 'cube';
+    description: '';
+  };
+  attributes: {
+    title: Attribute.String & Attribute.Required;
+    generalTickets: Attribute.Component<'tickets.ticket', true> &
+      Attribute.Required;
+    subsidizedTickets: Attribute.Component<'tickets.tickets'> &
+      Attribute.Required;
+  };
+}
+
 export interface HomeServices extends Schema.Component {
   collectionName: 'components_home_services';
   info: {
@@ -211,6 +283,9 @@ export interface ButtonButton extends Schema.Component {
 declare module '@strapi/types' {
   export module Shared {
     export interface Components {
+      'tickets.tickets': TicketsTickets;
+      'tickets.ticket': TicketsTicket;
+      'shared.tickets': SharedTickets;
       'shared.text-and-media': SharedTextAndMedia;
       'shared.seo': SharedSeo;
       'shared.meta-social': SharedMetaSocial;
@@ -218,6 +293,7 @@ declare module '@strapi/types' {
       'shared.hero': SharedHero;
       'shared.cards': SharedCards;
       'schedule-card.timetable': ScheduleCardTimetable;
+      'home.tickets': HomeTickets;
       'home.services': HomeServices;
       'hero.schedule-card': HeroScheduleCard;
       'hero.info-card': HeroInfoCard;

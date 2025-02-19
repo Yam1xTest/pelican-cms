@@ -26,7 +26,8 @@
       "components": [
         "shared.hero",
         "shared.text-and-media",
-        "shared.image-with-button-grid"
+        "shared.image-with-button-grid",
+        "shared.tickets"
       ],
       "required": false
     },
