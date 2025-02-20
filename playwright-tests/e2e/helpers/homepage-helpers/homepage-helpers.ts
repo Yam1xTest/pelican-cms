@@ -20,7 +20,7 @@ export async function createAndPublishHomepage({
   mapCard: MapCardBlock,
   seo: SeoBlock
 }) {
-  await page.getByText(`Content Manager`)
+  await page.locator('a[aria-label="Content Manager"]')
     .click();
 
   await page.getByText(`Главная страница`)

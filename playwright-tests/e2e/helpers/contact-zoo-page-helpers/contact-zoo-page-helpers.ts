@@ -16,7 +16,7 @@ export async function createAndPublishContactZooPage({
   imageWithButtonGrid: ImageWithButtonGridBlock,
   seo: SeoBlock,
 }) {
-  await page.getByText(`Content Manager`)
+  await page.locator('a[aria-label="Content Manager"]')
     .click();
 
   await page.getByText(`Страница контактного зоопарка`)
