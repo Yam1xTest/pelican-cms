@@ -441,7 +441,7 @@ export interface ApiDocumentDocument extends Struct.CollectionTypeSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'default';
+          preset: 'defaultHtml';
         }
       >;
     files: Schema.Attribute.Media<'files', true> & Schema.Attribute.Required;
@@ -459,7 +459,7 @@ export interface ApiDocumentDocument extends Struct.CollectionTypeSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'default';
+          preset: 'defaultHtml';
         }
       >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -582,7 +582,7 @@ export interface ApiNewsCollectionNewsCollection
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'defaultMarkdown';
+          preset: 'defaultHtml';
         }
       >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

@@ -13,7 +13,7 @@
     "description": {
       "type": "customField",
       "options": {
-        "preset": "defaultMarkdown"
+        "preset": "defaultHtml"
       },
       "required": true,
       "customField": "plugin::ckeditor5.CKEditor"
@@ -29,7 +29,7 @@
     "note": {
       "type": "customField",
       "options": {
-        "preset": "defaultMarkdown"
+        "preset": "defaultHtml"
       },
       "customField": "plugin::ckeditor5.CKEditor",
       "required": true

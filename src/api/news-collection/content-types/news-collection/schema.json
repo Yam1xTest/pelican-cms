@@ -46,7 +46,7 @@
     "innerContent": {
       "type": "customField",
       "options": {
-        "preset": "defaultMarkdown"
+        "preset": "defaultHtml"
       },
       "customField": "plugin::ckeditor5.CKEditor",
       "required": true

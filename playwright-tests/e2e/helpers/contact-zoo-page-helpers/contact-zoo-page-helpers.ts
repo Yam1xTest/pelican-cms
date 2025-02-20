@@ -57,6 +57,8 @@ export async function createAndPublishContactZooPage({
   });
 
   await saveAndPublish({ page });
+
+  await page.waitForTimeout(1000);
 }
 
 export async function deleteContactZooPage() {

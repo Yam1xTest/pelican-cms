@@ -75,7 +75,7 @@ export interface HomeMapCard extends Struct.ComponentSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'defaultMarkdown';
+          preset: 'defaultHtml';
         }
       >;
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
@@ -84,7 +84,7 @@ export interface HomeMapCard extends Struct.ComponentSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'defaultMarkdown';
+          preset: 'defaultHtml';
         }
       >;
     title: Schema.Attribute.String & Schema.Attribute.Required;

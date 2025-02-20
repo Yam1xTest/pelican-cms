@@ -83,6 +83,8 @@ export async function createAndPublishHomepage({
   });
 
   await saveAndPublish({ page });
+
+  await page.waitForTimeout(1000);
 }
 
 async function createServicesBlock({
@@ -119,17 +121,21 @@ async function createServicesBlock({
     name: 'Services'
   }).click();
 
-  await page.locator('id=blocks.2.cards.title')
+  await page.getByRole('button', {
+    name: 'Services'
+  }).click();
+
+  await page.locator('[name="blocks.2.cards.title"]')
     .fill(title);
 
-  await page.getByText('No entry yet. Click on the button below to add one.')
+  await page.getByText('No entry yet. Click to add one.')
     .first()
     .click();
 
-  await page.locator('id=blocks.2.cards.cards.0.title')
+  await page.locator('[name="blocks.2.cards.cards.0.title"]')
     .fill(card.title);
 
-  await page.locator('id=blocks.2.cards.cards.0.description')
+  await page.locator('[name="blocks.2.cards.cards.0.description"]')
     .fill(card.description);
 
   await uploadFile({
@@ -137,20 +143,20 @@ async function createServicesBlock({
     filePath,
   });
 
-  await page.locator('id=blocks.2.cards.cards.0.link')
+  await page.locator('[name="blocks.2.cards.cards.0.link"]')
     .fill(card.link);
 
-  await page.locator('id=blocks.2.phone')
+  await page.locator('[name="blocks.2.phone"]')
     .fill(phone);
 
-  await page.locator('id=blocks.2.email')
+  await page.locator('[name="blocks.2.email"]')
     .fill(email);
 
-  await page.getByText('No entry yet. Click on the button below to add one.')
+  await page.getByText('No entry yet. Click to add one.')
     .first()
     .click();
 
-  await page.locator('id=blocks.2.cards.cards.0.labels.0.text')
+  await page.locator('[name="blocks.2.cards.cards.0.labels.0.text"]')
     .fill(card.labels.text);
 }
 
@@ -179,7 +185,11 @@ async function createMapCardBlock({
     name: 'MapCard'
   }).click();
 
-  await page.locator('id=blocks.4.title')
+  await page.getByRole('button', {
+    name: 'MapCard'
+  }).click();
+
+  await page.locator('[name="blocks.4.title"]')
     .fill(title);
 
   await page.locator(`.ck-content`)
