@@ -114,6 +114,7 @@ export interface HomeTickets extends Struct.ComponentSchema {
   attributes: {
     generalTickets: Schema.Attribute.Component<'tickets.ticket', true> &
       Schema.Attribute.Required;
+    generalTicketsLink: Schema.Attribute.String & Schema.Attribute.Required;
     subsidizedTickets: Schema.Attribute.Component<'tickets.tickets', false> &
       Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -284,7 +285,6 @@ export interface TicketsTicket extends Struct.ComponentSchema {
     category: Schema.Attribute.Text & Schema.Attribute.Required;
     description: Schema.Attribute.Text;
     frequency: Schema.Attribute.String;
-    link: Schema.Attribute.String;
     price: Schema.Attribute.String & Schema.Attribute.Required;
     theme: Schema.Attribute.Enumeration<
       [
