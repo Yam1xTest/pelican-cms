@@ -16,7 +16,7 @@ export async function createAndPublishContactZooPage({
   imageWithButtonGrid: ImageWithButtonGridBlock,
   seo: SeoBlock,
 }) {
-  await page.getByText(`Content Manager`)
+  await page.locator('a[aria-label="Content Manager"]')
     .click();
 
   await page.getByText(`Страница контактного зоопарка`)
@@ -57,6 +57,8 @@ export async function createAndPublishContactZooPage({
   });
 
   await saveAndPublish({ page });
+
+  await page.waitForTimeout(1000);
 }
 
 export async function deleteContactZooPage() {

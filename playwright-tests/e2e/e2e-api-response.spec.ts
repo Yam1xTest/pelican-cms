@@ -154,11 +154,9 @@ async function checkNewsResponseTest({
   const expectedNewsResponse = {
     data: [
       {
-        attributes: {
-          title,
-          description,
-          innerContent: `<p>${innerContent}</p>`,
-        }
+        title,
+        description,
+        innerContent: `<p>${innerContent}</p>`,
       }
     ]
   };
@@ -178,18 +176,15 @@ async function checkNewsResponseTest({
   await expect({
     data: [
       {
-        attributes:
-        {
-          title: newsWithPrefix[0].attributes.title,
-          description: newsWithPrefix[0].attributes.description,
-          innerContent: newsWithPrefix[0].attributes.innerContent,
-        }
+        title: newsWithPrefix[0].title,
+        description: newsWithPrefix[0].description,
+        innerContent: newsWithPrefix[0].innerContent,
       }
     ]
   })
     .toEqual(expectedNewsResponse);
 
-  await expect(newsWithPrefix[0].attributes.image.data.attributes.url)
+  await expect(newsWithPrefix[0].image.url)
     .not
     .toBeNull();
 }
@@ -208,13 +203,11 @@ async function checkDocumentsResponseTest({
   const expectedDocumentsResponse = {
     data: [
       {
-        attributes: {
-          date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`,
-          showDate,
-          title,
-          subtitle: `<p>${subtitle}</p>`,
-          description: `<p>${description}</p>`,
-        }
+        date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${(date.getDate()).toString().padStart(2, '0')}`,
+        showDate,
+        title,
+        subtitle: `<p>${subtitle}</p>`,
+        description: `<p>${description}</p>`,
       }
     ]
   };
@@ -241,19 +234,17 @@ async function checkDocumentsResponseTest({
   await expect({
     data: [
       {
-        attributes: {
-          date: documentsWithPrefix[0].attributes.date,
-          showDate: documentsWithPrefix[0].attributes.showDate,
-          title: documentsWithPrefix[0].attributes.title,
-          subtitle: documentsWithPrefix[0].attributes.subtitle,
-          description: documentsWithPrefix[0].attributes.description,
-        }
+        date: documentsWithPrefix[0].date,
+        showDate: documentsWithPrefix[0].showDate,
+        title: documentsWithPrefix[0].title,
+        subtitle: documentsWithPrefix[0].subtitle,
+        description: documentsWithPrefix[0].description,
       }
     ]
   })
     .toEqual(expectedDocumentsResponse);
 
-  await expect(documentsWithPrefix[0].attributes.files.data[0].attributes.url)
+  await expect(documentsWithPrefix[0].files[0].url)
     .not
     .toBeNull();
 }
@@ -267,9 +258,7 @@ async function checkDocumentsCategoriesResponseTest({
   const expectedDocumentsCategoriesResponse = {
     data: [
       {
-        attributes: {
-          title,
-        }
+        title,
       }
     ]
   };
@@ -285,10 +274,7 @@ async function checkDocumentsCategoriesResponseTest({
   await expect({
     data: [
       {
-        attributes:
-        {
-          title: documentCategoriesWithPrefix[0].attributes.title,
-        }
+        title: documentCategoriesWithPrefix[0].title,
       }
     ]
   })
@@ -315,20 +301,18 @@ async function checkHomepageResponseTest({
 
   const expectedHomepageResponse = {
     data: {
-      attributes: {
-        blocks: [
-          expectedHero,
-          expectedServices,
-          expectedTextAndMedia,
-          expectedImageWithButtonGrid,
-          {
-            ...expectedMapCard,
-            description: `<p>${expectedMapCard.description}</p>`,
-            note: `<p>${expectedMapCard.note}</p>`
-          }
-        ],
-        seo: MOCK_SEO
-      }
+      blocks: [
+        expectedHero,
+        expectedServices,
+        expectedTextAndMedia,
+        expectedImageWithButtonGrid,
+        {
+          ...expectedMapCard,
+          description: `<p>${expectedMapCard.description}</p>`,
+          note: `<p>${expectedMapCard.note}</p>`
+        }
+      ],
+      seo: MOCK_SEO
     }
   };
 
@@ -364,103 +348,101 @@ async function checkHomepageResponseTest({
     path: `/api/home?${qs.stringify(queryParams)}`
   }))).data;
 
-  const heroBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
-  const textAndMediaBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
-  const imageWithButtonGridBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
-  const servicesBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.services');
-  const mapCardBlock = homepageResponse.data.attributes.blocks.find((block) => block.__component === 'home.map-card');
+  const heroBlock = homepageResponse.data.blocks.find((block) => block.__component === 'shared.hero');
+  const textAndMediaBlock = homepageResponse.data.blocks.find((block) => block.__component === 'shared.text-and-media');
+  const imageWithButtonGridBlock = homepageResponse.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
+  const servicesBlock = homepageResponse.data.blocks.find((block) => block.__component === 'home.services');
+  const mapCardBlock = homepageResponse.data.blocks.find((block) => block.__component === 'home.map-card');
 
   await expect({
     data: {
-      attributes: {
-        blocks: [
-          {
-            title: heroBlock.title,
-            __component: heroBlock.__component,
-            infoCard: {
-              title: heroBlock.infoCard.title,
-              description: heroBlock.infoCard.description
-            },
-            scheduleCard: {
-              title: heroBlock.scheduleCard.title,
-              timetable: [
-                {
-                  days: heroBlock.scheduleCard.timetable[0].days,
-                  time: heroBlock.scheduleCard.timetable[0].time,
-                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
-                }
-              ]
-            },
+      blocks: [
+        {
+          title: heroBlock.title,
+          __component: heroBlock.__component,
+          infoCard: {
+            title: heroBlock.infoCard.title,
+            description: heroBlock.infoCard.description
           },
-          {
-            __component: servicesBlock.__component,
-            phone: servicesBlock.phone,
-            email: servicesBlock.email,
-            cards: {
-              title: servicesBlock.cards.title,
-              cards: [
-                {
-                  title: servicesBlock.cards.cards[0].title,
-                  description: servicesBlock.cards.cards[0].description,
-                  link: servicesBlock.cards.cards[0].link,
-                  labels: [{
-                    text: servicesBlock.cards.cards[0].labels[0].text
-                  }]
-                }
-              ],
-            }
+          scheduleCard: {
+            title: heroBlock.scheduleCard.title,
+            timetable: [
+              {
+                days: heroBlock.scheduleCard.timetable[0].days,
+                time: heroBlock.scheduleCard.timetable[0].time,
+                ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
+              }
+            ]
           },
-          {
-            __component: textAndMediaBlock.__component,
-            title: textAndMediaBlock.title,
-            description: textAndMediaBlock.description,
-            contentOrder: textAndMediaBlock.contentOrder,
-            viewFootsteps: textAndMediaBlock.viewFootsteps,
-          },
-          {
-            __component: imageWithButtonGridBlock.__component,
-            title: imageWithButtonGridBlock.title,
-            description: imageWithButtonGridBlock.description,
-            link: imageWithButtonGridBlock.button.link,
-            label: imageWithButtonGridBlock.button.label,
-          },
-          {
-            __component: mapCardBlock.__component,
-            title: mapCardBlock.title,
-            description: mapCardBlock.description,
-            note: mapCardBlock.note
+        },
+        {
+          __component: servicesBlock.__component,
+          phone: servicesBlock.phone,
+          email: servicesBlock.email,
+          cards: {
+            title: servicesBlock.cards.title,
+            cards: [
+              {
+                title: servicesBlock.cards.cards[0].title,
+                description: servicesBlock.cards.cards[0].description,
+                link: servicesBlock.cards.cards[0].link,
+                labels: [{
+                  text: servicesBlock.cards.cards[0].labels[0].text
+                }]
+              }
+            ],
           }
-        ],
-        seo: {
-          metaTitle: homepageResponse.data.attributes.seo.metaTitle,
-          metaDescription: homepageResponse.data.attributes.seo.metaDescription,
+        },
+        {
+          __component: textAndMediaBlock.__component,
+          title: textAndMediaBlock.title,
+          description: textAndMediaBlock.description,
+          contentOrder: textAndMediaBlock.contentOrder,
+          viewFootsteps: textAndMediaBlock.viewFootsteps,
+        },
+        {
+          __component: imageWithButtonGridBlock.__component,
+          title: imageWithButtonGridBlock.title,
+          description: imageWithButtonGridBlock.description,
+          link: imageWithButtonGridBlock.button.link,
+          label: imageWithButtonGridBlock.button.label,
+        },
+        {
+          __component: mapCardBlock.__component,
+          title: mapCardBlock.title,
+          description: mapCardBlock.description,
+          note: mapCardBlock.note
         }
+      ],
+      seo: {
+        metaTitle: homepageResponse.data.seo.metaTitle,
+        metaDescription: homepageResponse.data.seo.metaDescription,
       }
     }
   })
     .toEqual(expectedHomepageResponse);
 
-  await expect(heroBlock.image.data.attributes.url)
+  await expect(heroBlock.image.url)
     .not
     .toBeNull();
 
-  await expect(servicesBlock.cards.cards[0].image.data.attributes.url)
+  await expect(servicesBlock.cards.cards[0].image.url)
     .not
     .toBeNull();
 
-  await expect(textAndMediaBlock.media.data.attributes.url)
+  await expect(textAndMediaBlock.media.url)
     .not
     .toBeNull();
 
-  await expect(imageWithButtonGridBlock.largeImage.data.attributes.url)
+  await expect(imageWithButtonGridBlock.largeImage.url)
     .not
     .toBeNull();
 
-  await expect(imageWithButtonGridBlock.smallImage.data.attributes.url)
+  await expect(imageWithButtonGridBlock.smallImage.url)
     .not
     .toBeNull();
 
-  await expect(mapCardBlock.image.data.attributes.url)
+  await expect(mapCardBlock.image.url)
     .not
     .toBeNull();
 }
@@ -480,14 +462,12 @@ async function checkContactZooPageResponseTest({
 
   const expectedConcatZooPageResponse = {
     data: {
-      attributes: {
-        blocks: [
-          expectedHero,
-          expectedTextAndMedia,
-          expectedImageWithButtonGrid,
-        ],
-        seo: MOCK_SEO
-      }
+      blocks: [
+        expectedHero,
+        expectedTextAndMedia,
+        expectedImageWithButtonGrid,
+      ],
+      seo: MOCK_SEO
     }
   };
 
@@ -517,69 +497,67 @@ async function checkContactZooPageResponseTest({
     path: `/api/contact-zoo?${qs.stringify(queryParams)}`
   }))).data;
 
-  const heroBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.hero');
-  const textAndMediaBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.text-and-media');
-  const imageWithButtonGridBlock = contactZooPageResponse.data.attributes.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
+  const heroBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.hero');
+  const textAndMediaBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.text-and-media');
+  const imageWithButtonGridBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
 
   await expect({
     data: {
-      attributes: {
-        blocks: [
-          {
-            title: heroBlock.title,
-            __component: heroBlock.__component,
-            infoCard: {
-              title: heroBlock.infoCard.title,
-              description: heroBlock.infoCard.description
-            },
-            scheduleCard: {
-              title: heroBlock.scheduleCard.title,
-              timetable: [
-                {
-                  days: heroBlock.scheduleCard.timetable[0].days,
-                  time: heroBlock.scheduleCard.timetable[0].time,
-                  ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
-                }
-              ]
-            },
+      blocks: [
+        {
+          title: heroBlock.title,
+          __component: heroBlock.__component,
+          infoCard: {
+            title: heroBlock.infoCard.title,
+            description: heroBlock.infoCard.description
           },
-          {
-            __component: textAndMediaBlock.__component,
-            title: textAndMediaBlock.title,
-            description: textAndMediaBlock.description,
-            contentOrder: textAndMediaBlock.contentOrder,
-            viewFootsteps: textAndMediaBlock.viewFootsteps,
+          scheduleCard: {
+            title: heroBlock.scheduleCard.title,
+            timetable: [
+              {
+                days: heroBlock.scheduleCard.timetable[0].days,
+                time: heroBlock.scheduleCard.timetable[0].time,
+                ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
+              }
+            ]
           },
-          {
-            __component: imageWithButtonGridBlock.__component,
-            title: imageWithButtonGridBlock.title,
-            description: imageWithButtonGridBlock.description,
-            link: imageWithButtonGridBlock.button.link,
-            label: imageWithButtonGridBlock.button.label,
-          },
-        ],
-        seo: {
-          metaTitle: contactZooPageResponse.data.attributes.seo.metaTitle,
-          metaDescription: contactZooPageResponse.data.attributes.seo.metaDescription,
-        }
+        },
+        {
+          __component: textAndMediaBlock.__component,
+          title: textAndMediaBlock.title,
+          description: textAndMediaBlock.description,
+          contentOrder: textAndMediaBlock.contentOrder,
+          viewFootsteps: textAndMediaBlock.viewFootsteps,
+        },
+        {
+          __component: imageWithButtonGridBlock.__component,
+          title: imageWithButtonGridBlock.title,
+          description: imageWithButtonGridBlock.description,
+          link: imageWithButtonGridBlock.button.link,
+          label: imageWithButtonGridBlock.button.label,
+        },
+      ],
+      seo: {
+        metaTitle: contactZooPageResponse.data.seo.metaTitle,
+        metaDescription: contactZooPageResponse.data.seo.metaDescription,
       }
     }
   })
     .toEqual(expectedConcatZooPageResponse);
 
-  await expect(heroBlock.image.data.attributes.url)
+  await expect(heroBlock.image.url)
     .not
     .toBeNull();
 
-  await expect(textAndMediaBlock.media.data.attributes.url)
+  await expect(textAndMediaBlock.media.url)
     .not
     .toBeNull();
 
-  await expect(imageWithButtonGridBlock.largeImage.data.attributes.url)
+  await expect(imageWithButtonGridBlock.largeImage.url)
     .not
     .toBeNull();
 
-  await expect(imageWithButtonGridBlock.smallImage.data.attributes.url)
+  await expect(imageWithButtonGridBlock.smallImage.url)
     .not
     .toBeNull();
 }
