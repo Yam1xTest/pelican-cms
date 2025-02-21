@@ -267,6 +267,7 @@ export interface SharedTickets extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
+    link: Schema.Attribute.String;
     note: Schema.Attribute.Text;
     subsidizedTickets: Schema.Attribute.Component<'tickets.ticket', true> &
       Schema.Attribute.Required;
