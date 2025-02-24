@@ -32,7 +32,7 @@ async function translitAndAddSuffix(params: any) {
       strict: true
     });
 
-    const maxLength = 48;
+    const maxLength = 50;
     if (slug.length > maxLength) {
       slug = slug.substring(0, maxLength);
 
