@@ -71,3 +71,44 @@ export const MOCK_IMAGE_WITH_BUTTON_GRID = {
   largeImagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   smallImagePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
 };
+
+export const MOCK_HOME_TICKETS = {
+  __component: "home.tickets",
+  generalTicketsTitle: `${E2E_SMOKE_NAME_PREFIX} Входные билеты`,
+  generalTickets: [
+    {
+      category: `Взрослые, дети от 14 лет`,
+      description: `Требуется подтверждающий документ.`,
+      price: `400  ₽ / чел`,
+      frequency: `1 раз в месяц`,
+    },
+  ],
+  generalTicketsLink: `https://widget.afisha.yandex.ru/w/sessions/ticketsteam-803@37605507?clientKey=3bc42fbd-a832-49aa-a269-79188e18d9e1&regionId=56`,
+  subsidizedTicketsTitle: `Льготные билеты`,
+  subsidizedTicketsDescription: `Купить льготный билет можно только на кассе зоопарка.`,
+  subsidizedTickets: [
+    {
+      category: `Многодетные семьи`,
+      description: `Требуется подтверждающий документ.`,
+      price: `Бесплатно`,
+      frequency: `1 раз в месяц`,
+    },
+  ],
+  subsidizedTicketsLink: `https://vk.com/topic-71671982_48253263`,
+};
+
+export const MOCK_TICKETS = {
+  __component: "shared.tickets",
+  title: `Билеты`,
+  description: `Купить билет можно только на\u00A0кассе контактного зоопарка.`,
+  tickets: [
+    {
+      category: `Многодетные семьи`,
+      description: `Требуется подтверждающий документ.`,
+      price: `Бесплатно`,
+      frequency: `1 раз в месяц`,
+    },
+  ],
+  link: `https://widget.afisha.yandex.ru/w/sessions/ticketsteam-803@37605507?clientKey=3bc42fbd-a832-49aa-a269-79188e18d9e1&regionId=56`,
+  note: `Билет контактного зоопарка приобретается дополнительно ко\u00A0входному билету зоопарка`,
+};

@@ -1,7 +1,23 @@
 import { Page } from "@playwright/test";
-import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, getStrapiUrl, saveAndPublish, uploadFile } from "../global-helpers";
+import {
+  createHeroBlock,
+  createImageWithButtonGridBlock,
+  createSeo,
+  createTextAndMediaBlock,
+  getStrapiUrl,
+  saveAndPublish,
+  uploadFile
+} from "../global-helpers";
 import axios from "axios";
-import { HeroBlock, ImageWithButtonGridBlock, MapCardBlock, SeoBlock, ServicesBlock, TextAndMediaBlock } from "../types";
+import {
+  HeroBlock,
+  HomeTicketsBlock,
+  ImageWithButtonGridBlock,
+  MapCardBlock,
+  SeoBlock,
+  ServicesBlock,
+  TextAndMediaBlock
+} from "../types";
 
 export async function createAndPublishHomepage({
   page,
@@ -10,6 +26,7 @@ export async function createAndPublishHomepage({
   textAndMedia,
   imageWithButtonGrid,
   mapCard,
+  tickets,
   seo,
 }: {
   page: Page,
@@ -18,6 +35,7 @@ export async function createAndPublishHomepage({
   textAndMedia: TextAndMediaBlock,
   imageWithButtonGrid: ImageWithButtonGridBlock,
   mapCard: MapCardBlock,
+  tickets: HomeTicketsBlock,
   seo: SeoBlock
 }) {
   await page.locator('a[aria-label="Content Manager"]')
@@ -74,6 +92,17 @@ export async function createAndPublishHomepage({
     description: mapCard.description,
     note: mapCard.note,
     imagePath: mapCard.imagePath,
+  });
+
+  await createTicketsBlock({
+    page,
+    generalTicketsTitle: tickets.generalTicketsTitle,
+    generalTickets: tickets.generalTickets,
+    generalTicketsLink: tickets.generalTicketsLink,
+    subsidizedTicketsTitle: tickets.subsidizedTicketsTitle,
+    subsidizedTicketsDescription: tickets.subsidizedTicketsDescription,
+    subsidizedTickets: tickets.subsidizedTickets,
+    subsidizedTicketsLink: tickets.subsidizedTicketsLink,
   });
 
   await createSeo({
@@ -204,6 +233,89 @@ async function createMapCardBlock({
     page,
     filePath: imagePath
   })
+}
+
+async function createTicketsBlock({
+  page,
+  generalTicketsTitle,
+  generalTickets,
+  generalTicketsLink,
+  subsidizedTicketsTitle,
+  subsidizedTicketsDescription,
+  subsidizedTickets,
+  subsidizedTicketsLink,
+}: {
+  page: Page,
+  generalTicketsTitle: HomeTicketsBlock['generalTicketsTitle'],
+  generalTickets: HomeTicketsBlock['generalTickets'],
+  generalTicketsLink: HomeTicketsBlock['generalTicketsLink'],
+  subsidizedTicketsTitle: HomeTicketsBlock['subsidizedTicketsTitle'],
+  subsidizedTicketsDescription: HomeTicketsBlock['subsidizedTicketsDescription'],
+  subsidizedTickets: HomeTicketsBlock['subsidizedTickets'],
+  subsidizedTicketsLink: HomeTicketsBlock['subsidizedTicketsLink'],
+}) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'home'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Tickets'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Tickets'
+  }).click();
+
+  await page.locator('[name="blocks.5.title"]')
+    .fill(generalTicketsTitle);
+
+  await page.getByText('No entry yet. Click to add one.')
+    .first()
+    .click();
+
+  await page.locator('[name="blocks.5.generalTickets.0.category"]')
+    .fill(generalTickets[0].category);
+
+  await page.locator('[name="blocks.5.generalTickets.0.description"]')
+    .fill(generalTickets[0].description);
+
+  await page.locator('[name="blocks.5.generalTickets.0.price"]')
+    .fill(generalTickets[0].price);
+
+  await page.locator('[name="blocks.5.generalTickets.0.frequency"]')
+    .fill(generalTickets[0].frequency);
+
+  await page.locator('[name="blocks.5.generalTicketsLink"]')
+    .fill(generalTicketsLink);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.title"]')
+    .fill(subsidizedTicketsTitle);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.description"]')
+    .fill(subsidizedTicketsDescription);
+
+  await page.getByText('No entry yet. Click to add one.')
+    .first()
+    .click();
+
+  await page.locator('[name="blocks.5.subsidizedTickets.ticketsList.0.category"]')
+    .fill(subsidizedTickets[0].category);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.ticketsList.0.description"]')
+    .fill(subsidizedTickets[0].description);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.ticketsList.0.price"]')
+    .fill(subsidizedTickets[0].price);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.ticketsList.0.frequency"]')
+    .fill(subsidizedTickets[0].frequency);
+
+  await page.locator('[name="blocks.5.subsidizedTickets.link"]')
+    .fill(subsidizedTicketsLink);
 }
 
 export async function deleteHomepage() {
