@@ -42,23 +42,6 @@ export default ({ env }) => ({
             },
         },
     },
-    slugify: {
-        enabled: true,
-        config: {
-            shouldUpdateSlug: true,
-            slugifyWithCount: true,
-            contentTypes: {
-                'documents-category': {
-                    field: 'slug',
-                    references: 'title',
-                },
-                'news-collection': {
-                    field: 'slug',
-                    references: 'title',
-                },
-            },
-        },
-    },
     'preview-button': {
         config: {
             contentTypes: [
