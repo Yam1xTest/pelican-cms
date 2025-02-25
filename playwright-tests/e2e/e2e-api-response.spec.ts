@@ -7,7 +7,7 @@ import axios from "axios";
 import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-helpers/homepage-helpers";
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import qs from "qs";
-import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD } from "./helpers/mocks";
+import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD, MOCK_HOME_TICKETS, MOCK_TICKETS } from "./helpers/mocks";
 
 
 test.describe(`API response tests`, () => {
@@ -314,7 +314,8 @@ async function checkHomepageResponseTest({
           ...expectedMapCard,
           description: `<p>${expectedMapCard.description}</p>`,
           note: `<p>${expectedMapCard.note}</p>`
-        }
+        },
+        MOCK_HOME_TICKETS,
       ],
       seo: MOCK_SEO
     }
@@ -327,6 +328,7 @@ async function checkHomepageResponseTest({
     textAndMedia: MOCK_TEXT_AND_MEDIA,
     imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
     mapCard: MOCK_HOME_MAP_CARD,
+    tickets: MOCK_HOME_TICKETS,
     seo: MOCK_SEO,
   });
 
@@ -344,6 +346,8 @@ async function checkHomepageResponseTest({
       `blocks.button`,
       `blocks.largeImage`,
       `blocks.smallImage`,
+      `blocks.generalTickets`,
+      `blocks.subsidizedTickets.ticketsList`,
       `seo`,
     ],
   };
@@ -357,6 +361,7 @@ async function checkHomepageResponseTest({
   const imageWithButtonGridBlock = homepageResponse.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
   const servicesBlock = homepageResponse.data.blocks.find((block) => block.__component === 'home.services');
   const mapCardBlock = homepageResponse.data.blocks.find((block) => block.__component === 'home.map-card');
+  const homeTicketsBlock = homepageResponse.data.blocks.find((block) => block.__component === 'home.tickets');
 
   await expect({
     data: {
@@ -416,7 +421,31 @@ async function checkHomepageResponseTest({
           title: mapCardBlock.title,
           description: mapCardBlock.description,
           note: mapCardBlock.note
-        }
+        },
+        {
+          __component: homeTicketsBlock.__component,
+          generalTicketsTitle: homeTicketsBlock.title,
+          generalTickets: [
+            {
+              category: homeTicketsBlock.generalTickets[0].category,
+              description: homeTicketsBlock.generalTickets[0].description,
+              price: homeTicketsBlock.generalTickets[0].price,
+              frequency: homeTicketsBlock.generalTickets[0].frequency,
+            },
+          ],
+          generalTicketsLink: homeTicketsBlock.generalTicketsLink,
+          subsidizedTicketsTitle: homeTicketsBlock.subsidizedTickets.title,
+          subsidizedTicketsDescription: homeTicketsBlock.subsidizedTickets.description,
+          subsidizedTickets: [
+            {
+              category: homeTicketsBlock.subsidizedTickets.ticketsList[0].category,
+              description: homeTicketsBlock.subsidizedTickets.ticketsList[0].description,
+              price: homeTicketsBlock.subsidizedTickets.ticketsList[0].price,
+              frequency: homeTicketsBlock.subsidizedTickets.ticketsList[0].frequency,
+            },
+          ],
+          subsidizedTicketsLink: homeTicketsBlock.subsidizedTickets.link,
+        },
       ],
       seo: {
         metaTitle: homepageResponse.data.seo.metaTitle,
@@ -470,6 +499,7 @@ async function checkContactZooPageResponseTest({
         expectedHero,
         expectedTextAndMedia,
         expectedImageWithButtonGrid,
+        MOCK_TICKETS,
       ],
       seo: MOCK_SEO
     }
@@ -480,6 +510,7 @@ async function checkContactZooPageResponseTest({
     hero: MOCK_HERO,
     textAndMedia: MOCK_TEXT_AND_MEDIA,
     imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
+    tickets: MOCK_TICKETS,
     seo: MOCK_SEO,
   });
 
@@ -493,6 +524,7 @@ async function checkContactZooPageResponseTest({
       `blocks.button`,
       `blocks.largeImage`,
       `blocks.smallImage`,
+      `blocks.subsidizedTickets`,
       `seo`,
     ],
   };
@@ -504,6 +536,7 @@ async function checkContactZooPageResponseTest({
   const heroBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.hero');
   const textAndMediaBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.text-and-media');
   const imageWithButtonGridBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
+  const ticketsBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.tickets');
 
   await expect({
     data: {
@@ -539,6 +572,21 @@ async function checkContactZooPageResponseTest({
           description: imageWithButtonGridBlock.description,
           link: imageWithButtonGridBlock.button.link,
           label: imageWithButtonGridBlock.button.label,
+        },
+        {
+          __component: ticketsBlock.__component,
+          title: ticketsBlock.title,
+          description: ticketsBlock.description,
+          tickets: [
+            {
+              category: ticketsBlock.subsidizedTickets[0].category,
+              description: ticketsBlock.subsidizedTickets[0].description,
+              price: ticketsBlock.subsidizedTickets[0].price,
+              frequency: ticketsBlock.subsidizedTickets[0].frequency,
+            },
+          ],
+          note: ticketsBlock.note,
+          link: ticketsBlock.link,
         },
       ],
       seo: {
