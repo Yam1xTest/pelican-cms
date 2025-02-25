@@ -50,6 +50,8 @@ export async function createAndPublishNews({
     .fill(innerContent);
 
   await saveAndPublish({ page });
+
+  await page.waitForTimeout(500);
 }
 
 export function getNewsWithTestPrefix({
