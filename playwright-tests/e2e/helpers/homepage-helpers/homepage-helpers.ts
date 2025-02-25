@@ -41,7 +41,7 @@ export async function createAndPublishHomepage({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Главная страница`)
+  await page.locator(`a`, { hasText: 'Главная страница' })
     .click();
 
   await createHeroBlock({

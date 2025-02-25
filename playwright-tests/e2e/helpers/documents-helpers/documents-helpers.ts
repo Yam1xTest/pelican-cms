@@ -33,7 +33,7 @@ export async function createAndPublishDocument({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Документы`)
+  await page.locator(`a`, { hasText: 'Документы' })
     .click();
 
   await page.getByText(`Create new entry`)
@@ -76,7 +76,7 @@ export function getDocumentsWithTestPrefix({
 }: {
   documents: DocumentsResponse
 }) {
-  return documents.data.filter((document) => document.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+  return documents.data.filter((document) => document.title?.startsWith(E2E_SMOKE_NAME_PREFIX));
 }
 
 type DocumentsResponse = {

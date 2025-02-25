@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-02-24T09:07:52.463Z"
+    "x-generation-date": "2025-02-25T05:53:51.458Z"
   },
   "x-strapi-config": {
     "plugins": []
@@ -3208,6 +3208,9 @@
               "Зелёный",
               "Коричневый"
             ]
+          },
+          "link": {
+            "type": "string"
           }
         }
       },
@@ -3236,9 +3239,6 @@
             }
           },
           "note": {
-            "type": "string"
-          },
-          "link": {
             "type": "string"
           }
         }
@@ -3566,7 +3566,8 @@
               "showDate",
               "title",
               "files",
-              "category"
+              "category",
+              "date"
             ],
             "type": "object",
             "properties": {
@@ -3673,7 +3674,8 @@
           "showDate",
           "title",
           "files",
-          "category"
+          "category",
+          "date"
         ],
         "properties": {
           "id": {
@@ -4304,6 +4306,9 @@
               "hasTabs": {
                 "type": "boolean"
               },
+              "slug": {
+                "type": "string"
+              },
               "createdAt": {
                 "type": "string",
                 "format": "date-time"
@@ -4659,6 +4664,9 @@
               "hasTabs": {
                 "type": "boolean"
               },
+              "slug": {
+                "type": "string"
+              },
               "locale": {
                 "type": "string"
               },
@@ -4732,6 +4740,9 @@
           },
           "hasTabs": {
             "type": "boolean"
+          },
+          "slug": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -5038,6 +5049,9 @@
                 },
                 "hasTabs": {
                   "type": "boolean"
+                },
+                "slug": {
+                  "type": "string"
                 },
                 "createdAt": {
                   "type": "string",
@@ -5811,9 +5825,6 @@
               "$ref": "#/components/schemas/TicketsTicketComponent"
             }
           },
-          "generalTicketsLink": {
-            "type": "string"
-          },
           "subsidizedTickets": {
             "$ref": "#/components/schemas/TicketsTicketsComponent"
           }
@@ -5851,6 +5862,9 @@
                 "example": "string or id"
               },
               "innerContent": {
+                "type": "string"
+              },
+              "slug": {
                 "type": "string"
               },
               "locale": {
@@ -6530,6 +6544,9 @@
           "innerContent": {
             "type": "string"
           },
+          "slug": {
+            "type": "string"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -6714,6 +6731,9 @@
                   }
                 },
                 "innerContent": {
+                  "type": "string"
+                },
+                "slug": {
                   "type": "string"
                 },
                 "createdAt": {

@@ -28,7 +28,7 @@ export async function createAndPublishNews({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Новости`)
+  await page.locator(`a`, { hasText: 'Новости' })
     .click();
 
   await page.getByText(`Create new entry`)
@@ -50,6 +50,8 @@ export async function createAndPublishNews({
     .fill(innerContent);
 
   await saveAndPublish({ page });
+
+  await page.waitForTimeout(500);
 }
 
 export function getNewsWithTestPrefix({
@@ -57,7 +59,7 @@ export function getNewsWithTestPrefix({
 }: {
   news: NewsResponse
 }) {
-  return news.data.filter((news) => news.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+  return news.data.filter((news) => news.title?.startsWith(E2E_SMOKE_NAME_PREFIX));
 }
 
 type NewsResponse = {
