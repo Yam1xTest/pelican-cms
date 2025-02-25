@@ -84,7 +84,7 @@ export async function uploadFile({
 export async function deleteFiles() {
   const filesResponse = (await axios.get(getStrapiUrl({ path: '/api/upload/files' }))).data;
 
-  const filesDelete = filesResponse.filter((file) => file.name.startsWith(E2E_SMOKE_NAME_PREFIX));
+  const filesDelete = filesResponse.filter((file) => file.name?.startsWith(E2E_SMOKE_NAME_PREFIX));
 
   filesDelete.forEach(async ({ id }) => {
     await axios.delete(getStrapiUrl({ path: `/api/upload/files/${id}` }));

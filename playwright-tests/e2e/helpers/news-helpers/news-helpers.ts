@@ -59,7 +59,7 @@ export function getNewsWithTestPrefix({
 }: {
   news: NewsResponse
 }) {
-  return news.data.filter((news) => news.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+  return news.data.filter((news) => news.title?.startsWith(E2E_SMOKE_NAME_PREFIX));
 }
 
 type NewsResponse = {

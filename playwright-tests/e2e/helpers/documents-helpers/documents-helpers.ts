@@ -76,7 +76,7 @@ export function getDocumentsWithTestPrefix({
 }: {
   documents: DocumentsResponse
 }) {
-  return documents.data.filter((document) => document.title.startsWith(E2E_SMOKE_NAME_PREFIX));
+  return documents.data.filter((document) => document.title?.startsWith(E2E_SMOKE_NAME_PREFIX));
 }
 
 type DocumentsResponse = {
