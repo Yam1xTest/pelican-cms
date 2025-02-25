@@ -33,7 +33,7 @@ export async function createAndPublishDocument({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Документы`)
+  await page.locator(`a`, { hasText: 'Документы' })
     .click();
 
   await page.getByText(`Create new entry`)

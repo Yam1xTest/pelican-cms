@@ -16,7 +16,7 @@ export async function createAndPublishDocumentsCategory({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Категории документов`)
+  await page.locator(`a`, { hasText: 'Категории документов' })
     .click();
 
   await page.getByText(`Create new entry`)

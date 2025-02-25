@@ -28,7 +28,7 @@ export async function createAndPublishNews({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Новости`)
+  await page.locator(`a`, { hasText: 'Новости' })
     .click();
 
   await page.getByText(`Create new entry`)

@@ -21,7 +21,8 @@ export async function createAndPublishContactZooPage({
   await page.locator('a[aria-label="Content Manager"]')
     .click();
 
-  await page.getByText(`Страница контактного зоопарка`)
+
+  await page.locator(`a`, { hasText: 'Страница контактного зоопарка' })
     .click();
 
   await createHeroBlock({
