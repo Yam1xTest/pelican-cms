@@ -12,11 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
     "hasTabs": {
       "type": "boolean",
       "default": true
