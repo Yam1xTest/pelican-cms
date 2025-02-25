@@ -1,19 +1,21 @@
 import { Page } from "@playwright/test";
-import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, getStrapiUrl, saveAndPublish } from "../global-helpers";
+import { createHeroBlock, createImageWithButtonGridBlock, createSeo, createTextAndMediaBlock, createTicketsBlock, getStrapiUrl, saveAndPublish } from "../global-helpers";
 import axios from "axios";
-import { HeroBlock, TextAndMediaBlock, ImageWithButtonGridBlock, SeoBlock } from "../types";
+import { HeroBlock, TextAndMediaBlock, ImageWithButtonGridBlock, SeoBlock, sharedTicketsBlock } from "../types";
 
 export async function createAndPublishContactZooPage({
   page,
   hero,
   textAndMedia,
   imageWithButtonGrid,
+  tickets,
   seo,
 }: {
   page: Page,
   hero: HeroBlock,
   textAndMedia: TextAndMediaBlock,
   imageWithButtonGrid: ImageWithButtonGridBlock,
+  tickets: sharedTicketsBlock,
   seo: SeoBlock,
 }) {
   await page.locator('a[aria-label="Content Manager"]')
@@ -48,6 +50,16 @@ export async function createAndPublishContactZooPage({
     label: imageWithButtonGrid.label,
     largeImagePath: imageWithButtonGrid.largeImagePath,
     smallImagePath: imageWithButtonGrid.smallImagePath,
+  });
+
+  await createTicketsBlock({
+    page,
+    id: 3,
+    title: tickets.title,
+    description: tickets.description,
+    tickets: tickets.tickets,
+    note: tickets.note,
+    link: tickets.link,
   });
 
   await createSeo({

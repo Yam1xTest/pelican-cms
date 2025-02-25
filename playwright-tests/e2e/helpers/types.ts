@@ -52,6 +52,31 @@ export type ImageWithButtonGridBlock = {
   smallImagePath: string,
 }
 
+export type Ticket = {
+  category: string,
+  description: string,
+  price: string,
+  frequency?: string,
+};
+
+export type HomeTicketsBlock = {
+  generalTicketsTitle: string,
+  generalTickets: Ticket[],
+  generalTicketsLink: string,
+  subsidizedTicketsTitle: string,
+  subsidizedTicketsDescription: string,
+  subsidizedTickets: Ticket[],
+  subsidizedTicketsLink: string,
+}
+
+export type sharedTicketsBlock = {
+  title: string,
+  description: string,
+  tickets: Ticket[],
+  link: string,
+  note: string,
+}
+
 export type MapCardBlock = {
   note: string,
   title: string,
