@@ -1,7 +1,7 @@
 import { Page } from "@playwright/test";
 import axios from "axios";
 import 'dotenv/config';
-import { HeroBlock, ImageWithButtonGridBlock, SeoBlock, TextAndMediaBlock } from "./types";
+import { HeroBlock, ImageWithButtonGridBlock, SeoBlock, sharedTicketsBlock, TextAndMediaBlock } from "./types";
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
@@ -285,4 +285,57 @@ export async function createImageWithButtonGridBlock({
     page,
     filePath: smallImagePath,
   });
+}
+
+export async function createTicketsBlock({
+  page,
+  id,
+  title,
+  description,
+  tickets,
+  link,
+  note,
+}: {
+  page: Page,
+  id: number
+} & sharedTicketsBlock) {
+  await page.getByRole('button', {
+    name: 'Add a component to blocks'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Tickets'
+  }).click();
+
+  await page.getByRole('button', {
+    name: 'Tickets'
+  }).click();
+
+  await page.locator(`[name="blocks.${id}.title"]`)
+    .fill(title);
+
+  await page.locator(`[name="blocks.${id}.description"]`)
+    .fill(description);
+
+  await page.getByText('No entry yet. Click to add one.')
+    .first()
+    .click();
+
+  await page.locator(`[name="blocks.${id}.subsidizedTickets.0.category"]`)
+    .fill(tickets[0].category);
+
+  await page.locator(`[name="blocks.${id}.subsidizedTickets.0.description"]`)
+    .fill(tickets[0].description);
+
+  await page.locator(`[name="blocks.${id}.subsidizedTickets.0.price"]`)
+    .fill(tickets[0].price);
+
+  await page.locator(`[name="blocks.${id}.subsidizedTickets.0.frequency"]`)
+    .fill(tickets[0].frequency);
+
+  await page.locator(`[name="blocks.${id}.note"]`)
+    .fill(note);
+
+  await page.locator(`[name="blocks.${id}.link"]`)
+    .fill(link);
 }
