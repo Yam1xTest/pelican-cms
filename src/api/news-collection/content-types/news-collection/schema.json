@@ -12,6 +12,16 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "title": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        }
+      },
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
     "description": {
       "pluginOptions": {
         "versions": {
