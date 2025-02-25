@@ -302,7 +302,6 @@ async function checkHomepageResponseTest({
     imagePath: mapCardImagePath,
     ...expectedMapCard
   } = MOCK_HOME_MAP_CARD;
-  const expectedHomeTickets = MOCK_HOME_TICKETS;
 
   const expectedHomepageResponse = {
     data: {
@@ -316,7 +315,7 @@ async function checkHomepageResponseTest({
           description: `<p>${expectedMapCard.description}</p>`,
           note: `<p>${expectedMapCard.note}</p>`
         },
-        expectedHomeTickets
+        MOCK_HOME_TICKETS,
       ],
       seo: MOCK_SEO
     }
@@ -493,7 +492,6 @@ async function checkContactZooPageResponseTest({
     smallImagePath: imageWithButtonGridSmallImagePath,
     ...expectedImageWithButtonGrid
   } = MOCK_IMAGE_WITH_BUTTON_GRID;
-  const expectedTickets = MOCK_TICKETS;
 
   const expectedConcatZooPageResponse = {
     data: {
@@ -501,7 +499,7 @@ async function checkContactZooPageResponseTest({
         expectedHero,
         expectedTextAndMedia,
         expectedImageWithButtonGrid,
-        expectedTickets,
+        MOCK_TICKETS,
       ],
       seo: MOCK_SEO
     }
