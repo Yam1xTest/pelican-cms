@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import axios from 'axios';
-import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl, saveAndPublish, uploadFile } from '../global-helpers';
+import { createSeo, E2E_SMOKE_NAME_PREFIX, getStrapiUrl, saveAndPublish, uploadFile } from '../global-helpers';
+import { SeoBlock } from '../types';
 
 export async function deleteNews() {
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
@@ -18,12 +19,14 @@ export async function createAndPublishNews({
   description,
   innerContent,
   filePath,
+  seo
 }: {
   page: Page,
   title: string,
   description: string,
   innerContent: string,
-  filePath: string
+  filePath: string,
+  seo: SeoBlock
 }) {
   await page.locator('a[aria-label="Content Manager"]')
     .click();
@@ -49,6 +52,13 @@ export async function createAndPublishNews({
   await page.locator(`.ck-content`)
     .fill(innerContent);
 
+  await createSeo({
+    page,
+    metaTitle: seo.metaTitle,
+    metaDescription: seo.metaDescription,
+    keywords: seo.keywords,
+  });
+
   await saveAndPublish({ page });
 
   await page.waitForTimeout(500);
@@ -65,7 +75,7 @@ export function getNewsWithTestPrefix({
 type NewsResponse = {
   data: {
     id?: number;
-    documentId: string,
+    documentId: string;
     title: string;
     description?: string;
     innerContent: string;
@@ -74,5 +84,6 @@ type NewsResponse = {
       alternativeText: string;
     },
     slug: string;
+    seo: SeoBlock;
   }[]
 }

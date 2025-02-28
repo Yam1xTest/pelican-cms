@@ -160,7 +160,6 @@ test.describe(`API response tests`, () => {
       async () => await checkNewsPageResponseTest({ page })
     );
   });
-
 })
 
 
@@ -178,7 +177,8 @@ async function checkNewsResponseTest({
         title,
         description,
         innerContent: `<p>${innerContent}</p>`,
-        slug: 'e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr'
+        slug: 'e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr',
+        seo: MOCK_SEO
       }
     ]
   };
@@ -188,9 +188,9 @@ async function checkNewsResponseTest({
     title,
     description,
     innerContent,
+    seo: MOCK_SEO,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
-
 
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
   const newsWithPrefix = getNewsWithTestPrefix({ news: newsResponse });
@@ -201,7 +201,12 @@ async function checkNewsResponseTest({
         title: newsWithPrefix[0].title,
         description: newsWithPrefix[0].description,
         innerContent: newsWithPrefix[0].innerContent,
-        slug: newsWithPrefix[0].slug
+        slug: newsWithPrefix[0].slug,
+        seo: {
+          metaTitle: newsWithPrefix[0].seo.metaTitle,
+          metaDescription: newsWithPrefix[0].seo.metaDescription,
+          keywords: newsWithPrefix[0].seo.keywords
+        }
       }
     ]
   })

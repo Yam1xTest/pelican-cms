@@ -593,6 +593,7 @@ export interface ApiNewsCollectionNewsCollection
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
