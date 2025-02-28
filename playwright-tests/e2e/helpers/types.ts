@@ -17,7 +17,8 @@ export type HeroBlock = {
 
 export type SeoBlock = {
   metaTitle: string,
-  metaDescription: string
+  metaDescription: string,
+  keywords: string,
 }
 
 export type TextAndMediaBlock = {
