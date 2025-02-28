@@ -1,6 +1,7 @@
 import test, { expect, Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
+import { createAndPublishNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
   let page: Page;
@@ -51,6 +52,12 @@ async function e2eNewsCreateAndViewTest({
   const title = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
   const description = `На фотографии изображен амурский тигр!`;
   const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
+
+
+  await createAndPublishNewsPage({
+    page,
+    newsTitle: 'Новости',
+  });
 
   await createAndPublishNews({
     page,

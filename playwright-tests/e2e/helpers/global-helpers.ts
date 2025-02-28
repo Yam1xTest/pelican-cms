@@ -22,7 +22,7 @@ export async function gotoUI({
   page: Page
   path?: string
 }) {
-  await page.goto(`${process.env.FRONTEND_URL}/${path}` || `http://localhost:40110/${path}`, {
+  await page.goto(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/${path}`, {
     waitUntil: 'networkidle'
   })
 }
