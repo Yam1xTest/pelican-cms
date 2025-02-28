@@ -393,7 +393,8 @@ async function checkDocumentsCategoriesResponseTest({
     data: [
       {
         title,
-        slug: 'e2e-smoke-otchyoty'
+        slug: 'e2e-smoke-otchyoty',
+        seo: MOCK_SEO
       }
     ]
   };
@@ -401,6 +402,7 @@ async function checkDocumentsCategoriesResponseTest({
   await createAndPublishDocumentsCategory({
     page,
     title,
+    seo: MOCK_SEO,
   });
 
   const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: '/api/documents-categories?populate=*' }))).data;
@@ -410,7 +412,12 @@ async function checkDocumentsCategoriesResponseTest({
     data: [
       {
         title: documentCategoriesWithPrefix[0].title,
-        slug: documentCategoriesWithPrefix[0].slug
+        slug: documentCategoriesWithPrefix[0].slug,
+        seo: {
+          metaTitle: documentCategoriesWithPrefix[0].seo.metaTitle,
+          metaDescription: documentCategoriesWithPrefix[0].seo.metaDescription,
+          keywords: documentCategoriesWithPrefix[0].seo.keywords,
+        },
       }
     ]
   })

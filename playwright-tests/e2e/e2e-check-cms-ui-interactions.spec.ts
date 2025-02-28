@@ -1,7 +1,6 @@
 import test, { expect, Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
-import { MOCK_SEO } from "./helpers/mocks";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
   let page: Page;
@@ -59,7 +58,6 @@ async function e2eNewsCreateAndViewTest({
     description,
     innerContent,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
-    seo: MOCK_SEO,
   });
 
   await gotoUI({

@@ -26,7 +26,7 @@ export async function createAndPublishNews({
   description: string,
   innerContent: string,
   filePath: string,
-  seo: SeoBlock
+  seo?: SeoBlock
 }) {
   await page.locator('a[aria-label="Content Manager"]')
     .click();
@@ -52,12 +52,14 @@ export async function createAndPublishNews({
   await page.locator(`.ck-content`)
     .fill(innerContent);
 
-  await createSeo({
-    page,
-    metaTitle: seo.metaTitle,
-    metaDescription: seo.metaDescription,
-    keywords: seo.keywords,
-  });
+  if (seo) {
+    await createSeo({
+      page,
+      metaTitle: seo.metaTitle,
+      metaDescription: seo.metaDescription,
+      keywords: seo.keywords,
+    });
+  }
 
   await saveAndPublish({ page });
 
