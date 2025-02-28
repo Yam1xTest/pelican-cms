@@ -9,6 +9,7 @@ import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/
 import qs from "qs";
 import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD, MOCK_HOME_TICKETS, MOCK_TICKETS } from "./helpers/mocks";
 import { createAndPublishNewsPage, deleteNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
+import { createAndPublishDocumentsPage, deleteDocumentsPage } from "./helpers/documents-page-helpers/documents-page-helpers";
 
 
 test.describe(`API response tests`, () => {
@@ -120,7 +121,7 @@ test.describe(`API response tests`, () => {
     );
   });
 
-  test.describe(`ContactZoo response tests`, () => {
+  test.describe(`ContactZoo page response tests`, () => {
     test.beforeEach(async () => {
       await deleteContactZooPage();
 
@@ -142,7 +143,7 @@ test.describe(`API response tests`, () => {
     );
   });
 
-  test.describe(`News Page response tests`, () => {
+  test.describe(`News page response tests`, () => {
     test.beforeEach(async () => {
       await deleteNewsPage();
     });
@@ -158,6 +159,25 @@ test.describe(`API response tests`, () => {
       SHOULD get a response news page
       `,
       async () => await checkNewsPageResponseTest({ page })
+    );
+  });
+
+  test.describe(`Documents page response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteDocumentsPage();
+    });
+
+    test.afterEach(async () => {
+      await deleteDocumentsPage();
+    });
+
+
+    test(`
+      GIVEN empty documents page
+      WHEN fill out the documents page
+      SHOULD get a response documents  page
+      `,
+      async () => await checkDocumentsPageResponseTest({ page })
     );
   });
 })
@@ -258,6 +278,49 @@ async function checkNewsPageResponseTest({
     }
   })
     .toEqual(expectedNewsPageResponse);
+}
+
+async function checkDocumentsPageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const documentsTitle = 'Информация о деятельности МБУК «Зоопарк»';
+  const expectedDocumentsPageResponse = {
+    data: {
+      documentsTitle,
+      seo: MOCK_SEO
+    }
+  };
+
+  await createAndPublishDocumentsPage({
+    page,
+    documentsTitle,
+    seo: MOCK_SEO
+  })
+
+  const queryParams = {
+    populate: [
+      `seo`,
+    ],
+  };
+
+  const documentsPageResponse = (await axios.get(getStrapiUrl({
+    path: `/api/documents-page?${qs.stringify(queryParams)}`
+  }))).data;
+
+
+  await expect({
+    data: {
+      documentsTitle: documentsPageResponse.data.title,
+      seo: {
+        metaTitle: documentsPageResponse.data.seo.metaTitle,
+        metaDescription: documentsPageResponse.data.seo.metaDescription,
+        keywords: documentsPageResponse.data.seo.keywords
+      }
+    }
+  })
+    .toEqual(expectedDocumentsPageResponse);
 }
 
 async function checkDocumentsResponseTest({

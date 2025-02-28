@@ -503,6 +503,35 @@ export interface ApiDocumentsCategoryDocumentsCategory
   };
 }
 
+export interface ApiDocumentsPageDocumentsPage extends Struct.SingleTypeSchema {
+  collectionName: 'documents_page_plural';
+  info: {
+    displayName: '\u0421\u0442\u0440\u0430\u043D\u0438\u0446\u0430 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u043E\u0432';
+    pluralName: 'documents-page-plural';
+    singularName: 'documents-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::documents-page.documents-page'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHomeHome extends Struct.SingleTypeSchema {
   collectionName: 'home-page';
   info: {
@@ -1150,6 +1179,7 @@ declare module '@strapi/strapi' {
       'api::contact-zoo.contact-zoo': ApiContactZooContactZoo;
       'api::document.document': ApiDocumentDocument;
       'api::documents-category.documents-category': ApiDocumentsCategoryDocumentsCategory;
+      'api::documents-page.documents-page': ApiDocumentsPageDocumentsPage;
       'api::home.home': ApiHomeHome;
       'api::news-collection.news-collection': ApiNewsCollectionNewsCollection;
       'api::news-page.news-page': ApiNewsPageNewsPage;
