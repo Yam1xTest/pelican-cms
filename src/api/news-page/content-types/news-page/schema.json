@@ -1,0 +1,24 @@
+{
+  "kind": "singleType",
+  "collectionName": "news_page_plural",
+  "info": {
+    "singularName": "news-page",
+    "pluralName": "news-page-plural",
+    "displayName": "Страница новостей",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

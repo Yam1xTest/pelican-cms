@@ -3,6 +3,7 @@ import { E2E_SMOKE_NAME_PREFIX } from "./global-helpers";
 export const MOCK_SEO = {
   metaTitle: "Челябинский зоопарк",
   metaDescription: "Описание челябинского зоопарка, приглашаем взрослых и детей, у нас много животных!",
+  keywords: 'Ключевые слова'
 }
 
 export const MOCK_HERO = {
