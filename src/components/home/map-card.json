@@ -1,7 +1,7 @@
 {
   "collectionName": "components_home_map_cards",
   "info": {
-    "displayName": "MapCard",
+    "displayName": "Блок с картой",
     "description": ""
   },
   "options": {},
@@ -13,7 +13,7 @@
     "description": {
       "type": "customField",
       "options": {
-        "preset": "defaultHtml"
+        "preset": "withoutImagesPreset"
       },
       "required": true,
       "customField": "plugin::ckeditor5.CKEditor"
@@ -29,7 +29,7 @@
     "note": {
       "type": "customField",
       "options": {
-        "preset": "defaultHtml"
+        "preset": "withoutImagesPreset"
       },
       "customField": "plugin::ckeditor5.CKEditor",
       "required": true

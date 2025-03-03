@@ -3,7 +3,8 @@ import type { Schema, Struct } from '@strapi/strapi';
 export interface ButtonButton extends Struct.ComponentSchema {
   collectionName: 'components_button_buttons';
   info: {
-    displayName: 'Button';
+    description: '';
+    displayName: '\u041A\u043D\u043E\u043F\u043A\u0430';
     icon: 'cube';
   };
   attributes: {
@@ -16,7 +17,7 @@ export interface CardCard extends Struct.ComponentSchema {
   collectionName: 'components_card_cards';
   info: {
     description: '';
-    displayName: 'card';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430';
   };
   attributes: {
     description: Schema.Attribute.Text;
@@ -31,7 +32,7 @@ export interface CardLabel extends Struct.ComponentSchema {
   collectionName: 'components_card_labels';
   info: {
     description: '';
-    displayName: 'label';
+    displayName: '\u041C\u0435\u0442\u043A\u0430';
   };
   attributes: {
     text: Schema.Attribute.String & Schema.Attribute.Required;
@@ -42,7 +43,7 @@ export interface HeroInfoCard extends Struct.ComponentSchema {
   collectionName: 'components_hero_info_cards';
   info: {
     description: '';
-    displayName: 'InfoCard';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0441 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u0435\u0439';
   };
   attributes: {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
@@ -54,7 +55,7 @@ export interface HeroScheduleCard extends Struct.ComponentSchema {
   collectionName: 'components_hero_schedule_cards';
   info: {
     description: '';
-    displayName: 'ScheduleCard';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0441 \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435\u043C';
   };
   attributes: {
     timetable: Schema.Attribute.Component<'schedule-card.timetable', true> &
@@ -67,7 +68,7 @@ export interface HomeMapCard extends Struct.ComponentSchema {
   collectionName: 'components_home_map_cards';
   info: {
     description: '';
-    displayName: 'MapCard';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u043E\u0439';
   };
   attributes: {
     description: Schema.Attribute.RichText &
@@ -75,7 +76,7 @@ export interface HomeMapCard extends Struct.ComponentSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'defaultHtml';
+          preset: 'withoutImagesPreset';
         }
       >;
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
@@ -84,7 +85,7 @@ export interface HomeMapCard extends Struct.ComponentSchema {
       Schema.Attribute.CustomField<
         'plugin::ckeditor5.CKEditor',
         {
-          preset: 'defaultHtml';
+          preset: 'withoutImagesPreset';
         }
       >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -94,7 +95,8 @@ export interface HomeMapCard extends Struct.ComponentSchema {
 export interface HomeServices extends Struct.ComponentSchema {
   collectionName: 'components_home_services';
   info: {
-    displayName: 'Services';
+    description: '';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0443\u0441\u043B\u0443\u0433\u0430\u043C\u0438';
   };
   attributes: {
     cards: Schema.Attribute.Component<'shared.cards', false> &
@@ -108,7 +110,7 @@ export interface HomeTickets extends Struct.ComponentSchema {
   collectionName: 'components_home_tickets';
   info: {
     description: '';
-    displayName: 'Tickets';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0431\u0438\u043B\u0435\u0442\u0430\u043C\u0438';
     icon: 'cube';
   };
   attributes: {
@@ -125,7 +127,7 @@ export interface ScheduleCardTimetable extends Struct.ComponentSchema {
   collectionName: 'components_shedule_card_timetables';
   info: {
     description: '';
-    displayName: 'Timetable';
+    displayName: '\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435';
   };
   attributes: {
     days: Schema.Attribute.String & Schema.Attribute.Required;
@@ -138,7 +140,7 @@ export interface SharedCards extends Struct.ComponentSchema {
   collectionName: 'components_shared_cards';
   info: {
     description: '';
-    displayName: 'Cards';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0430\u043C\u0438';
   };
   attributes: {
     cards: Schema.Attribute.Component<'card.card', true> &
@@ -151,7 +153,7 @@ export interface SharedHero extends Struct.ComponentSchema {
   collectionName: 'components_shared_heroes';
   info: {
     description: '';
-    displayName: 'Hero';
+    displayName: '\u041F\u0435\u0440\u0432\u044B\u0439 \u0431\u043B\u043E\u043A';
   };
   attributes: {
     image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
@@ -167,7 +169,7 @@ export interface SharedImageWithButtonGrid extends Struct.ComponentSchema {
   collectionName: 'components_shared_image_with_button_grids';
   info: {
     description: '';
-    displayName: 'ImageWithButtonGrid';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u043E\u0439 \u0438 \u043A\u043D\u043E\u043F\u043A\u043E\u0439';
     icon: 'cube';
   };
   attributes: {
@@ -207,7 +209,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
   collectionName: 'components_shared_seos';
   info: {
     description: '';
-    displayName: 'seo';
+    displayName: '\u0411\u043B\u043E\u043A SEO';
     icon: 'search';
   };
   attributes: {
@@ -236,7 +238,7 @@ export interface SharedTextAndMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_text_and_medias';
   info: {
     description: '';
-    displayName: 'TextAndMedia';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u0438\u043D\u043A\u043E\u0439/\u0432\u0438\u0434\u0435\u043E';
     icon: 'cube';
   };
   attributes: {
@@ -262,7 +264,7 @@ export interface SharedTickets extends Struct.ComponentSchema {
   collectionName: 'components_shared_tickets';
   info: {
     description: '';
-    displayName: 'Tickets';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0431\u0438\u043B\u0435\u0442\u0430\u043C\u0438';
     icon: 'cube';
   };
   attributes: {
@@ -279,7 +281,7 @@ export interface TicketsTicket extends Struct.ComponentSchema {
   collectionName: 'components_ticket_tickets';
   info: {
     description: '';
-    displayName: 'Ticket';
+    displayName: '\u0411\u0438\u043B\u0435\u0442';
     icon: 'cube';
   };
   attributes: {
@@ -302,7 +304,7 @@ export interface TicketsTickets extends Struct.ComponentSchema {
   collectionName: 'components_tickets_tickets';
   info: {
     description: '';
-    displayName: 'Tickets';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0431\u0438\u043B\u0435\u0442\u0430\u043C\u0438';
     icon: 'cube';
   };
   attributes: {

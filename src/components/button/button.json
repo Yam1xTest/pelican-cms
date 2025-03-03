@@ -1,8 +1,9 @@
 {
   "collectionName": "components_button_buttons",
   "info": {
-    "displayName": "Button",
-    "icon": "cube"
+    "displayName": "Кнопка",
+    "icon": "cube",
+    "description": ""
   },
   "options": {},
   "attributes": {
