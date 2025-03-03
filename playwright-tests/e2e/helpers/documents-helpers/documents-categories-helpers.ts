@@ -1,17 +1,21 @@
 import { Page } from '@playwright/test';
 import {
+  createSeo,
   E2E_SMOKE_NAME_PREFIX,
   getStrapiUrl,
   saveAndPublish
 } from '../global-helpers';
 import axios from 'axios';
+import { SeoBlock } from '../types';
 
 export async function createAndPublishDocumentsCategory({
   page,
   title,
+  seo,
 }: {
   page: Page,
   title: string,
+  seo?: SeoBlock
 }) {
   await page.locator('a[aria-label="Content Manager"]')
     .click();
@@ -25,6 +29,15 @@ export async function createAndPublishDocumentsCategory({
 
   await page.locator('[name="title"]')
     .fill(title);
+
+  if (seo) {
+    await createSeo({
+      page,
+      metaTitle: seo.metaTitle,
+      metaDescription: seo.metaDescription,
+      keywords: seo.keywords
+    })
+  }
 
   await saveAndPublish({ page });
 }
@@ -48,6 +61,7 @@ export function getDocumentCategoriesWithTestPrefix({
       documentId: string;
       title: string;
       slug: string;
+      seo: SeoBlock;
     }[]
   }
 }) {

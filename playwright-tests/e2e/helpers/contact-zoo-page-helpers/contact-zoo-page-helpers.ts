@@ -66,7 +66,8 @@ export async function createAndPublishContactZooPage({
   await createSeo({
     page,
     metaTitle: seo.metaTitle,
-    metaDescription: seo.metaDescription
+    metaDescription: seo.metaDescription,
+    keywords: seo.keywords
   });
 
   await saveAndPublish({ page });

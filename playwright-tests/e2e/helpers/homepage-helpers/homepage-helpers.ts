@@ -108,7 +108,8 @@ export async function createAndPublishHomepage({
   await createSeo({
     page,
     metaTitle: seo.metaTitle,
-    metaDescription: seo.metaDescription
+    metaDescription: seo.metaDescription,
+    keywords: seo.keywords
   });
 
   await saveAndPublish({ page });

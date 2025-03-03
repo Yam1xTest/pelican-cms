@@ -8,6 +8,8 @@ import { createAndPublishHomepage, deleteHomepage } from "./helpers/homepage-hel
 import { createAndPublishContactZooPage, deleteContactZooPage } from "./helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
 import qs from "qs";
 import { MOCK_HOME_SERVICES, MOCK_SEO, MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD, MOCK_HOME_TICKETS, MOCK_TICKETS } from "./helpers/mocks";
+import { createAndPublishNewsPage, deleteNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
+import { createAndPublishDocumentsPage, deleteDocumentsPage } from "./helpers/documents-page-helpers/documents-page-helpers";
 
 
 test.describe(`API response tests`, () => {
@@ -119,7 +121,7 @@ test.describe(`API response tests`, () => {
     );
   });
 
-  test.describe(`ContactZoo response tests`, () => {
+  test.describe(`ContactZoo page response tests`, () => {
     test.beforeEach(async () => {
       await deleteContactZooPage();
 
@@ -140,6 +142,44 @@ test.describe(`API response tests`, () => {
       async () => await checkContactZooPageResponseTest({ page })
     );
   });
+
+  test.describe(`News page response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteNewsPage();
+    });
+
+    test.afterEach(async () => {
+      await deleteNewsPage();
+    });
+
+
+    test(`
+      GIVEN empty news page
+      WHEN fill out the news page
+      SHOULD get a response news page
+      `,
+      async () => await checkNewsPageResponseTest({ page })
+    );
+  });
+
+  test.describe(`Documents page response tests`, () => {
+    test.beforeEach(async () => {
+      await deleteDocumentsPage();
+    });
+
+    test.afterEach(async () => {
+      await deleteDocumentsPage();
+    });
+
+
+    test(`
+      GIVEN empty documents page
+      WHEN fill out the documents page
+      SHOULD get a response documents  page
+      `,
+      async () => await checkDocumentsPageResponseTest({ page })
+    );
+  });
 })
 
 
@@ -157,7 +197,8 @@ async function checkNewsResponseTest({
         title,
         description,
         innerContent: `<p>${innerContent}</p>`,
-        slug: 'e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr'
+        slug: 'e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr',
+        seo: MOCK_SEO
       }
     ]
   };
@@ -167,9 +208,9 @@ async function checkNewsResponseTest({
     title,
     description,
     innerContent,
+    seo: MOCK_SEO,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
-
 
   const newsResponse = (await axios.get(getStrapiUrl({ path: '/api/news?populate=*' }))).data;
   const newsWithPrefix = getNewsWithTestPrefix({ news: newsResponse });
@@ -180,7 +221,12 @@ async function checkNewsResponseTest({
         title: newsWithPrefix[0].title,
         description: newsWithPrefix[0].description,
         innerContent: newsWithPrefix[0].innerContent,
-        slug: newsWithPrefix[0].slug
+        slug: newsWithPrefix[0].slug,
+        seo: {
+          metaTitle: newsWithPrefix[0].seo.metaTitle,
+          metaDescription: newsWithPrefix[0].seo.metaDescription,
+          keywords: newsWithPrefix[0].seo.keywords
+        }
       }
     ]
   })
@@ -189,6 +235,92 @@ async function checkNewsResponseTest({
   await expect(newsWithPrefix[0].image.url)
     .not
     .toBeNull();
+}
+
+async function checkNewsPageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const newsTitle = 'Новости';
+  const expectedNewsPageResponse = {
+    data: {
+      newsTitle,
+      seo: MOCK_SEO
+    }
+  };
+
+  await createAndPublishNewsPage({
+    page,
+    newsTitle,
+    seo: MOCK_SEO
+  })
+
+  const queryParams = {
+    populate: [
+      `seo`,
+    ],
+  };
+
+  const newsPageResponse = (await axios.get(getStrapiUrl({
+    path: `/api/news-page?${qs.stringify(queryParams)}`
+  }))).data;
+
+
+  await expect({
+    data: {
+      newsTitle: newsPageResponse.data.title,
+      seo: {
+        metaTitle: newsPageResponse.data.seo.metaTitle,
+        metaDescription: newsPageResponse.data.seo.metaDescription,
+        keywords: newsPageResponse.data.seo.keywords
+      }
+    }
+  })
+    .toEqual(expectedNewsPageResponse);
+}
+
+async function checkDocumentsPageResponseTest({
+  page
+}: {
+  page: Page
+}) {
+  const documentsTitle = 'Информация о деятельности МБУК «Зоопарк»';
+  const expectedDocumentsPageResponse = {
+    data: {
+      documentsTitle,
+      seo: MOCK_SEO
+    }
+  };
+
+  await createAndPublishDocumentsPage({
+    page,
+    documentsTitle,
+    seo: MOCK_SEO
+  })
+
+  const queryParams = {
+    populate: [
+      `seo`,
+    ],
+  };
+
+  const documentsPageResponse = (await axios.get(getStrapiUrl({
+    path: `/api/documents-page?${qs.stringify(queryParams)}`
+  }))).data;
+
+
+  await expect({
+    data: {
+      documentsTitle: documentsPageResponse.data.title,
+      seo: {
+        metaTitle: documentsPageResponse.data.seo.metaTitle,
+        metaDescription: documentsPageResponse.data.seo.metaDescription,
+        keywords: documentsPageResponse.data.seo.keywords
+      }
+    }
+  })
+    .toEqual(expectedDocumentsPageResponse);
 }
 
 async function checkDocumentsResponseTest({
@@ -261,7 +393,8 @@ async function checkDocumentsCategoriesResponseTest({
     data: [
       {
         title,
-        slug: 'e2e-smoke-otchyoty'
+        slug: 'e2e-smoke-otchyoty',
+        seo: MOCK_SEO
       }
     ]
   };
@@ -269,6 +402,7 @@ async function checkDocumentsCategoriesResponseTest({
   await createAndPublishDocumentsCategory({
     page,
     title,
+    seo: MOCK_SEO,
   });
 
   const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: '/api/documents-categories?populate=*' }))).data;
@@ -278,7 +412,12 @@ async function checkDocumentsCategoriesResponseTest({
     data: [
       {
         title: documentCategoriesWithPrefix[0].title,
-        slug: documentCategoriesWithPrefix[0].slug
+        slug: documentCategoriesWithPrefix[0].slug,
+        seo: {
+          metaTitle: documentCategoriesWithPrefix[0].seo.metaTitle,
+          metaDescription: documentCategoriesWithPrefix[0].seo.metaDescription,
+          keywords: documentCategoriesWithPrefix[0].seo.keywords,
+        },
       }
     ]
   })
@@ -450,6 +589,7 @@ async function checkHomepageResponseTest({
       seo: {
         metaTitle: homepageResponse.data.seo.metaTitle,
         metaDescription: homepageResponse.data.seo.metaDescription,
+        keywords: homepageResponse.data.seo.keywords,
       }
     }
   })
@@ -592,6 +732,7 @@ async function checkContactZooPageResponseTest({
       seo: {
         metaTitle: contactZooPageResponse.data.seo.metaTitle,
         metaDescription: contactZooPageResponse.data.seo.metaDescription,
+        keywords: contactZooPageResponse.data.seo.keywords
       }
     }
   })

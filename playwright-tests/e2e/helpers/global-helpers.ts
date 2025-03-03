@@ -133,11 +133,13 @@ export async function saveAndPublish({
 export async function createSeo({
   page,
   metaTitle,
-  metaDescription
+  metaDescription,
+  keywords,
 }: {
   page: Page,
   metaTitle: SeoBlock['metaTitle'],
-  metaDescription: SeoBlock['metaDescription']
+  metaDescription: SeoBlock['metaDescription'],
+  keywords: SeoBlock['keywords']
 }) {
   await page.getByText('No entry yet. Click to add one.')
     .last()
@@ -146,9 +148,11 @@ export async function createSeo({
   await page.locator('[name="seo.metaTitle"]')
     .fill(metaTitle);
 
-
   await page.locator('[name="seo.metaDescription"]')
     .fill(metaDescription);
+
+  await page.locator('[name="seo.keywords"]')
+    .fill(keywords);
 }
 
 export async function createHeroBlock({
