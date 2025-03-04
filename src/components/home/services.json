@@ -1,7 +1,8 @@
 {
   "collectionName": "components_home_services",
   "info": {
-    "displayName": "Services"
+    "displayName": "Блок с услугами",
+    "description": ""
   },
   "options": {},
   "attributes": {

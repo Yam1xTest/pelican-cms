@@ -1,9 +1,67 @@
+import {
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  Essentials,
+  Heading,
+  Link,
+  List,
+  ListProperties,
+  Paragraph,
+  ShowBlocks,
+  Indent,
+  IndentBlock,
+} from 'ckeditor5';
 
 import {
   type PluginConfig,
+  type Preset,
   setPluginConfig,
-  defaultHtmlPreset
+  defaultHtmlPreset,
 } from '@_sh/strapi-plugin-ckeditor';
+
+const withoutImagesPreset: Preset = {
+  name: 'withoutImagesPreset',
+  description: 'withoutImagesPreset',
+  editorConfig: {
+    licenseKey: 'GPL',
+    plugins: [
+      Bold,
+      Italic,
+      Underline,
+      Strikethrough,
+      Essentials,
+      Heading,
+      Link,
+      List,
+      ListProperties,
+      Paragraph,
+      ShowBlocks,
+      Indent,
+      IndentBlock,
+    ],
+    toolbar: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'strikethrough',
+      'underline',
+      'link',
+      '|',
+      'bulletedList',
+      'numberedList',
+      '|',
+      'showBlocks',
+      'outdent',
+      'indent',
+      '|',
+      'undo',
+      'redo',
+    ],
+  },
+};
 
 const CKEConfig = (): PluginConfig => ({
   presets: [
@@ -44,6 +102,7 @@ const CKEConfig = (): PluginConfig => ({
         ],
       },
     },
+    withoutImagesPreset,
   ],
   // theme: {},
 });
