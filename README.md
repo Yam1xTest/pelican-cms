@@ -8,7 +8,7 @@
 ```
 npm ci
 ```
-Запуск сборки админ панели [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-build)
+Запуск сборки админ панели [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-build):
 
 ```
 npm run build
@@ -16,19 +16,19 @@ npm run build
 
 Чтобы в дальнейшем успешно запустить Strapi локально, запустите команду `docker-compose --profile db-only up -d`, чтобы запустить базу данных в docker.
 
-Запуск Strapi в режиме разработки [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+Запуск Strapi в режиме разработки [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-develop):
 
 ```
 npm run develop
 ```
 
-Запуск Strapi [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-start)
+Запуск Strapi [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-start):
 
 ```
 npm run start
 ```
 
-Запуск Strapi без хранилища s3. Для работы в этом режиме вам не обязательно нужно указывать данные из s3.
+Запуск Strapi без хранилища s3. Для работы в этом режиме вам не обязательно нужно указывать данные для s3.
 ```
 npm run develop:no-s3
 npm run start:no-s3
