@@ -171,11 +171,11 @@ export async function createHeroBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'Hero'
+    name: 'Первый блок'
   }).click();
 
   await page.getByRole('button', {
-    name: 'Hero'
+    name: 'Первый блок'
   }).click();
 
   await page.locator(`[name="blocks.${id}.title"]`)
@@ -224,11 +224,11 @@ export async function createTextAndMediaBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'TextAndMedia'
+    name: 'Блок с картинкой/видео'
   }).click();
 
   await page.getByRole('button', {
-    name: 'TextAndMedia'
+    name: 'Блок с картинкой/видео'
   }).click();
 
   await page.locator(`[name="blocks.${id}.title"]`)
@@ -261,11 +261,11 @@ export async function createImageWithButtonGridBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'ImageWithButtonGrid'
+    name: 'Блок с картинкой и кнопкой'
   }).click();
 
   await page.getByRole('button', {
-    name: 'ImageWithButtonGrid'
+    name: 'Блок с картинкой и кнопкой'
   }).click();
 
   await page.locator(`[name="blocks.${id}.title"]`)
@@ -308,11 +308,11 @@ export async function createTicketsBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'Tickets'
+    name: 'Блок с билетами'
   }).click();
 
   await page.getByRole('button', {
-    name: 'Tickets'
+    name: 'Блок с билетами'
   }).click();
 
   await page.locator(`[name="blocks.${id}.title"]`)

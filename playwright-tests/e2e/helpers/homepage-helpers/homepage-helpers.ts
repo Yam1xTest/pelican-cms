@@ -148,11 +148,11 @@ async function createServicesBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'Services'
+    name: 'Блок с услугами'
   }).click();
 
   await page.getByRole('button', {
-    name: 'Services'
+    name: 'Блок с услугами'
   }).click();
 
   await page.locator('[name="blocks.2.cards.title"]')
@@ -212,11 +212,11 @@ async function createMapCardBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'MapCard'
+    name: 'Блок с картой'
   }).click();
 
   await page.getByRole('button', {
-    name: 'MapCard'
+    name: 'Блок с картой'
   }).click();
 
   await page.locator('[name="blocks.4.title"]')
@@ -264,11 +264,11 @@ async function createTicketsBlock({
   }).click();
 
   await page.getByRole('button', {
-    name: 'Tickets'
+    name: 'Блок с билетами'
   }).click();
 
   await page.getByRole('button', {
-    name: 'Tickets'
+    name: 'Блок с билетами'
   }).click();
 
   await page.locator('[name="blocks.5.title"]')
