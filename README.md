@@ -1,49 +1,72 @@
 # pelican-cms
 
-## How to use
+### Локальный запуск
 
-### Local launch
+Добавьте файл .env на основе .env.example.
 
-Add a .env file based on .env.example
-
-Install the required dependencies
+Установите необходимые зависимости:
 ```
 npm ci
 ```
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+Запуск сборки админ панели [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-build):
 
 ```
 npm run build
 ```
 
-To further enable Strapi successfully locally, run `docker-compose --profile db-only up -d` command to enable the database in docker.
+Чтобы в дальнейшем успешно запустить Strapi локально, запустите команду `docker-compose --profile db-only up -d`, чтобы запустить базу данных в docker.
 
-Start your Strapi application. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+Запуск Strapi в режиме разработки [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-develop):
+
+```
+npm run develop
+```
+
+Запуск Strapi [Подробнее читать тут](https://docs.strapi.io/dev-docs/cli#strapi-start):
 
 ```
 npm run start
 ```
 
-Start your Strapi application without s3. To work in this mode, you do not need to specify data from s3.
+Запуск Strapi без хранилища s3. Для работы в этом режиме вам не обязательно нужно указывать данные для s3.
 ```
+npm run develop:no-s3
 npm run start:no-s3
 ```
 
-Go to http://localhost:1337/admin
+Strapi будет доступна по следующему url http://localhost:1337/admin
 
-Open the swagger documentation.
+Если вы не переопределяли данные администратора в .env, по умолчанию они будут такие:
+- `email`: *admin@init-strapi-admin.strapi.io*
+- `password`: *admin*
 
-Go to http://localhost:1337/documentation
+Документации swagger доступна по следующему url http://localhost:1337/documentation
 
-### In Docker
+
+### Запуск тестов на Playwright
+
+После успешного запуска Strapi (его можно открыть по адресу http://localhost:1337/admin), оставив первый терминал активным в отдельной вкладке терминала, вы можете запустить тесты в headless-режиме (без пользовательского интерфейса браузера), выполнив следующий скрипт:
+
+*для успешного прохождения тестов, которые проверяют взаимодействие CMS и UI необходимо запустить проект [pelican-ui](https://github.com/TourmalineCore/pelican-ui) в режиме работы с API*
+
+```bash
+npm run test-e2e
+```
+
+Запуск тестов в режиме с интерфейсом Playwright:
+
+```bash
+npm run test-e2e:ui
+```
+
+### Запуск в Docker
 
 #### Profiles
-- local-run - runs cms app and the database
-- db-only - runs only database
+- local-run - запуск cms и базы данных
+- db-only - запуск только базы данных
 
-To enable Strapi and the database in Docker, run the command `docker-compose --profile local-run up -d`
+Для запуска Strapi и базы данных в Docker, выполните следующую команду `docker-compose --profile local-run up -d`
 
-Go to http://localhost:1337/admin
+*В docker, Strapi запускает в режиме без хранилища s3*
 
-Link to full documentation: https://github.com/TourmalineCore/pelican-documentation/blob/master/README.md
-
+Strapi будет доступна по следующему url http://localhost:1337/admin
