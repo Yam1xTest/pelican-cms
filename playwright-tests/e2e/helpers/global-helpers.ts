@@ -169,6 +169,8 @@ export async function createSeo({
 
   await page.locator('[name="seo.keywords"]')
     .fill(keywords);
+
+  await page.waitForTimeout(500);
 }
 
 export async function createHeroBlock({
