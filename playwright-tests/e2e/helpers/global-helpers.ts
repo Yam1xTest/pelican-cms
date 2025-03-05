@@ -22,7 +22,7 @@ export async function gotoUI({
   page: Page
   path?: string
 }) {
-  await page.goto(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/${path}`, {
+  await page.goto(`${process.env.FRONTEND_URL || 'http://localhost:3000'}${path}`, {
     waitUntil: 'networkidle'
   })
 }
@@ -117,17 +117,33 @@ export async function saveAndPublish({
 }: {
   page: Page
 }) {
+  const saveResponsePromise = page.waitForResponse((response) => {
+    const responseType = (response.url().includes('/single-types/') ? 'PUT' : 'POST');
+
+    return (
+      response.url().includes('/content-manager/') &&
+      response.request().method() === responseType
+    )
+  });
+
   await page.getByRole(`button`, {
     name: 'Save'
   })
     .click();
+
+  await saveResponsePromise;
+
+  const publishResponsePromise = page.waitForResponse((response) =>
+    response.url().includes('/content-manager/') &&
+    response.request().method() === 'POST'
+  );
 
   await page.getByRole(`button`, {
     name: 'Publish'
   })
     .click();
 
-  await page.waitForTimeout(500);
+  await publishResponsePromise;
 }
 
 export async function createSeo({
