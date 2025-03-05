@@ -1,4 +1,4 @@
-import test, { expect, Page } from "@playwright/test";
+import test, { Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
 import { createAndPublishNewsPage, deleteNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
@@ -76,16 +76,13 @@ async function e2eNewsCreateAndViewTest({
     path: '/news'
   })
 
-  await expect(page.getByText(title))
-    .toBeVisible();
+  await page.getByText(title).waitFor();
 
-  await expect(page.getByText(description))
-    .toBeVisible();
+  await page.getByText(description).waitFor();
 
   await page.getByTestId(`cards-card`)
     .first()
     .click();
 
-  await expect(page.getByText(innerContent))
-    .toBeVisible();
+  await page.getByText(innerContent).waitFor();
 }
