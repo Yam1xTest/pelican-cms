@@ -67,6 +67,6 @@ npm run test-e2e:ui
 
 Для запуска Strapi и базы данных в Docker, выполните следующую команду `docker-compose --profile local-run up -d`
 
-*В docker, Strapi запускает в режиме без хранилища s3*
+*Обязательно нужно указать данные от s3*
 
 Strapi будет доступна по следующему url http://localhost:1337/admin
