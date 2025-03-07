@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_tickets_popup_sokrashhyonnyj_bilet",
+  "info": {
+    "displayName": "Сокращённый билет",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "category": {
+      "type": "text",
+      "required": true
+    },
+    "price": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

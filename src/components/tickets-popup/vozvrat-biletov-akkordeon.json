@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_tickets_popup_vozvrat_biletov_akkordeon",
+  "info": {
+    "displayName": "Возврат билетов аккордеон",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "customField",
+      "options": {
+        "preset": "withoutImagesPreset"
+      },
+      "required": true,
+      "customField": "plugin::ckeditor5.CKEditor"
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "button.button",
+      "required": true
+    }
+  }
+}

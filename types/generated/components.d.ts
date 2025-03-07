@@ -277,6 +277,129 @@ export interface SharedTickets extends Struct.ComponentSchema {
   };
 }
 
+export interface TicketsPopupBiletSAkkordeonom extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_bilet_s_akkordeonom';
+  info: {
+    description: '';
+    displayName: '\u0411\u0438\u043B\u0435\u0442 \u0441 \u0430\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D\u043E\u043C';
+    icon: 'dashboard';
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'button.button', false> &
+      Schema.Attribute.Required;
+    categories: Schema.Attribute.Component<
+      'tickets-popup.lgotnaya-kategoriya',
+      true
+    > &
+      Schema.Attribute.Required;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TicketsPopupLgotnayaKategoriya extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_lgotnaya_kategoriya';
+  info: {
+    description: '';
+    displayName: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F';
+    icon: 'dashboard';
+  };
+  attributes: {
+    category: Schema.Attribute.Text & Schema.Attribute.Required;
+    price: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TicketsPopupPravilaPoseshheniyaAkkordeon
+  extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_pravila_poseshheniya_akkordeon';
+  info: {
+    description: '';
+    displayName: '\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u044F \u0430\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D';
+    icon: 'dashboard';
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'button.button', false> &
+      Schema.Attribute.Required;
+    images: Schema.Attribute.Media<'images' | 'files', true> &
+      Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TicketsPopupSokrashhyonnyjBilet
+  extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_sokrashhyonnyj_bilet';
+  info: {
+    displayName: '\u0421\u043E\u043A\u0440\u0430\u0449\u0451\u043D\u043D\u044B\u0439 \u0431\u0438\u043B\u0435\u0442';
+    icon: 'dashboard';
+  };
+  attributes: {
+    category: Schema.Attribute.Text & Schema.Attribute.Required;
+    description: Schema.Attribute.Text;
+    price: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TicketsPopupVozvratBiletovAkkordeon
+  extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_vozvrat_biletov_akkordeon';
+  info: {
+    displayName: '\u0412\u043E\u0437\u0432\u0440\u0430\u0442 \u0431\u0438\u043B\u0435\u0442\u043E\u0432 \u0430\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D';
+    icon: 'dashboard';
+  };
+  attributes: {
+    button: Schema.Attribute.Component<'button.button', false> &
+      Schema.Attribute.Required;
+    description: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
+      Schema.Attribute.CustomField<
+        'plugin::ckeditor5.CKEditor',
+        {
+          preset: 'withoutImagesPreset';
+        }
+      >;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface TicketsPopupVsplyvayushheeOknoPokupkiBiletov
+  extends Struct.ComponentSchema {
+  collectionName: 'components_tickets_popup_vsplyvayushhee_okno_pokupki_biletov';
+  info: {
+    description: '';
+    displayName: '\u0412\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0435\u0435 \u043E\u043A\u043D\u043E \u043F\u043E\u043A\u0443\u043F\u043A\u0438 \u0431\u0438\u043B\u0435\u0442\u043E\u0432';
+    icon: 'dashboard';
+  };
+  attributes: {
+    accordionTicketReturn: Schema.Attribute.Component<
+      'tickets-popup.vozvrat-biletov-akkordeon',
+      false
+    > &
+      Schema.Attribute.Required;
+    accordionVisitingRules: Schema.Attribute.Component<
+      'tickets-popup.pravila-poseshheniya-akkordeon',
+      false
+    > &
+      Schema.Attribute.Required;
+    button: Schema.Attribute.Component<'button.button', false> &
+      Schema.Attribute.Required;
+    discountTicket: Schema.Attribute.Component<
+      'tickets-popup.bilet-s-akkordeonom',
+      false
+    > &
+      Schema.Attribute.Required;
+    generalTickets: Schema.Attribute.Component<
+      'tickets-popup.sokrashhyonnyj-bilet',
+      true
+    > &
+      Schema.Attribute.Required;
+    link: Schema.Attribute.String & Schema.Attribute.Required;
+    note: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface TicketsTicket extends Struct.ComponentSchema {
   collectionName: 'components_ticket_tickets';
   info: {
@@ -335,6 +458,12 @@ declare module '@strapi/strapi' {
       'shared.seo': SharedSeo;
       'shared.text-and-media': SharedTextAndMedia;
       'shared.tickets': SharedTickets;
+      'tickets-popup.bilet-s-akkordeonom': TicketsPopupBiletSAkkordeonom;
+      'tickets-popup.lgotnaya-kategoriya': TicketsPopupLgotnayaKategoriya;
+      'tickets-popup.pravila-poseshheniya-akkordeon': TicketsPopupPravilaPoseshheniyaAkkordeon;
+      'tickets-popup.sokrashhyonnyj-bilet': TicketsPopupSokrashhyonnyjBilet;
+      'tickets-popup.vozvrat-biletov-akkordeon': TicketsPopupVozvratBiletovAkkordeon;
+      'tickets-popup.vsplyvayushhee-okno-pokupki-biletov': TicketsPopupVsplyvayushheeOknoPokupkiBiletov;
       'tickets.ticket': TicketsTicket;
       'tickets.tickets': TicketsTickets;
     }

@@ -1,0 +1,53 @@
+{
+  "collectionName": "components_tickets_popup_vsplyvayushhee_okno_pokupki_biletov",
+  "info": {
+    "displayName": "Всплывающее окно покупки билетов",
+    "icon": "dashboard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    },
+    "generalTickets": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tickets-popup.sokrashhyonnyj-bilet",
+      "required": true
+    },
+    "discountTicket": {
+      "type": "component",
+      "repeatable": false,
+      "component": "tickets-popup.bilet-s-akkordeonom",
+      "required": true
+    },
+    "accordionVisitingRules": {
+      "type": "component",
+      "repeatable": false,
+      "component": "tickets-popup.pravila-poseshheniya-akkordeon",
+      "required": true
+    },
+    "accordionTicketReturn": {
+      "type": "component",
+      "repeatable": false,
+      "component": "tickets-popup.vozvrat-biletov-akkordeon",
+      "required": true
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "button.button",
+      "required": true
+    },
+    "note": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
