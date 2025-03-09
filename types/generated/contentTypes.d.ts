@@ -556,7 +556,7 @@ export interface ApiHeaderHeader extends Struct.SingleTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     ticketsPopup: Schema.Attribute.Component<
-      'tickets-popup.vsplyvayushhee-okno-pokupki-biletov',
+      'tickets-popup.tickets-popup',
       false
     > &
       Schema.Attribute.Required;

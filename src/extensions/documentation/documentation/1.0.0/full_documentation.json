@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-07T05:28:35.411Z"
+    "x-generation-date": "2025-03-09T09:23:11.685Z"
   },
   "x-strapi-config": {
     "plugins": []
@@ -6073,7 +6073,7 @@
             "type": "object",
             "properties": {
               "ticketsPopup": {
-                "$ref": "#/components/schemas/TicketsPopupVsplyvayushheeOknoPokupkiBiletovComponent"
+                "$ref": "#/components/schemas/TicketsPopupTicketsPopupComponent"
               },
               "locale": {
                 "type": "string"
@@ -6144,7 +6144,7 @@
             "type": "string"
           },
           "ticketsPopup": {
-            "$ref": "#/components/schemas/TicketsPopupVsplyvayushheeOknoPokupkiBiletovComponent"
+            "$ref": "#/components/schemas/TicketsPopupTicketsPopupComponent"
           },
           "createdAt": {
             "type": "string",
@@ -6195,7 +6195,7 @@
                   "type": "string"
                 },
                 "ticketsPopup": {
-                  "$ref": "#/components/schemas/TicketsPopupVsplyvayushheeOknoPokupkiBiletovComponent"
+                  "$ref": "#/components/schemas/TicketsPopupTicketsPopupComponent"
                 },
                 "createdAt": {
                   "type": "string",
@@ -6264,7 +6264,7 @@
           }
         }
       },
-      "TicketsPopupSokrashhyonnyjBiletComponent": {
+      "TicketsPopupShortenedTicketComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -6281,7 +6281,7 @@
           }
         }
       },
-      "TicketsPopupLgotnayaKategoriyaComponent": {
+      "TicketsPopupCategoryComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -6295,13 +6295,13 @@
           }
         }
       },
-      "TicketsPopupBiletSAkkordeonomComponent": {
+      "TicketsPopupAccordionTicketComponent": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
           },
-          "title": {
+          "category": {
             "type": "string"
           },
           "description": {
@@ -6310,7 +6310,7 @@
           "categories": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketsPopupLgotnayaKategoriyaComponent"
+              "$ref": "#/components/schemas/TicketsPopupCategoryComponent"
             }
           },
           "button": {
@@ -6318,14 +6318,11 @@
           }
         }
       },
-      "TicketsPopupPravilaPoseshheniyaAkkordeonComponent": {
+      "TicketsPopupAccordionVisitingRulesComponent": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
-          },
-          "title": {
-            "type": "string"
           },
           "images": {
             "type": "array",
@@ -6464,51 +6461,62 @@
           }
         }
       },
-      "TicketsPopupVozvratBiletovAkkordeonComponent": {
+      "TicketsPopupRefundListItemComponent": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
           },
-          "title": {
+          "refundReason": {
+            "type": "string"
+          }
+        }
+      },
+      "TicketsPopupAccordionTicketRefundComponent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "refundHead": {
             "type": "string"
           },
-          "description": {
-            "type": "string"
+          "refundBody": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketsPopupRefundListItemComponent"
+            }
           },
           "button": {
             "$ref": "#/components/schemas/ButtonButtonComponent"
           }
         }
       },
-      "TicketsPopupVsplyvayushheeOknoPokupkiBiletovComponent": {
+      "TicketsPopupTicketsPopupComponent": {
         "type": "object",
         "properties": {
           "id": {
             "type": "number"
           },
-          "title": {
-            "type": "string"
-          },
-          "link": {
+          "generalTicketsLink": {
             "type": "string"
           },
           "generalTickets": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TicketsPopupSokrashhyonnyjBiletComponent"
+              "$ref": "#/components/schemas/TicketsPopupShortenedTicketComponent"
             }
           },
-          "discountTicket": {
-            "$ref": "#/components/schemas/TicketsPopupBiletSAkkordeonomComponent"
+          "subsidizedTicket": {
+            "$ref": "#/components/schemas/TicketsPopupAccordionTicketComponent"
           },
           "accordionVisitingRules": {
-            "$ref": "#/components/schemas/TicketsPopupPravilaPoseshheniyaAkkordeonComponent"
+            "$ref": "#/components/schemas/TicketsPopupAccordionVisitingRulesComponent"
           },
-          "accordionTicketReturn": {
-            "$ref": "#/components/schemas/TicketsPopupVozvratBiletovAkkordeonComponent"
+          "accordionTicketRefund": {
+            "$ref": "#/components/schemas/TicketsPopupAccordionTicketRefundComponent"
           },
-          "button": {
+          "buyTicketsButton": {
             "$ref": "#/components/schemas/ButtonButtonComponent"
           },
           "note": {

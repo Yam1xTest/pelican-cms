@@ -1,13 +1,13 @@
 {
-  "collectionName": "components_tickets_popup_bilet_s_akkordeonom",
+  "collectionName": "components_tickets_popup_accordion_tickets",
   "info": {
-    "displayName": "Билет с аккордеоном",
+    "displayName": "accordionTicket",
     "icon": "dashboard",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
+    "category": {
       "type": "string",
       "required": true
     },
@@ -18,7 +18,7 @@
     "categories": {
       "type": "component",
       "repeatable": true,
-      "component": "tickets-popup.lgotnaya-kategoriya",
+      "component": "tickets-popup.category",
       "required": true
     },
     "button": {

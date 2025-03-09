@@ -1,52 +1,48 @@
 {
-  "collectionName": "components_tickets_popup_vsplyvayushhee_okno_pokupki_biletov",
+  "collectionName": "components_tickets_popup_tickets_popups",
   "info": {
-    "displayName": "Всплывающее окно покупки билетов",
+    "displayName": "ticketsPopup",
     "icon": "dashboard",
     "description": ""
   },
   "options": {},
   "attributes": {
-    "title": {
-      "type": "string",
-      "required": true
-    },
-    "link": {
+    "generalTicketsLink": {
       "type": "string",
       "required": true
     },
     "generalTickets": {
       "type": "component",
       "repeatable": true,
-      "component": "tickets-popup.sokrashhyonnyj-bilet",
+      "component": "tickets-popup.shortened-ticket",
       "required": true
     },
-    "discountTicket": {
+    "subsidizedTicket": {
       "type": "component",
       "repeatable": false,
-      "component": "tickets-popup.bilet-s-akkordeonom",
+      "component": "tickets-popup.accordion-ticket",
       "required": true
     },
     "accordionVisitingRules": {
       "type": "component",
       "repeatable": false,
-      "component": "tickets-popup.pravila-poseshheniya-akkordeon",
+      "component": "tickets-popup.accordion-visiting-rules",
       "required": true
     },
-    "accordionTicketReturn": {
+    "accordionTicketRefund": {
       "type": "component",
       "repeatable": false,
-      "component": "tickets-popup.vozvrat-biletov-akkordeon",
+      "component": "tickets-popup.accordion-ticket-refund",
       "required": true
     },
-    "button": {
+    "buyTicketsButton": {
       "type": "component",
       "repeatable": false,
       "component": "button.button",
       "required": true
     },
     "note": {
-      "type": "text",
+      "type": "string",
       "required": true
     }
   }

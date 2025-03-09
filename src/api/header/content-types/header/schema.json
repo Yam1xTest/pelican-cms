@@ -14,7 +14,7 @@
     "ticketsPopup": {
       "type": "component",
       "repeatable": false,
-      "component": "tickets-popup.vsplyvayushhee-okno-pokupki-biletov",
+      "component": "tickets-popup.tickets-popup",
       "required": true
     }
   }

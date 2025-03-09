@@ -1,7 +1,7 @@
 {
-  "collectionName": "components_tickets_popup_lgotnaya_kategoriya",
+  "collectionName": "components_tickets_popup_categories",
   "info": {
-    "displayName": "Категория",
+    "displayName": "category",
     "icon": "dashboard",
     "description": ""
   },
