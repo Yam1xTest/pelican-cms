@@ -1,7 +1,7 @@
 {
   "collectionName": "components_tickets_popup_accordion_ticket_refunds",
   "info": {
-    "displayName": "accordionTicketRefund",
+    "displayName": "Аккордеон \"Возврат билетов\"",
     "icon": "dashboard",
     "description": ""
   },

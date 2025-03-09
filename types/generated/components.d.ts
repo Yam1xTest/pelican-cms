@@ -281,7 +281,7 @@ export interface TicketsPopupAccordionTicket extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_accordion_tickets';
   info: {
     description: '';
-    displayName: 'accordionTicket';
+    displayName: '\u0411\u0438\u043B\u0435\u0442 \u0441 \u0430\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D\u043E\u043C';
     icon: 'dashboard';
   };
   attributes: {
@@ -299,7 +299,7 @@ export interface TicketsPopupAccordionTicketRefund
   collectionName: 'components_tickets_popup_accordion_ticket_refunds';
   info: {
     description: '';
-    displayName: 'accordionTicketRefund';
+    displayName: '\u0410\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D "\u0412\u043E\u0437\u0432\u0440\u0430\u0442 \u0431\u0438\u043B\u0435\u0442\u043E\u0432"';
     icon: 'dashboard';
   };
   attributes: {
@@ -318,7 +318,8 @@ export interface TicketsPopupAccordionVisitingRules
   extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_accordion_visiting_rules';
   info: {
-    displayName: 'accordionVisitingRules';
+    description: '';
+    displayName: '\u0410\u043A\u043A\u043E\u0440\u0434\u0435\u043E\u043D "\u041F\u0440\u0430\u0432\u0438\u043B\u0430 \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u044F"';
     icon: 'dashboard';
   };
   attributes: {
@@ -333,7 +334,7 @@ export interface TicketsPopupCategory extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_categories';
   info: {
     description: '';
-    displayName: 'category';
+    displayName: '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F';
     icon: 'dashboard';
   };
   attributes: {
@@ -346,7 +347,7 @@ export interface TicketsPopupRefundListItem extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_refund_list_items';
   info: {
     description: '';
-    displayName: 'refundListItem';
+    displayName: '\u041F\u0440\u0430\u0432\u0438\u043B\u043E \u0432\u043E\u0437\u0432\u0440\u0430\u0442\u0430 \u0431\u0438\u043B\u0435\u0442\u043E\u0432';
     icon: 'dashboard';
   };
   attributes: {
@@ -358,7 +359,7 @@ export interface TicketsPopupShortenedTicket extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_shortened_tickets';
   info: {
     description: '';
-    displayName: 'shortenedTicket';
+    displayName: '\u0421\u043E\u043A\u0440\u0430\u0449\u0451\u043D\u043D\u044B\u0439 \u0431\u0438\u043B\u0435\u0442';
     icon: 'dashboard';
   };
   attributes: {
@@ -372,7 +373,7 @@ export interface TicketsPopupTicketsPopup extends Struct.ComponentSchema {
   collectionName: 'components_tickets_popup_tickets_popups';
   info: {
     description: '';
-    displayName: 'ticketsPopup';
+    displayName: '\u0412\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0435\u0435 \u043E\u043A\u043D\u043E \u043F\u043E\u043A\u0443\u043F\u043A\u0438 \u0431\u0438\u043B\u0435\u0442\u043E\u0432';
     icon: 'dashboard';
   };
   attributes: {

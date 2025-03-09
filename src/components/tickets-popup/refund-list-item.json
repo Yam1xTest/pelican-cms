@@ -1,7 +1,7 @@
 {
   "collectionName": "components_tickets_popup_refund_list_items",
   "info": {
-    "displayName": "refundListItem",
+    "displayName": "Правило возврата билетов",
     "icon": "dashboard",
     "description": ""
   },
