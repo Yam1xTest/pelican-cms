@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-03-09T12:04:49.180Z"
+    "x-generation-date": "2025-03-11T03:38:47.306Z"
   },
   "x-strapi-config": {
     "plugins": []
@@ -6318,7 +6318,7 @@
           }
         }
       },
-      "TicketsPopupAccordionVisitingRulesComponent": {
+      "TicketsPopupVisitingRulesAccordionComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -6472,7 +6472,7 @@
           }
         }
       },
-      "TicketsPopupAccordionTicketRefundComponent": {
+      "TicketsPopupTicketRefundAccordionComponent": {
         "type": "object",
         "properties": {
           "id": {
@@ -6510,17 +6510,17 @@
           "subsidizedTicket": {
             "$ref": "#/components/schemas/TicketsPopupAccordionTicketComponent"
           },
-          "accordionVisitingRules": {
-            "$ref": "#/components/schemas/TicketsPopupAccordionVisitingRulesComponent"
-          },
-          "accordionTicketRefund": {
-            "$ref": "#/components/schemas/TicketsPopupAccordionTicketRefundComponent"
-          },
           "buyTicketsButton": {
             "$ref": "#/components/schemas/ButtonButtonComponent"
           },
           "note": {
             "type": "string"
+          },
+          "visitingRulesAccordion": {
+            "$ref": "#/components/schemas/TicketsPopupVisitingRulesAccordionComponent"
+          },
+          "ticketRefundAccordion": {
+            "$ref": "#/components/schemas/TicketsPopupTicketRefundAccordionComponent"
           }
         }
       },
