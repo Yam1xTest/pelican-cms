@@ -853,16 +853,16 @@ async function checkHeaderSingleTypeResponseTest({
           },
         },
         ticketRefundAccordion: {
-          refundHead: ticketsPopupBlock.TicketRefundAccordion.refundHead,
+          refundHead: ticketsPopupBlock.ticketRefundAccordion.refundHead,
           refundBody: [
             {
               id: 0,
-              refundReason: ticketsPopupBlock.TicketRefundAccordion.refundBody[0].refundReason,
+              refundReason: ticketsPopupBlock.ticketRefundAccordion.refundBody[0].refundReason,
             },
           ],
           button: {
-            label: ticketsPopupBlock.TicketRefundAccordion.button.label,
-            link: ticketsPopupBlock.TicketRefundAccordion.button.link,
+            label: ticketsPopupBlock.ticketRefundAccordion.button.label,
+            link: ticketsPopupBlock.ticketRefundAccordion.button.link,
           },
         },
         buyTicketsButton: {
