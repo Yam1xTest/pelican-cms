@@ -138,7 +138,7 @@ export const MOCK_TICKETS_POPUP = {
       link: `https://vk.com/topic-71671982_48253263`,
     },
   },
-  accordionVisitingRules: {
+  visitingRulesAccordion: {
     images: [
       {
         url: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
@@ -150,7 +150,7 @@ export const MOCK_TICKETS_POPUP = {
       link: `http://chelzoo.ru/media/articles/2022/05/06/prikaz-221-ot-050522-o-pravilah-posescheniya-2.pdf`,
     },
   },
-  accordionTicketRefund: {
+  ticketRefundAccordion: {
     refundHead: `Возврат билета осуществляется в следующих случаях:`,
     refundBody: [
       {

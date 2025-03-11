@@ -780,9 +780,9 @@ async function checkHeaderSingleTypeResponseTest({
   page: Page
 }) {
   const {
-    accordionVisitingRules: {
+    visitingRulesAccordion: {
       images: ticketsPopupImagePath,
-      ...expectedAccordionVisitingRules
+      ...expectedVisitingRulesAccordion
     },
     ...expectedTicketsPopup
   } = MOCK_TICKETS_POPUP;
@@ -791,7 +791,7 @@ async function checkHeaderSingleTypeResponseTest({
     data: {
       ticketsPopup: {
         ...expectedTicketsPopup,
-        accordionVisitingRules: expectedAccordionVisitingRules,
+        visitingRulesAccordion: expectedVisitingRulesAccordion,
       },
     },
   };
@@ -806,10 +806,10 @@ async function checkHeaderSingleTypeResponseTest({
       `ticketsPopup.generalTickets`,
       `ticketsPopup.subsidizedTicket.categories`,
       `ticketsPopup.subsidizedTicket.button`,
-      `ticketsPopup.accordionVisitingRules.images`,
-      `ticketsPopup.accordionVisitingRules.button`,
-      `ticketsPopup.accordionTicketRefund.refundBody`,
-      `ticketsPopup.accordionTicketRefund.button`,
+      `ticketsPopup.visitingRulesAccordion.images`,
+      `ticketsPopup.visitingRulesAccordion.button`,
+      `ticketsPopup.ticketRefundAccordion.refundBody`,
+      `ticketsPopup.ticketRefundAccordion.button`,
       `ticketsPopup.buyTicketsButton`,
     ],
   };
@@ -846,23 +846,23 @@ async function checkHeaderSingleTypeResponseTest({
             link: ticketsPopupBlock.subsidizedTicket.button.link,
           },
         },
-        accordionVisitingRules: {
+        visitingRulesAccordion: {
           button: {
-            label: ticketsPopupBlock.accordionVisitingRules.button.label,
-            link: ticketsPopupBlock.accordionVisitingRules.button.link,
+            label: ticketsPopupBlock.visitingRulesAccordion.button.label,
+            link: ticketsPopupBlock.visitingRulesAccordion.button.link,
           },
         },
-        accordionTicketRefund: {
-          refundHead: ticketsPopupBlock.accordionTicketRefund.refundHead,
+        ticketRefundAccordion: {
+          refundHead: ticketsPopupBlock.TicketRefundAccordion.refundHead,
           refundBody: [
             {
               id: 0,
-              refundReason: ticketsPopupBlock.accordionTicketRefund.refundBody[0].refundReason,
+              refundReason: ticketsPopupBlock.TicketRefundAccordion.refundBody[0].refundReason,
             },
           ],
           button: {
-            label: ticketsPopupBlock.accordionTicketRefund.button.label,
-            link: ticketsPopupBlock.accordionTicketRefund.button.link,
+            label: ticketsPopupBlock.TicketRefundAccordion.button.label,
+            link: ticketsPopupBlock.TicketRefundAccordion.button.link,
           },
         },
         buyTicketsButton: {
@@ -875,7 +875,7 @@ async function checkHeaderSingleTypeResponseTest({
   })
     .toEqual(expectedHeaderSingleTypeResponse);
 
-  await expect(ticketsPopupBlock.accordionVisitingRules.images[0].url)
+  await expect(ticketsPopupBlock.visitingRulesAccordion.images[0].url)
     .not
     .toBeNull();
 }

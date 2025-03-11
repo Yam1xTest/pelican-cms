@@ -14,8 +14,8 @@ export async function createAndPublishHeaderSingleType({
     generalTicketsLink,
     generalTickets,
     subsidizedTicket,
-    accordionVisitingRules,
-    accordionTicketRefund,
+    visitingRulesAccordion,
+    ticketRefundAccordion,
     buyTicketsButton,
     note,
   } = ticketsPopup;
@@ -32,8 +32,8 @@ export async function createAndPublishHeaderSingleType({
     generalTicketsLink,
     generalTickets,
     subsidizedTicket,
-    accordionVisitingRules,
-    accordionTicketRefund,
+    visitingRulesAccordion,
+    ticketRefundAccordion,
     buyTicketsButton,
     note,
   });
@@ -54,8 +54,8 @@ export async function createTicketsPopupBlock({
   generalTicketsLink,
   generalTickets,
   subsidizedTicket,
-  accordionVisitingRules,
-  accordionTicketRefund,
+  visitingRulesAccordion,
+  ticketRefundAccordion,
   buyTicketsButton,
   note,
 }: {
@@ -63,8 +63,8 @@ export async function createTicketsPopupBlock({
   generalTicketsLink,
   generalTickets,
   subsidizedTicket,
-  accordionVisitingRules,
-  accordionTicketRefund,
+  visitingRulesAccordion,
+  ticketRefundAccordion,
   buyTicketsButton,
   note,
 } & TicketsPopupBlock) {
@@ -107,30 +107,30 @@ export async function createTicketsPopupBlock({
 
   await uploadFile({
     page,
-    filePath: accordionVisitingRules.images[0].url,
+    filePath: visitingRulesAccordion.images[0].url,
   });
 
-  await page.locator('[name="ticketsPopup.accordionVisitingRules.button.label"]')
-    .fill(accordionVisitingRules.button.label);
+  await page.locator('[name="ticketsPopup.visitingRulesAccordion.button.label"]')
+    .fill(visitingRulesAccordion.button.label);
 
-  await page.locator('[name="ticketsPopup.accordionVisitingRules.button.link"]')
-    .fill(accordionVisitingRules.button.link);
+  await page.locator('[name="ticketsPopup.visitingRulesAccordion.button.link"]')
+    .fill(visitingRulesAccordion.button.link);
 
-  await page.locator('[name="ticketsPopup.accordionTicketRefund.refundHead"]')
-    .fill(accordionTicketRefund.refundHead);
+  await page.locator('[name="ticketsPopup.ticketRefundAccordion.refundHead"]')
+    .fill(ticketRefundAccordion.refundHead);
 
   await page.getByText('No entry yet. Click to add one.')
     .first()
     .click();
 
-  await page.locator('[name="ticketsPopup.accordionTicketRefund.refundBody.0.refundReason"]')
-    .fill(accordionTicketRefund.refundBody[0].refundReason);
+  await page.locator('[name="ticketsPopup.ticketRefundAccordion.refundBody.0.refundReason"]')
+    .fill(ticketRefundAccordion.refundBody[0].refundReason);
 
-  await page.locator('[name="ticketsPopup.accordionTicketRefund.button.label"]')
-    .fill(accordionTicketRefund.button.label);
+  await page.locator('[name="ticketsPopup.ticketRefundAccordion.button.label"]')
+    .fill(ticketRefundAccordion.button.label);
 
-  await page.locator('[name="ticketsPopup.accordionTicketRefund.button.link"]')
-    .fill(accordionTicketRefund.button.link);
+  await page.locator('[name="ticketsPopup.ticketRefundAccordion.button.link"]')
+    .fill(ticketRefundAccordion.button.link);
 
   await page.locator('[name="ticketsPopup.buyTicketsButton.label"]')
     .fill(buyTicketsButton.label);

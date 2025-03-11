@@ -106,7 +106,7 @@ export type TicketsPopupBlock = {
       link: string,
     },
   },
-  accordionVisitingRules: {
+  visitingRulesAccordion: {
     images: {
       url: string,
       alternativeText: string,
@@ -116,7 +116,7 @@ export type TicketsPopupBlock = {
       link: string,
     },
   },
-  accordionTicketRefund: {
+  ticketRefundAccordion: {
     refundHead: string,
     refundBody: {
       id: number,
