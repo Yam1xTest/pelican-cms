@@ -192,9 +192,9 @@ test.describe(`API response tests`, () => {
     });
 
     test(`
-      GIVEN empty contact zoo page
-      WHEN fill out the contact zoo page
-      SHOULD get a response contact zoo page
+      GIVEN empty header single type
+      WHEN fill out the header single type
+      SHOULD get a response header single type
       `,
       async () => await checkHeaderSingleTypeResponseTest({ page })
     );
