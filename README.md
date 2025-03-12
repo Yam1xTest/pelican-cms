@@ -17,9 +17,11 @@ npm ci
 npm run build
 ```
 
-Чтобы в дальнейшем успешно запустить Strapi локально, запустите команду `docker-compose --profile db-only up -d`, чтобы запустить только базу данных в docker.
+Чтобы в дальнейшем успешно запустить Strapi локально, выполните следующую команду `docker-compose --profile db-only up -d`, чтобы запустить только базу данных в docker.
 
-Чтобы запустить базу данных и minio-s3, запустите команду `docker-compose --profile db-and-minio-s3 up -d`.
+Чтобы запустить только minio-s3, выполните следующую команду `docker-compose --profile minio-s3-only up -d`
+
+Чтобы запустить базу данных и minio-s3, выполните следующую команду `docker-compose --profile db-and-minio-s3 up -d`.
 
 minio-s3 будет доступен по следующему url http://localhost:9001 
 Для входа введите:
