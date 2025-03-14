@@ -58,13 +58,6 @@ export async function createTicketsPopupBlock({
   note,
 }: {
   page: Page,
-  generalTicketsLink,
-  generalTickets,
-  subsidizedTicket,
-  visitingRulesAccordion,
-  ticketRefundAccordion,
-  buyTicketsButton,
-  note,
 } & TicketsPopupBlock) {
   await page.locator('[name="ticketsPopup.generalTicketsLink"]')
     .fill(generalTicketsLink);
