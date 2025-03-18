@@ -2,6 +2,8 @@ import test, { Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
 import { createAndPublishNewsPage, deleteNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
+import { createAndPublishHeaderSingleType } from "./helpers/header-helpers/header-helpers";
+import { MOCK_TICKETS_POPUP } from "./helpers/mocks";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
   let page: Page;
@@ -57,7 +59,6 @@ async function e2eNewsCreateAndViewTest({
   const description = `На фотографии изображен амурский тигр!`;
   const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
 
-
   await createAndPublishNewsPage({
     page,
     newsTitle: 'Новости',
@@ -70,6 +71,11 @@ async function e2eNewsCreateAndViewTest({
     innerContent,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
   });
+
+  await createAndPublishHeaderSingleType({
+    page,
+    ticketsPopup: MOCK_TICKETS_POPUP,
+  })
 
   await gotoUI({
     page,
