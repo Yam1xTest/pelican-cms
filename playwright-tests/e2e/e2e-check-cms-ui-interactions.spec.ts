@@ -2,7 +2,7 @@ import test, { Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "./helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "./helpers/news-helpers/news-helpers";
 import { createAndPublishNewsPage, deleteNewsPage } from "./helpers/news-page-helpers/news-page-helpers";
-import { createAndPublishHeaderSingleType } from "./helpers/header-helpers/header-helpers";
+import { createAndPublishHeaderSingleType, deleteHeaderSingleType } from "./helpers/header-helpers/header-helpers";
 import { MOCK_TICKETS_POPUP } from "./helpers/mocks";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
@@ -28,6 +28,8 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
 
       await deleteNewsPage();
 
+      await deleteHeaderSingleType();
+
       await deleteFiles();
     });
 
@@ -35,6 +37,8 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
       await deleteNews();
 
       await deleteNewsPage();
+
+      await deleteHeaderSingleType();
 
       await deleteFiles();
     });
