@@ -649,6 +649,10 @@ async function checkContactZooPageResponseTest({
     smallImagePath: imageWithButtonGridSmallImagePath,
     ...expectedImageWithButtonGrid
   } = MOCK_IMAGE_WITH_BUTTON_GRID;
+  const {
+    __component: servicesComponentName,
+    filePath: servicesFilePath,
+    ...expectedServices } = MOCK_HOME_SERVICES;
 
   const expectedConcatZooPageResponse = {
     data: {
@@ -657,6 +661,10 @@ async function checkContactZooPageResponseTest({
         expectedTextAndMedia,
         expectedImageWithButtonGrid,
         MOCK_TICKETS,
+        {
+          __component: `shared.cards`,
+          ...expectedServices.cards,
+        },
       ],
       seo: MOCK_SEO
     }
@@ -668,6 +676,7 @@ async function checkContactZooPageResponseTest({
     textAndMedia: MOCK_TEXT_AND_MEDIA,
     imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
     tickets: MOCK_TICKETS,
+    services: MOCK_HOME_SERVICES,
     seo: MOCK_SEO,
   });
 
@@ -682,6 +691,9 @@ async function checkContactZooPageResponseTest({
       `blocks.largeImage`,
       `blocks.smallImage`,
       `blocks.subsidizedTickets`,
+      `blocks.cards`,
+      `blocks.cards.image`,
+      `blocks.cards.labels`,
       `seo`,
     ],
   };
@@ -694,6 +706,7 @@ async function checkContactZooPageResponseTest({
   const textAndMediaBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.text-and-media');
   const imageWithButtonGridBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
   const ticketsBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.tickets');
+  const servicesBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.cards');
 
   await expect({
     data: {
@@ -745,6 +758,20 @@ async function checkContactZooPageResponseTest({
           note: ticketsBlock.note,
           link: ticketsBlock.link,
         },
+        {
+          __component: servicesBlock.__component,
+          title: servicesBlock.title,
+          cards: [
+            {
+              title: servicesBlock.cards[0].title,
+              description: servicesBlock.cards[0].description,
+              link: servicesBlock.cards[0].link,
+              labels: [{
+                text: servicesBlock.cards[0].labels[0].text
+              }]
+            }
+          ],
+        },
       ],
       seo: {
         metaTitle: contactZooPageResponse.data.seo.metaTitle,
@@ -768,6 +795,10 @@ async function checkContactZooPageResponseTest({
     .toBeNull();
 
   await expect(imageWithButtonGridBlock.smallImage.url)
+    .not
+    .toBeNull();
+
+  await expect(servicesBlock.cards[0].image.url)
     .not
     .toBeNull();
 }
