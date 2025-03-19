@@ -6,7 +6,6 @@ export default ({ env }) => ({
             config: {
                 provider: 'aws-s3',
                 providerOptions: {
-                    // For kubernetes local env only
                     baseUrl: env('AWS_PUBLIC_ENDPOINT', 'http://localhost:9000/pelican-bucket'),
                     s3Options: {
                         credentials: {
@@ -45,24 +44,94 @@ export default ({ env }) => ({
     'preview-button': {
         config: {
             contentTypes: [
-                // Todo: comment out after adding the preview
-                // {
-                //     uid: 'api::home.home',
-                //     draft: {
-                //         url: env('FRONTEND_PREVIEW_URL'),
-                //         query: {
-                //             slug: '{slug}',
-                //             version: '{versionNumber}',
-                //             secret: env('PREVIEW_SECRET'),
-                //         },
-                //         openTarget: '_blank',
-                //         alwaysVisible: true,
-                //     },
-                //     published: {
-                //         url: env('FRONTEND_URL'),
-                //         openTarget: '_blank',
-                //     },
-                // },
+                {
+                    uid: 'api::home.home',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: '',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::contact-zoo.contact-zoo',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'contact-zoo',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::documents-page.documents-page',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::documents-category.documents-category',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::document.document',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::header.header',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: '',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::news-page.news-page',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'news',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::news-collection.news-collection',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'news',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
             ]
         }
     },
