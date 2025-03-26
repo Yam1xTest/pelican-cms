@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_button_buttons",
+  "info": {
+    "displayName": "Кнопка",
+    "icon": "cube",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

@@ -10,11 +10,7 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {
-    "versions": {
-      "versioned": true
-    }
-  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
       "pluginOptions": {
@@ -23,7 +19,8 @@
         }
       },
       "type": "string",
-      "required": true
+      "required": true,
+      "unique": false
     },
     "description": {
       "pluginOptions": {
@@ -50,10 +47,19 @@
     "innerContent": {
       "type": "customField",
       "options": {
-        "preset": "default"
+        "preset": "defaultHtml"
       },
       "customField": "plugin::ckeditor5.CKEditor",
       "required": true
+    },
+    "slug": {
+      "type": "string",
+      "unique": false
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     }
   }
 }

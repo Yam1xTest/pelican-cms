@@ -1,3 +1,4 @@
+
 export default ({ env }) => ({
     ...(process.env.APP_ENV !== 'no-s3' &&
     {
@@ -5,25 +6,27 @@ export default ({ env }) => ({
             config: {
                 provider: 'aws-s3',
                 providerOptions: {
-                    // For kubernetes local env only
-                    baseUrl: env('AWS_PUBLIC_ENDPOINT'),
+                    baseUrl: env('AWS_PUBLIC_ENDPOINT', 'http://localhost:9000/pelican-bucket'),
                     s3Options: {
                         credentials: {
-                            accessKeyId: env('AWS_ACCESS_KEY_ID'),
-                            secretAccessKey: env('AWS_ACCESS_SECRET_KEY'),
+                            accessKeyId: env('AWS_ACCESS_KEY_ID', 'admin'),
+                            secretAccessKey: env('AWS_ACCESS_SECRET_KEY', 'rootPassword'),
                         },
-                        endpoint: env('AWS_ENDPOINT'),
-                        region: env('AWS_REGION'),
+                        endpoint: env('AWS_ENDPOINT', 'http://localhost:9000'),
+                        region: env('AWS_REGION', 'us-east-1'),
                         forcePathStyle: true,
                         params: {
                             ACL: env('AWS_ACL', 'public-read'),
-                            Bucket: env('AWS_BUCKET'),
+                            Bucket: env('AWS_BUCKET', 'pelican-bucket'),
                         },
                     }
                 },
             },
         }
     }),
+    seo: {
+        enabled: true,
+    },
     documentation: {
         enabled: true,
         config: {
@@ -38,27 +41,95 @@ export default ({ env }) => ({
             },
         },
     },
-    "content-versioning": {
-        enabled: true,
-    },
     'preview-button': {
         config: {
             contentTypes: [
                 {
                     uid: 'api::home.home',
                     draft: {
-                        url: env('FRONTEND_PREVIEW_URL'),
+                        url: `${env('FRONTEND_URL')}/api/preview`,
                         query: {
-                            slug: '{slug}',
-                            version: '{versionNumber}',
-                            secret: env('PREVIEW_SECRET'),
+                            slug: '',
+                            secret: env('PREVIEW_SECRET')
                         },
-                        openTarget: '_blank',
-                        alwaysVisible: true,
+                        openTarget: 'StrapiPreviewPage',
                     },
-                    published: {
-                        url: env('FRONTEND_URL'),
-                        openTarget: '_blank',
+                },
+                {
+                    uid: 'api::contact-zoo.contact-zoo',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'contact-zoo',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::documents-page.documents-page',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::documents-category.documents-category',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::document.document',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'documents',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::header.header',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: '',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::news-page.news-page',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'news',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
+                    uid: 'api::news-collection.news-collection',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'news',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
                     },
                 },
             ]

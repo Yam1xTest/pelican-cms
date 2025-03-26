@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "documents_page_plural",
+  "info": {
+    "singularName": "documents-page",
+    "pluralName": "documents-page-plural",
+    "displayName": "Страница документов"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

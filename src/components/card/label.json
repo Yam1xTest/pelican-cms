@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_card_labels",
+  "info": {
+    "displayName": "Метка",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

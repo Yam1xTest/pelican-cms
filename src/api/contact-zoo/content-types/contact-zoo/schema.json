@@ -1,0 +1,43 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_zoo_page",
+  "info": {
+    "singularName": "contact-zoo",
+    "pluralName": "contact-zoo-page",
+    "displayName": "Страница контактного зоопарка",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "blocks": {
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        }
+      },
+      "type": "dynamiczone",
+      "components": [
+        "shared.hero",
+        "shared.text-and-media",
+        "shared.image-with-button-grid",
+        "shared.tickets",
+        "shared.cards"
+      ],
+      "required": false
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "versions": {
+          "versioned": true
+        }
+      },
+      "component": "shared.seo",
+      "required": false
+    }
+  }
+}
