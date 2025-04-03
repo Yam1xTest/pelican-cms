@@ -215,10 +215,10 @@ export interface SharedSeo extends Struct.ComponentSchema {
   attributes: {
     canonicalURL: Schema.Attribute.String;
     keywords: Schema.Attribute.Text;
-    metaDescription: Schema.Attribute.String &
+    metaDescription: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 160;
+        maxLength: 1000;
         minLength: 50;
       }>;
     metaImage: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
@@ -227,7 +227,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     metaTitle: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 60;
+        maxLength: 300;
       }>;
     metaViewport: Schema.Attribute.String;
     structuredData: Schema.Attribute.JSON;
