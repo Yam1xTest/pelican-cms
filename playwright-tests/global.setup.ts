@@ -49,7 +49,8 @@ async function uploadFile({
 }) {
   await page.getByRole(`button`, {
     name: `Add new assets`,
-  }).click()
+  })
+    .click()
 
   await page.locator('input[name="files"]')
     .setInputFiles(filePath);
@@ -57,5 +58,5 @@ async function uploadFile({
   await page.getByText(`Upload 1 asset to the library`)
     .click();
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(1500);
 }
