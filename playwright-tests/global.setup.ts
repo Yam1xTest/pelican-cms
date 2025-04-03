@@ -3,7 +3,7 @@ import path from 'path';
 import { authenticate, getStrapiUrl, gotoCMS } from './e2e/helpers/global-helpers';
 import fs from 'fs';
 
-const AUTH_FILE = path.join(__dirname, '/.auth/user.json');
+const AUTH_FILE = path.join(__dirname, '/.auth/session.json');
 
 const FILE_PATHS = [
   `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,

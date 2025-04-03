@@ -16,7 +16,6 @@ test.describe(`News page response tests`, () => {
     await deleteNewsPage();
   });
 
-
   test(`
     GIVEN empty news page
     WHEN fill out the news page
@@ -55,7 +54,6 @@ async function checkNewsPageResponseTest({
   const newsPageResponse = (await axios.get(getStrapiUrl({
     path: `/api/news-page?${qs.stringify(queryParams)}`
   }))).data;
-
 
   await expect({
     data: {

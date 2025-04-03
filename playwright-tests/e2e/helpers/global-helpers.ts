@@ -13,7 +13,7 @@ export async function authenticateWithJwtToken({
 }) {
   await gotoCMS({ page });
 
-  const jwtToken = JSON.parse(fs.readFileSync('playwright-tests/.auth/user.json', 'utf8')).jwtToken;
+  const jwtToken = JSON.parse(fs.readFileSync('playwright-tests/.auth/session.json', 'utf8')).jwtToken;
 
   await page.evaluate((token) => {
     sessionStorage.setItem('jwtToken', token);
@@ -141,7 +141,7 @@ export async function saveAndPublish({
 
   await publishResponsePromise;
 
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(1500);
 }
 
 export async function createSeo({
