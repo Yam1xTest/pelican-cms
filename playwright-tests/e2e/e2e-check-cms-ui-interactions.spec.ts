@@ -21,7 +21,6 @@ test.describe.skip(`Checking the interaction between CMS and UI`, () => {
     });
   });
 
-
   test.describe(`News E2E test`, () => {
     test.beforeEach(async () => {
       // await deleteNews();

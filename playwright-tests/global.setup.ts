@@ -3,7 +3,7 @@ import path from 'path';
 import { authenticate, getStrapiUrl, gotoCMS } from './e2e/helpers/global-helpers';
 import fs from 'fs';
 
-const authFile = path.join(__dirname, '/.auth/user.json');
+const AUTH_FILE = path.join(__dirname, '/.auth/user.json');
 
 const FILE_PATHS = [
   `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
@@ -22,10 +22,10 @@ setup('authenticate and upload test files', async ({ browser }) => {
 
   const sessionStorage = await page.evaluate(() => JSON.stringify(sessionStorage));
 
-  const authDir = path.dirname(authFile);
+  const authDir = path.dirname(AUTH_FILE);
   fs.mkdirSync(authDir, { recursive: true });
 
-  fs.writeFileSync(authFile, sessionStorage, 'utf-8');
+  fs.writeFileSync(AUTH_FILE, sessionStorage, 'utf-8');
 
   await page.locator('a[aria-label="Media Library"]')
     .click();

@@ -84,7 +84,10 @@ export async function selectFile({
     .first()
     .click();
 
-  await page.locator('button[role="checkbox"]').nth(isMultipleSelection ? 1 : 0)
+  await page.waitForTimeout(1000);
+
+  await page.locator('button[role="checkbox"]')
+    .nth(isMultipleSelection ? 1 : 0)
     .click();
 
   await page.getByRole(`button`, {
@@ -103,27 +106,6 @@ export async function deleteFiles() {
       await axios.delete(getStrapiUrl({ path: `/api/upload/files/${id}` }));
     })
   }
-}
-
-export async function clickByCheckboxAndDeleteWithConfirm({
-  page,
-}: {
-  page: Page
-}) {
-  await page.getByRole(`checkbox`)
-    .first()
-    .check();
-
-  await page.getByRole(`button`, {
-    name: `Delete`,
-  })
-    .first()
-    .click();
-
-  await page.getByRole(`button`, {
-    name: `Confirm`,
-  })
-    .click();
 }
 
 export async function saveAndPublish({
@@ -158,6 +140,8 @@ export async function saveAndPublish({
     .click();
 
   await publishResponsePromise;
+
+  await page.waitForTimeout(1000);
 }
 
 export async function createSeo({
