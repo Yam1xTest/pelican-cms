@@ -5,6 +5,12 @@ import fs from 'fs';
 
 const authFile = path.join(__dirname, '/.auth/user.json');
 
+const FILE_PATHS = [
+  `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+  `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-new-document.pdf`,
+  `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-text-and-media-video.mp4`
+];
+
 setup('authenticate and upload test files', async ({ browser }) => {
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -24,39 +30,27 @@ setup('authenticate and upload test files', async ({ browser }) => {
   await page.locator('a[aria-label="Media Library"]')
     .click();
 
-  await uploadFile({
+  await uploadFiles({
     page,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`
-  });
-
-  await uploadFile({
-    page,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-new-document.pdf`
-  });
-
-  await uploadFile({
-    page,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-text-and-media-video.mp4`
   });
 });
 
-async function uploadFile({
+async function uploadFiles({
   page,
-  filePath,
 }: {
   page: Page
-  filePath: string,
 }) {
-  await page.getByRole(`button`, {
-    name: `Add new assets`,
-  })
-    .click()
+  for (const path of FILE_PATHS) {
+    await page.getByRole(`button`, {
+      name: `Add new assets`,
+    })
+      .first()
+      .click();
 
-  await page.locator('input[name="files"]')
-    .setInputFiles(filePath);
+    await page.locator('input[name="files"]')
+      .setInputFiles(path);
+  }
 
-  await page.getByText(`Upload 1 asset to the library`)
+  await page.getByText(`Upload ${FILE_PATHS.length} assets to the library`)
     .click();
-
-  await page.waitForTimeout(1500);
 }
