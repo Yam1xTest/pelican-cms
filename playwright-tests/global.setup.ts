@@ -15,6 +15,10 @@ setup('authenticate and upload test files', async ({ browser }) => {
   await page.waitForURL(getStrapiUrl({ path: '/admin' }));
 
   const sessionStorage = await page.evaluate(() => JSON.stringify(sessionStorage));
+
+  const authDir = path.dirname(authFile);
+  fs.mkdirSync(authDir, { recursive: true });
+
   fs.writeFileSync(authFile, sessionStorage, 'utf-8');
 
   await page.locator('a[aria-label="Media Library"]')
