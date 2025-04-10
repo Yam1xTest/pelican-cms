@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test";
 import axios from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl } from "../global-helpers";
+import { getStrapiUrl } from "../helpers/global-helpers";
 
 const DOCUMENT_TITLE = 'Информация о деятельности МБУК «Зоопарк»';
 const ENDPOINT = `/api/documents-page`;

@@ -1,4 +1,4 @@
-import { E2E_SMOKE_NAME_PREFIX } from "./global-helpers";
+import { E2E_SMOKE_NAME_PREFIX } from "./helpers/global-helpers";
 
 export const MOCK_SEO = {
   metaTitle: "Челябинский зоопарк",

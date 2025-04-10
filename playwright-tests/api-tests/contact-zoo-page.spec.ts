@@ -9,7 +9,7 @@ import {
   MOCK_TICKETS,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/contact-zoo`;
 

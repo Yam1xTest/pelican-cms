@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 import axios from "axios";
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../global-helpers";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
 
 const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;

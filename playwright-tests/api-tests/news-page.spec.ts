@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test";
 import axios from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl } from "../global-helpers";
+import { getStrapiUrl } from "../helpers/global-helpers";
 
 const NEWS_TITLE = 'Новости';
 const ENDPOINT = `/api/news-page`;

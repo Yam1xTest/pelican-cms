@@ -10,7 +10,7 @@ import {
   MOCK_SEO
 } from "../mocks";
 import qs from "qs";
-import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 
 const ENDPOINT = '/api/home';
 

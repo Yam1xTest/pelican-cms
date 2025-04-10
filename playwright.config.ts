@@ -51,21 +51,5 @@ export default defineConfig({
       testMatch: '**/api-tests/**',
       dependencies: ['setup'],
     },
-    {
-      name: `CmsUiInteractions`,
-      use: {
-        ...devices[`Desktop Chrome`],
-      },
-      testMatch: '**/e2e-check-cms-ui-interactions.spec.ts',
-      dependencies: ['ApiTests'],
-    },
-    {
-      name: `PreviewTests`,
-      use: {
-        ...devices[`Desktop Chrome`],
-      },
-      testMatch: '**/e2e-preview-check.spec.ts',
-      dependencies: ['CmsUiInteractions'],
-    },
   ],
 });

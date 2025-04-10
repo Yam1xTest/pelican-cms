@@ -1,7 +1,7 @@
 import { test as setup } from "@playwright/test";
 import fs from 'fs';
 import axios from "axios";
-import { getStrapiUrl } from "./global-helpers";
+import { getStrapiUrl } from "./helpers/global-helpers";
 import FormData from 'form-data';
 
 setup('upload test files', async () => {

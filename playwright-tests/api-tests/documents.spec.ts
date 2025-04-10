@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 import axios from "axios";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../global-helpers";
-import { createDocumentsCategoryByTitle, deleteDocumentCategoryByTitle } from "./documents-categories.spec";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
+import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
 const DOCUMENT_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;

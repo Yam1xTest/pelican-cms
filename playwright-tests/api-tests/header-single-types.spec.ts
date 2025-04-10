@@ -2,7 +2,7 @@ import test, { expect } from "@playwright/test";
 import axios from "axios";
 import { MOCK_TICKETS_POPUP } from "../mocks";
 import qs from "qs";
-import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/header`;
 
