@@ -1,15 +1,15 @@
-import test, { Page, expect } from "@playwright/test";
+import test, { expect } from "@playwright/test";
 import axios from "axios";
-import { authenticateWithJwtToken, getStrapiUrl } from "../helpers/global-helpers";
-import { MOCK_SEO } from "../helpers/mocks";
-import { deleteNewsPage, createAndPublishNewsPage } from "../helpers/news-page-helpers/news-page-helpers";
+import { MOCK_SEO } from "../mocks";
 import qs from "qs";
+import { getStrapiUrl } from "../global-helpers";
+
+const NEWS_TITLE = 'Новости';
+const ENDPOINT = `/api/news-page`;
 
 test.describe(`News page response tests`, () => {
-  test.beforeEach(async ({ page }) => {
-    await authenticateWithJwtToken({ page });
-
-    await deleteNewsPage();
+  test.beforeEach(async () => {
+    await updateNewsPage();
   });
 
   test.afterEach(async () => {
@@ -25,25 +25,13 @@ test.describe(`News page response tests`, () => {
   );
 });
 
-
-async function checkNewsPageResponseTest({
-  page
-}: {
-  page: Page
-}) {
-  const newsTitle = 'Новости';
+async function checkNewsPageResponseTest() {
   const expectedNewsPageResponse = {
     data: {
-      newsTitle,
+      title: NEWS_TITLE,
       seo: MOCK_SEO
     }
   };
-
-  await createAndPublishNewsPage({
-    page,
-    newsTitle,
-    seo: MOCK_SEO
-  })
 
   const queryParams = {
     populate: [
@@ -52,12 +40,12 @@ async function checkNewsPageResponseTest({
   };
 
   const newsPageResponse = (await axios.get(getStrapiUrl({
-    path: `/api/news-page?${qs.stringify(queryParams)}`
+    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
   await expect({
     data: {
-      newsTitle: newsPageResponse.data.title,
+      title: newsPageResponse.data.title,
       seo: {
         metaTitle: newsPageResponse.data.seo.metaTitle,
         metaDescription: newsPageResponse.data.seo.metaDescription,
@@ -66,4 +54,19 @@ async function checkNewsPageResponseTest({
     }
   })
     .toEqual(expectedNewsPageResponse);
+}
+
+async function updateNewsPage() {
+  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    data: {
+      title: NEWS_TITLE,
+      seo: MOCK_SEO
+    }
+  });
+}
+
+async function deleteNewsPage() {
+  await axios.delete(getStrapiUrl({
+    path: ENDPOINT
+  }));
 }

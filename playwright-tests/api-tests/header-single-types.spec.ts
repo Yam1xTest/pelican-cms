@@ -1,15 +1,14 @@
-import test, { Page, expect } from "@playwright/test";
+import test, { expect } from "@playwright/test";
 import axios from "axios";
-import { authenticateWithJwtToken, getStrapiUrl } from "../helpers/global-helpers";
-import { deleteHeaderSingleType, createAndPublishHeaderSingleType } from "../helpers/header-helpers/header-helpers";
-import { MOCK_TICKETS_POPUP } from "../helpers/mocks";
+import { MOCK_TICKETS_POPUP } from "../mocks";
 import qs from "qs";
+import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+
+const ENDPOINT = `/api/header`;
 
 test.describe(`Header Single Type response tests`, () => {
-  test.beforeEach(async ({ page }) => {
-    await authenticateWithJwtToken({ page });
-
-    await deleteHeaderSingleType();
+  test.beforeEach(async () => {
+    await createHeaderSingleTypes();
   });
 
   test.afterEach(async () => {
@@ -26,32 +25,10 @@ test.describe(`Header Single Type response tests`, () => {
 });
 
 
-async function checkHeaderSingleTypeResponseTest({
-  page
-}: {
-  page: Page
-}) {
-  const {
-    visitingRulesAccordion: {
-      images: ticketsPopupImagePath,
-      ...expectedVisitingRulesAccordion
-    },
-    ...expectedTicketsPopup
-  } = MOCK_TICKETS_POPUP;
-
+async function checkHeaderSingleTypeResponseTest() {
   const expectedHeaderSingleTypeResponse = {
-    data: {
-      ticketsPopup: {
-        ...expectedTicketsPopup,
-        visitingRulesAccordion: expectedVisitingRulesAccordion,
-      },
-    },
+    data: MOCK_TICKETS_POPUP
   };
-
-  await createAndPublishHeaderSingleType({
-    page,
-    ticketsPopup: MOCK_TICKETS_POPUP,
-  });
 
   const queryParams = {
     populate: [
@@ -67,7 +44,7 @@ async function checkHeaderSingleTypeResponseTest({
   };
 
   const headerSingleTypeResponse = (await axios.get(getStrapiUrl({
-    path: `/api/header?${qs.stringify(queryParams)}`
+    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
   const ticketsPopupBlock = headerSingleTypeResponse.data.ticketsPopup;
@@ -78,9 +55,9 @@ async function checkHeaderSingleTypeResponseTest({
         generalTicketsLink: ticketsPopupBlock.generalTicketsLink,
         generalTickets: [
           {
-            id: 0,
             category: ticketsPopupBlock.generalTickets[0].category,
             price: ticketsPopupBlock.generalTickets[0].price,
+            description: ticketsPopupBlock.generalTickets[0].description
           },
         ],
         subsidizedTicket: {
@@ -88,7 +65,6 @@ async function checkHeaderSingleTypeResponseTest({
           description: ticketsPopupBlock.subsidizedTicket.description,
           categories: [
             {
-              id: 0,
               category: ticketsPopupBlock.subsidizedTicket.categories[0].category,
               price: ticketsPopupBlock.subsidizedTicket.categories[0].price,
             },
@@ -108,7 +84,6 @@ async function checkHeaderSingleTypeResponseTest({
           refundHead: ticketsPopupBlock.ticketRefundAccordion.refundHead,
           refundBody: [
             {
-              id: 0,
               refundReason: ticketsPopupBlock.ticketRefundAccordion.refundBody[0].refundReason,
             },
           ],
@@ -130,4 +105,29 @@ async function checkHeaderSingleTypeResponseTest({
   await expect(ticketsPopupBlock.visitingRulesAccordion.images[0].url)
     .not
     .toBeNull();
+}
+
+
+async function createHeaderSingleTypes() {
+  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    data: {
+      ticketsPopup: {
+        ...MOCK_TICKETS_POPUP.ticketsPopup,
+        visitingRulesAccordion: {
+          button: MOCK_TICKETS_POPUP.ticketsPopup.visitingRulesAccordion.button,
+          images: [
+            {
+              id: await getFileIdByName()
+            }
+          ]
+        }
+      }
+    },
+  });
+}
+
+async function deleteHeaderSingleType() {
+  await axios.delete(getStrapiUrl({
+    path: ENDPOINT
+  }));
 }

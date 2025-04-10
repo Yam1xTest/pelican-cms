@@ -1,14 +1,15 @@
-import test, { Page, expect } from "@playwright/test";
+import test, { expect } from "@playwright/test";
 import axios from "axios";
-import { deleteDocumentsPage, createAndPublishDocumentsPage } from "../helpers/documents-page-helpers/documents-page-helpers";
-import { authenticateWithJwtToken, getStrapiUrl } from "../helpers/global-helpers";
-import { MOCK_SEO } from "../helpers/mocks";
+import { MOCK_SEO } from "../mocks";
 import qs from "qs";
+import { getStrapiUrl } from "../global-helpers";
+
+const DOCUMENT_TITLE = 'Информация о деятельности МБУК «Зоопарк»';
+const ENDPOINT = `/api/documents-page`;
 
 test.describe(`Documents page response tests`, () => {
-  test.beforeEach(async ({ page }) => {
-    await authenticateWithJwtToken({ page });
-    await deleteDocumentsPage();
+  test.beforeEach(async () => {
+    await updateDocumentsPage();
   });
 
   test.afterEach(async () => {
@@ -26,24 +27,13 @@ test.describe(`Documents page response tests`, () => {
 });
 
 
-async function checkDocumentsPageResponseTest({
-  page
-}: {
-  page: Page
-}) {
-  const documentsTitle = 'Информация о деятельности МБУК «Зоопарк»';
+async function checkDocumentsPageResponseTest() {
   const expectedDocumentsPageResponse = {
     data: {
-      documentsTitle,
+      title: DOCUMENT_TITLE,
       seo: MOCK_SEO
     }
   };
-
-  await createAndPublishDocumentsPage({
-    page,
-    documentsTitle,
-    seo: MOCK_SEO
-  })
 
   const queryParams = {
     populate: [
@@ -52,13 +42,13 @@ async function checkDocumentsPageResponseTest({
   };
 
   const documentsPageResponse = (await axios.get(getStrapiUrl({
-    path: `/api/documents-page?${qs.stringify(queryParams)}`
+    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
 
   await expect({
     data: {
-      documentsTitle: documentsPageResponse.data.title,
+      title: documentsPageResponse.data.title,
       seo: {
         metaTitle: documentsPageResponse.data.seo.metaTitle,
         metaDescription: documentsPageResponse.data.seo.metaDescription,
@@ -67,4 +57,19 @@ async function checkDocumentsPageResponseTest({
     }
   })
     .toEqual(expectedDocumentsPageResponse);
+}
+
+async function updateDocumentsPage() {
+  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    data: {
+      title: DOCUMENT_TITLE,
+      seo: MOCK_SEO
+    }
+  });
+}
+
+async function deleteDocumentsPage() {
+  await axios.delete(getStrapiUrl({
+    path: ENDPOINT
+  }));
 }

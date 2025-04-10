@@ -1,19 +1,26 @@
-import test, { Page, expect } from "@playwright/test";
+import test, { expect } from "@playwright/test";
 import axios from "axios";
-import { authenticateWithJwtToken, getStrapiUrl } from "../helpers/global-helpers";
-import { deleteHomepage, createAndPublishHomepage } from "../helpers/homepage-helpers/homepage-helpers";
-import { MOCK_HERO, MOCK_HOME_SERVICES, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_MAP_CARD, MOCK_HOME_TICKETS, MOCK_SEO } from "../helpers/mocks";
+import {
+  MOCK_HERO,
+  MOCK_HOME_SERVICES,
+  MOCK_TEXT_AND_MEDIA,
+  MOCK_IMAGE_WITH_BUTTON_GRID,
+  MOCK_HOME_MAP_CARD,
+  MOCK_HOME_TICKETS,
+  MOCK_SEO
+} from "../mocks";
 import qs from "qs";
+import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+
+const ENDPOINT = '/api/home';
 
 test.describe(`Homepage response tests`, () => {
-  test.beforeEach(async ({ page }) => {
-    await authenticateWithJwtToken({ page });
-
-    await deleteHomepage()
+  test.beforeEach(async () => {
+    await updateCreateHomePage();
   });
 
   test.afterEach(async () => {
-    await deleteHomepage()
+    await deleteHomePage();
   });
 
   test(`
@@ -26,11 +33,7 @@ test.describe(`Homepage response tests`, () => {
 });
 
 
-async function checkHomepageResponseTest({
-  page
-}: {
-  page: Page
-}) {
+async function checkHomepageResponseTest() {
   const expectedHomepageResponse = {
     data: {
       blocks: [
@@ -38,27 +41,12 @@ async function checkHomepageResponseTest({
         MOCK_HOME_SERVICES,
         MOCK_TEXT_AND_MEDIA,
         MOCK_IMAGE_WITH_BUTTON_GRID,
-        {
-          ...MOCK_HOME_MAP_CARD,
-          description: `<p>${MOCK_HOME_MAP_CARD.description}</p>`,
-          note: `<p>${MOCK_HOME_MAP_CARD.note}</p>`
-        },
+        MOCK_HOME_MAP_CARD,
         MOCK_HOME_TICKETS,
       ],
       seo: MOCK_SEO
     }
   };
-
-  await createAndPublishHomepage({
-    page,
-    hero: MOCK_HERO,
-    services: MOCK_HOME_SERVICES,
-    textAndMedia: MOCK_TEXT_AND_MEDIA,
-    imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
-    mapCard: MOCK_HOME_MAP_CARD,
-    tickets: MOCK_HOME_TICKETS,
-    seo: MOCK_SEO,
-  });
 
   const queryParams = {
     populate: [
@@ -81,7 +69,7 @@ async function checkHomepageResponseTest({
   };
 
   const homepageResponse = (await axios.get(getStrapiUrl({
-    path: `/api/home?${qs.stringify(queryParams)}`
+    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
   const heroBlock = homepageResponse.data.blocks.find((block) => block.__component === 'shared.hero');
@@ -141,8 +129,10 @@ async function checkHomepageResponseTest({
           __component: imageWithButtonGridBlock.__component,
           title: imageWithButtonGridBlock.title,
           description: imageWithButtonGridBlock.description,
-          link: imageWithButtonGridBlock.button.link,
-          label: imageWithButtonGridBlock.button.label,
+          button: {
+            link: imageWithButtonGridBlock.button.link,
+            label: imageWithButtonGridBlock.button.label
+          }
         },
         {
           __component: mapCardBlock.__component,
@@ -152,27 +142,31 @@ async function checkHomepageResponseTest({
         },
         {
           __component: homeTicketsBlock.__component,
-          generalTicketsTitle: homeTicketsBlock.title,
+          title: homeTicketsBlock.title,
           generalTickets: [
             {
               category: homeTicketsBlock.generalTickets[0].category,
               description: homeTicketsBlock.generalTickets[0].description,
               price: homeTicketsBlock.generalTickets[0].price,
               frequency: homeTicketsBlock.generalTickets[0].frequency,
+              theme: homeTicketsBlock.generalTickets[0].theme
             },
           ],
           generalTicketsLink: homeTicketsBlock.generalTicketsLink,
-          subsidizedTicketsTitle: homeTicketsBlock.subsidizedTickets.title,
-          subsidizedTicketsDescription: homeTicketsBlock.subsidizedTickets.description,
-          subsidizedTickets: [
-            {
-              category: homeTicketsBlock.subsidizedTickets.ticketsList[0].category,
-              description: homeTicketsBlock.subsidizedTickets.ticketsList[0].description,
-              price: homeTicketsBlock.subsidizedTickets.ticketsList[0].price,
-              frequency: homeTicketsBlock.subsidizedTickets.ticketsList[0].frequency,
-            },
-          ],
-          subsidizedTicketsLink: homeTicketsBlock.subsidizedTickets.link,
+          subsidizedTickets: {
+            title: homeTicketsBlock.subsidizedTickets.title,
+            description: homeTicketsBlock.subsidizedTickets.description,
+            ticketsList: [
+              {
+                category: homeTicketsBlock.subsidizedTickets.ticketsList[0].category,
+                description: homeTicketsBlock.subsidizedTickets.ticketsList[0].description,
+                price: homeTicketsBlock.subsidizedTickets.ticketsList[0].price,
+                frequency: homeTicketsBlock.subsidizedTickets.ticketsList[0].frequency,
+                theme: homeTicketsBlock.subsidizedTickets.ticketsList[0].theme
+              }
+            ],
+            link: homeTicketsBlock.subsidizedTickets.link,
+          }
         },
       ],
       seo: {
@@ -207,4 +201,53 @@ async function checkHomepageResponseTest({
   await expect(mapCardBlock.image.url)
     .not
     .toBeNull();
+}
+
+
+async function updateCreateHomePage() {
+  const fileId = await getFileIdByName();
+
+  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    data: {
+      blocks: [
+        {
+          ...MOCK_HERO,
+          image: fileId
+        },
+        {
+          ...MOCK_HOME_SERVICES,
+          cards: {
+            title: MOCK_HOME_SERVICES.cards.title,
+            cards: [
+              {
+                ...MOCK_HOME_SERVICES.cards.cards[0],
+                image: fileId
+              }
+            ]
+          },
+        },
+        {
+          ...MOCK_TEXT_AND_MEDIA,
+          media: fileId
+        },
+        {
+          ...MOCK_IMAGE_WITH_BUTTON_GRID,
+          largeImage: fileId,
+          smallImage: fileId
+        },
+        {
+          ...MOCK_HOME_MAP_CARD,
+          image: fileId
+        },
+        MOCK_HOME_TICKETS,
+      ],
+      seo: MOCK_SEO
+    },
+  });
+}
+
+
+async function deleteHomePage() {
+  await axios.delete(getStrapiUrl({ path: ENDPOINT }));
+
 }

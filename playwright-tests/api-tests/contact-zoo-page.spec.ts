@@ -1,15 +1,21 @@
-import test, { expect, Page } from "@playwright/test";
-import { createAndPublishContactZooPage, deleteContactZooPage } from "../helpers/contact-zoo-page-helpers/contact-zoo-page-helpers";
-import { authenticateWithJwtToken, getStrapiUrl } from "../helpers/global-helpers";
+import test, { expect } from "@playwright/test";
 import axios from "axios";
 import qs from "qs";
-import { MOCK_HERO, MOCK_TEXT_AND_MEDIA, MOCK_IMAGE_WITH_BUTTON_GRID, MOCK_HOME_SERVICES, MOCK_TICKETS, MOCK_SEO } from "../helpers/mocks";
+import {
+  MOCK_HERO,
+  MOCK_TEXT_AND_MEDIA,
+  MOCK_IMAGE_WITH_BUTTON_GRID,
+  MOCK_HOME_SERVICES,
+  MOCK_TICKETS,
+  MOCK_SEO
+} from "../mocks";
+import { getFileIdByName, getStrapiUrl } from "../global-helpers";
+
+const ENDPOINT = `/api/contact-zoo`;
 
 test.describe(`ContactZoo page response tests`, () => {
-  test.beforeEach(async ({ page }) => {
-    await authenticateWithJwtToken({ page });
-
-    await deleteContactZooPage();
+  test.beforeEach(async () => {
+    await createContactZooPage();
   });
 
   test.afterEach(async () => {
@@ -26,11 +32,7 @@ test.describe(`ContactZoo page response tests`, () => {
 });
 
 
-async function checkContactZooPageResponseTest({
-  page
-}: {
-  page: Page
-}) {
+async function checkContactZooPageResponseTest() {
   const expectedConcatZooPageResponse = {
     data: {
       blocks: [
@@ -46,16 +48,6 @@ async function checkContactZooPageResponseTest({
       seo: MOCK_SEO
     }
   };
-
-  await createAndPublishContactZooPage({
-    page,
-    hero: MOCK_HERO,
-    textAndMedia: MOCK_TEXT_AND_MEDIA,
-    imageWithButtonGrid: MOCK_IMAGE_WITH_BUTTON_GRID,
-    tickets: MOCK_TICKETS,
-    services: MOCK_HOME_SERVICES,
-    seo: MOCK_SEO,
-  });
 
   const queryParams = {
     populate: [
@@ -76,7 +68,7 @@ async function checkContactZooPageResponseTest({
   };
 
   const contactZooPageResponse = (await axios.get(getStrapiUrl({
-    path: `/api/contact-zoo?${qs.stringify(queryParams)}`
+    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
   const heroBlock = contactZooPageResponse.data.blocks.find((block) => block.__component === 'shared.hero');
@@ -117,14 +109,16 @@ async function checkContactZooPageResponseTest({
           __component: imageWithButtonGridBlock.__component,
           title: imageWithButtonGridBlock.title,
           description: imageWithButtonGridBlock.description,
-          link: imageWithButtonGridBlock.button.link,
-          label: imageWithButtonGridBlock.button.label,
+          button: {
+            link: imageWithButtonGridBlock.button.link,
+            label: imageWithButtonGridBlock.button.label
+          }
         },
         {
           __component: ticketsBlock.__component,
           title: ticketsBlock.title,
           description: ticketsBlock.description,
-          tickets: [
+          subsidizedTickets: [
             {
               category: ticketsBlock.subsidizedTickets[0].category,
               description: ticketsBlock.subsidizedTickets[0].description,
@@ -178,4 +172,46 @@ async function checkContactZooPageResponseTest({
   await expect(servicesBlock.cards[0].image.url)
     .not
     .toBeNull();
+}
+
+async function createContactZooPage() {
+  const fileId = await getFileIdByName();
+
+  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    data: {
+      blocks: [
+        {
+          ...MOCK_HERO,
+          image: fileId
+        },
+        {
+          ...MOCK_TEXT_AND_MEDIA,
+          media: fileId
+        },
+        {
+          ...MOCK_IMAGE_WITH_BUTTON_GRID,
+          largeImage: fileId,
+          smallImage: fileId
+        },
+        MOCK_TICKETS,
+        {
+          __component: `shared.cards`,
+          title: MOCK_HOME_SERVICES.cards.title,
+          cards: [
+            {
+              ...MOCK_HOME_SERVICES.cards.cards[0],
+              image: fileId
+            }
+          ],
+        }
+      ],
+      seo: MOCK_SEO
+    },
+  });
+}
+
+async function deleteContactZooPage() {
+  await axios.delete(getStrapiUrl({
+    path: ENDPOINT
+  }));
 }
