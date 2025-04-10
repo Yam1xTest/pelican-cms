@@ -399,8 +399,7 @@ export interface TicketsPopupVisitingRulesAccordion
   attributes: {
     button: Schema.Attribute.Component<'button.button', false> &
       Schema.Attribute.Required;
-    images: Schema.Attribute.Media<'images' | 'files', true> &
-      Schema.Attribute.Required;
+    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
   };
 }
 
