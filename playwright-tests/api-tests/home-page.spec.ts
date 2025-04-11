@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import {
   MOCK_HERO,
   MOCK_HOME_SERVICES,
@@ -14,7 +14,7 @@ import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 
 const ENDPOINT = '/api/home';
 
-test.describe(`Homepage response tests`, () => {
+test.describe(`Home page response tests`, () => {
   test.beforeEach(async () => {
     await updateCreateHomePage();
   });
@@ -24,9 +24,10 @@ test.describe(`Homepage response tests`, () => {
   });
 
   test(`
-      GIVEN empty home page
-      WHEN fill out the home page
-      SHOULD get a response home page
+      GIVEN an empty home page
+      WHEN call method PUT ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkHomepageResponseTest
   );
@@ -175,7 +176,7 @@ async function checkHomepageResponseTest() {
         keywords: homepageResponse.data.seo.keywords,
       }
     }
-  })
+  }, 'Home page response corrected')
     .toEqual(expectedHomepageResponse);
 
   await expect(heroBlock.image.url)
@@ -207,7 +208,7 @@ async function checkHomepageResponseTest() {
 async function updateCreateHomePage() {
   const fileId = await getFileIdByName();
 
-  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       blocks: [
         {
@@ -244,10 +245,14 @@ async function updateCreateHomePage() {
       seo: MOCK_SEO
     },
   });
+
+  await expect(response.status, 'Home page updating')
+    .toEqual(HttpStatusCode.Ok);
 }
 
-
 async function deleteHomePage() {
-  await axios.delete(getStrapiUrl({ path: ENDPOINT }));
+  const response = await axios.delete(getStrapiUrl({ path: ENDPOINT }));
 
+  await expect(response.status, 'Home page deletion')
+    .toEqual(HttpStatusCode.NoContent);
 }

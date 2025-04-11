@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { getStrapiUrl } from "./global-helpers";
 import { MOCK_SEO } from "../mocks";
 import { SeoBlock } from "../types";
+import { expect } from "@playwright/test";
 
 const ENDPOINT = `/api/documents-categories`;
 
@@ -10,12 +11,17 @@ export async function createDocumentsCategoryByTitle({
 }: {
   title: string;
 }) {
-  return await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       title,
       seo: MOCK_SEO
     }
   });
+
+  await expect(response.status, 'Documents categories creation')
+    .toEqual(HttpStatusCode.Created);
+
+  return response
 }
 
 export async function deleteDocumentCategoryByTitle({
@@ -31,9 +37,12 @@ export async function deleteDocumentCategoryByTitle({
   });
 
   if (documentCategory) {
-    await axios.delete(getStrapiUrl({
+    const response = await axios.delete(getStrapiUrl({
       path: `${ENDPOINT}/${documentCategory.documentId}`
     }));
+
+    await expect(response.status, 'Documents categories deletion')
+      .toEqual(HttpStatusCode.NoContent);
   }
 }
 

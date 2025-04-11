@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
 import { getStrapiUrl } from "../helpers/global-helpers";
@@ -17,9 +17,10 @@ test.describe(`News page response tests`, () => {
   });
 
   test(`
-    GIVEN empty news page
-    WHEN fill out the news page
-    SHOULD get a response news page
+    GIVEN an empty news page
+    WHEN call method PUT ${ENDPOINT}
+    AND call method GET ${ENDPOINT}
+    SHOULD get a correct response
     `,
     checkNewsPageResponseTest
   );
@@ -52,21 +53,27 @@ async function checkNewsPageResponseTest() {
         keywords: newsPageResponse.data.seo.keywords
       }
     }
-  })
+  }, 'News page response corrected')
     .toEqual(expectedNewsPageResponse);
 }
 
 async function updateNewsPage() {
-  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       title: NEWS_TITLE,
-      seo: MOCK_SEO
-    }
+      seo: MOCK_SEO,
+    },
   });
+
+  await expect(response.status, 'News page updating')
+    .toEqual(HttpStatusCode.Ok);
 }
 
 async function deleteNewsPage() {
-  await axios.delete(getStrapiUrl({
+  const response = await axios.delete(getStrapiUrl({
     path: ENDPOINT
   }));
+
+  await expect(response.status, 'News page deletion')
+    .toEqual(HttpStatusCode.NoContent);
 }

@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
@@ -25,9 +25,10 @@ test.describe(`News response tests`, () => {
   });
 
   test(`
-      GIVEN collection of news without record
-      WHEN create one news
-      SHOULD get a response with this news
+      GIVEN an empty news collection
+      WHEN call method POST ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkNewsResponseTest
   );
@@ -66,7 +67,7 @@ async function checkNewsResponseTest() {
         }
       }
     ]
-  })
+  }, 'News response corrected')
     .toEqual(expectedNewsResponse);
 
   await expect(newsTest.image.url)
@@ -75,7 +76,7 @@ async function checkNewsResponseTest() {
 }
 
 async function createNewsAsync() {
-  await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       title: NEWS_TITLE,
       description: DESCRIPTION,
@@ -84,6 +85,9 @@ async function createNewsAsync() {
       seo: MOCK_SEO
     }
   });
+
+  await expect(response.status, 'News page creating')
+    .toEqual(HttpStatusCode.Created);
 }
 
 async function deleteNewsByTitle({
@@ -99,9 +103,12 @@ async function deleteNewsByTitle({
   });
 
   if (news) {
-    await axios.delete(getStrapiUrl({
+    const response = await axios.delete(getStrapiUrl({
       path: `${ENDPOINT}/${news.documentId}`
     }));
+
+    await expect(response.status, 'News deletion')
+      .toEqual(HttpStatusCode.NoContent);
   }
 }
 

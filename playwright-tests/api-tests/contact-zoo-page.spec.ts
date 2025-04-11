@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import qs from "qs";
 import {
   MOCK_HERO,
@@ -23,9 +23,10 @@ test.describe(`ContactZoo page response tests`, () => {
   });
 
   test(`
-      GIVEN empty contact zoo page
-      WHEN fill out the contact zoo page
-      SHOULD get a response contact zoo page
+      GIVEN an empty contact zoo page
+      WHEN call method PUT ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkContactZooPageResponseTest
   );
@@ -150,7 +151,7 @@ async function checkContactZooPageResponseTest() {
         keywords: contactZooPageResponse.data.seo.keywords
       }
     }
-  })
+  }, 'Contact zoo page response corrected')
     .toEqual(expectedConcatZooPageResponse);
 
   await expect(heroBlock.image.url)
@@ -177,7 +178,7 @@ async function checkContactZooPageResponseTest() {
 async function createContactZooPage() {
   const fileId = await getFileIdByName();
 
-  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       blocks: [
         {
@@ -208,10 +209,16 @@ async function createContactZooPage() {
       seo: MOCK_SEO
     },
   });
+
+  await expect(response.status, 'Contact zoo page updating')
+    .toEqual(HttpStatusCode.Ok);
 }
 
 async function deleteContactZooPage() {
-  await axios.delete(getStrapiUrl({
+  const response = await axios.delete(getStrapiUrl({
     path: ENDPOINT
   }));
+
+  await expect(response.status, 'Contact zoo page deletion')
+    .toEqual(HttpStatusCode.NoContent);
 }

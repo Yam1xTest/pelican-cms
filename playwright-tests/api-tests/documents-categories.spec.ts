@@ -5,6 +5,7 @@ import test, { expect } from "@playwright/test";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
+const ENDPOINT = `/api/documents-categories`;
 
 test.describe(`Documents categories response tests`, () => {
   test.beforeEach(async () => {
@@ -24,9 +25,10 @@ test.describe(`Documents categories response tests`, () => {
   });
 
   test(`
-      GIVEN collection of documents categories without record
-      WHEN create one category
-      SHOULD get a response with this category
+      GIVEN an empty documents categories collection
+      WHEN call method POST ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkDocumentsCategoriesResponseTest
   );
@@ -43,7 +45,7 @@ async function checkDocumentsCategoriesResponseTest() {
     ]
   };
 
-  const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: `/api/documents-categories?populate=*` }))).data;
+  const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
   const documentCategoryTest = getDocumentCategoryByTitle({
     documentCategories: documentsCategoriesResponse,
     title: DOCUMENT_CATEGORY_TITLE
@@ -61,6 +63,6 @@ async function checkDocumentsCategoriesResponseTest() {
         },
       }
     ]
-  })
+  }, 'Documents categories response corrected')
     .toEqual(expectedDocumentsCategoriesResponse);
 }

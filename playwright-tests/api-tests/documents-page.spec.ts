@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
 import { getStrapiUrl } from "../helpers/global-helpers";
@@ -18,9 +18,10 @@ test.describe(`Documents page response tests`, () => {
 
 
   test(`
-      GIVEN empty documents page
-      WHEN fill out the documents page
-      SHOULD get a response documents  page
+      GIVEN an empty documents page
+      WHEN call method PUT ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkDocumentsPageResponseTest
   );
@@ -55,21 +56,27 @@ async function checkDocumentsPageResponseTest() {
         keywords: documentsPageResponse.data.seo.keywords
       }
     }
-  })
+  }, 'Documents page response corrected')
     .toEqual(expectedDocumentsPageResponse);
 }
 
 async function updateDocumentsPage() {
-  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       title: DOCUMENT_TITLE,
       seo: MOCK_SEO
     }
   });
+
+  await expect(response.status, 'Documents page updating')
+    .toEqual(HttpStatusCode.Ok);
 }
 
 async function deleteDocumentsPage() {
-  await axios.delete(getStrapiUrl({
+  const response = await axios.delete(getStrapiUrl({
     path: ENDPOINT
   }));
+
+  await expect(response.status, 'Documents page deletion')
+    .toEqual(HttpStatusCode.NoContent);
 }

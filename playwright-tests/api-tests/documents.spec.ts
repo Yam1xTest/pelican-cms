@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 
@@ -29,9 +29,10 @@ test.describe(`Documents response tests`, () => {
   });
 
   test(`
-      GIVEN collection of documents without record
-      WHEN create one document
-      SHOULD get a response with this document
+      GIVEN an empty documents collection
+      WHEN call method POST ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkDocumentsResponseTest
   );
@@ -70,7 +71,7 @@ async function checkDocumentsResponseTest() {
         description: documentTest.description,
       }
     ]
-  })
+  }, 'Documents response corrected')
     .toEqual(expectedDocumentsResponse);
 
   await expect(documentTest.files[0].url)
@@ -85,7 +86,7 @@ async function createDocuments() {
   });
   const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
 
-  await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       title: DOCUMENT_TITLE,
       category: documentCategory.data.data.id,
@@ -95,6 +96,9 @@ async function createDocuments() {
       showDate: false
     }
   });
+
+  await expect(response.status, 'Documents creation')
+    .toEqual(HttpStatusCode.Created);
 }
 
 async function deleteDocument({
@@ -112,7 +116,10 @@ async function deleteDocument({
   });
 
   if (document) {
-    await axios.delete(getStrapiUrl({ path: `${ENDPOINT}/${document.documentId}` }));
+    const response = await axios.delete(getStrapiUrl({ path: `${ENDPOINT}/${document.documentId}` }));
+
+    await expect(response.status, 'Documents deletion')
+      .toEqual(HttpStatusCode.NoContent);
   }
 }
 

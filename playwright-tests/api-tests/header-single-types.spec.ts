@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { MOCK_TICKETS_POPUP } from "../mocks";
 import qs from "qs";
 import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
@@ -16,9 +16,10 @@ test.describe(`Header Single Type response tests`, () => {
   });
 
   test(`
-      GIVEN empty header single type
-      WHEN fill out the header single type
-      SHOULD get a response header single type
+      GIVEN an empty header single types
+      WHEN call method PUT ${ENDPOINT}
+      AND call method GET ${ENDPOINT}
+      SHOULD get a correct response
       `,
     checkHeaderSingleTypeResponseTest
   );
@@ -99,7 +100,7 @@ async function checkHeaderSingleTypeResponseTest() {
         note: ticketsPopupBlock.note,
       },
     },
-  })
+  }, 'Header single types response corrected')
     .toEqual(expectedHeaderSingleTypeResponse);
 
   await expect(ticketsPopupBlock.visitingRulesAccordion.images[0].url)
@@ -109,7 +110,7 @@ async function checkHeaderSingleTypeResponseTest() {
 
 
 async function createHeaderSingleTypes() {
-  await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
     data: {
       ticketsPopup: {
         ...MOCK_TICKETS_POPUP.ticketsPopup,
@@ -124,10 +125,17 @@ async function createHeaderSingleTypes() {
       }
     },
   });
+
+  await expect(response.status, 'Header single types updating')
+    .toEqual(HttpStatusCode.Ok);
 }
 
 async function deleteHeaderSingleType() {
-  await axios.delete(getStrapiUrl({
+  const response = await axios.delete(getStrapiUrl({
     path: ENDPOINT
   }));
+
+
+  await expect(response.status, 'Header single types deletion')
+    .toEqual(HttpStatusCode.NoContent);
 }
