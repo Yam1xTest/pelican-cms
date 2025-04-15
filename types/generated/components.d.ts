@@ -50,6 +50,70 @@ export interface CardLabel extends Struct.ComponentSchema {
   };
 }
 
+export interface DiscountsBasis extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_bases';
+  info: {
+    displayName: 'basis';
+    icon: 'dashboard';
+  };
+  attributes: {
+    link: Schema.Attribute.Text;
+    title: Schema.Attribute.Text;
+  };
+}
+
+export interface DiscountsCategories extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_categories';
+  info: {
+    description: '';
+    displayName: 'categories';
+    icon: 'dashboard';
+  };
+  attributes: {
+    remark: Schema.Attribute.Component<'discounts.basis', false>;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface DiscountsRules extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_rules';
+  info: {
+    description: '';
+    displayName: 'rules';
+    icon: 'dashboard';
+  };
+  attributes: {
+    basis: Schema.Attribute.Component<'discounts.basis', true>;
+    docs: Schema.Attribute.Component<'discounts.text', true>;
+    info: Schema.Attribute.Text;
+    terms: Schema.Attribute.Component<'discounts.text', true>;
+  };
+}
+
+export interface DiscountsTerms extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_terms';
+  info: {
+    displayName: 'terms';
+    icon: 'dashboard';
+  };
+  attributes: {
+    rulesCards: Schema.Attribute.Component<'discounts.text', true>;
+    subtitle: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface DiscountsText extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_texts';
+  info: {
+    displayName: 'text';
+    icon: 'dashboard';
+  };
+  attributes: {
+    text: Schema.Attribute.Text;
+  };
+}
+
 export interface HeroInfoCard extends Struct.ComponentSchema {
   collectionName: 'components_hero_info_cards';
   info: {
@@ -460,6 +524,11 @@ declare module '@strapi/strapi' {
       'button.button-with-text': ButtonButtonWithText;
       'card.card': CardCard;
       'card.label': CardLabel;
+      'discounts.basis': DiscountsBasis;
+      'discounts.categories': DiscountsCategories;
+      'discounts.rules': DiscountsRules;
+      'discounts.terms': DiscountsTerms;
+      'discounts.text': DiscountsText;
       'hero.info-card': HeroInfoCard;
       'hero.schedule-card': HeroScheduleCard;
       'home.map-card': HomeMapCard;

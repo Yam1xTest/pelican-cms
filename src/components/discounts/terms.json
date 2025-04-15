@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_discounts_terms",
+  "info": {
+    "displayName": "terms",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "rulesCards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "discounts.text"
+    }
+  }
+}

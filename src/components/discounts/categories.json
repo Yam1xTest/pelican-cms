@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_discounts_categories",
+  "info": {
+    "displayName": "categories",
+    "icon": "dashboard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "remark": {
+      "type": "component",
+      "repeatable": false,
+      "component": "discounts.basis"
+    }
+  }
+}

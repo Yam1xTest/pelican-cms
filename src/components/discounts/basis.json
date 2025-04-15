@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_discounts_bases",
+  "info": {
+    "displayName": "basis",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text"
+    },
+    "link": {
+      "type": "text"
+    }
+  }
+}
