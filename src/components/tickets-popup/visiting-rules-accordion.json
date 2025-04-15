@@ -12,8 +12,7 @@
       "multiple": true,
       "required": true,
       "allowedTypes": [
-        "images",
-        "files"
+        "images"
       ]
     },
     "button": {

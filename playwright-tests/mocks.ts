@@ -135,7 +135,6 @@ export const MOCK_TICKETS_POPUP = {
       ],
       button: {
         label: `Остальные льготные категории`,
-        link: `#`,
       },
     },
     buyTicketsButton: {
@@ -161,5 +160,5 @@ export const MOCK_TICKETS_POPUP = {
         link: `#`,
       },
     },
-  },
+  }
 }

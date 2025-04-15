@@ -4,12 +4,23 @@ export interface ButtonButton extends Struct.ComponentSchema {
   collectionName: 'components_button_buttons';
   info: {
     description: '';
-    displayName: '\u041A\u043D\u043E\u043F\u043A\u0430';
+    displayName: '\u041A\u043D\u043E\u043F\u043A\u0430 c \u0441\u0441\u044B\u043B\u043A\u043E\u0439';
     icon: 'cube';
   };
   attributes: {
     label: Schema.Attribute.String & Schema.Attribute.Required;
     link: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ButtonButtonWithText extends Struct.ComponentSchema {
+  collectionName: 'components_button_button_with_texts';
+  info: {
+    description: '';
+    displayName: '\u041A\u043D\u043E\u043F\u043A\u0430';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -215,10 +226,10 @@ export interface SharedSeo extends Struct.ComponentSchema {
   attributes: {
     canonicalURL: Schema.Attribute.String;
     keywords: Schema.Attribute.Text;
-    metaDescription: Schema.Attribute.String &
+    metaDescription: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 160;
+        maxLength: 1000;
         minLength: 50;
       }>;
     metaImage: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
@@ -227,7 +238,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     metaTitle: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
-        maxLength: 60;
+        maxLength: 300;
       }>;
     metaViewport: Schema.Attribute.String;
     structuredData: Schema.Attribute.JSON;
@@ -285,7 +296,7 @@ export interface TicketsPopupAccordionTicket extends Struct.ComponentSchema {
     icon: 'dashboard';
   };
   attributes: {
-    button: Schema.Attribute.Component<'button.button', false> &
+    button: Schema.Attribute.Component<'button.button-with-text', false> &
       Schema.Attribute.Required;
     categories: Schema.Attribute.Component<'tickets-popup.category', true> &
       Schema.Attribute.Required;
@@ -399,8 +410,7 @@ export interface TicketsPopupVisitingRulesAccordion
   attributes: {
     button: Schema.Attribute.Component<'button.button', false> &
       Schema.Attribute.Required;
-    images: Schema.Attribute.Media<'images' | 'files', true> &
-      Schema.Attribute.Required;
+    images: Schema.Attribute.Media<'images', true> & Schema.Attribute.Required;
   };
 }
 
@@ -447,6 +457,7 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'button.button': ButtonButton;
+      'button.button-with-text': ButtonButtonWithText;
       'card.card': CardCard;
       'card.label': CardLabel;
       'hero.info-card': HeroInfoCard;
