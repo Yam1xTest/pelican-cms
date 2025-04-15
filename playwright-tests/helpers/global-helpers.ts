@@ -4,16 +4,6 @@ import 'dotenv/config';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
-// export async function gotoCMS({
-//   page
-// }: {
-//   page: Page
-// }) {
-//   await page.goto(getStrapiUrl({ path: '' }), {
-//     waitUntil: 'networkidle'
-//   })
-// }
-
 export async function gotoUI({
   page,
   path,
