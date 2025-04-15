@@ -160,7 +160,6 @@ node_modules/
 /playwright-report/playwright-test-results
 /playwright-tests/playwright-test-results
 jspm_packages/
-/playwright-tests/.auth/session.json
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
