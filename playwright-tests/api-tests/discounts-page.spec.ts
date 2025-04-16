@@ -40,8 +40,8 @@ async function checkDiscountsPageResponseTest() {
 
   const queryParams = {
     populate: [
-      "blocks.discounts.terms.rulesCards",
-      "blocks.discounts.categories.remark",
+      "blocks.rulesCards",
+      "blocks.remark",
       `seo`,
     ],
   };
@@ -57,30 +57,16 @@ async function checkDiscountsPageResponseTest() {
     data: {
       blocks: [
         {
-          title: termsBlock.title,
           __component: termsBlock.__component,
-          rulesCards: {
-            id: termsBlock.rulesCards.id,
-            text: termsBlock.rulesCards.text
-          },
+          title: termsBlock.title,
+          subtitle: termsBlock.subtitle,
+          rulesCards: [{
+            text: termsBlock.rulesCards[0].text
+          }],
         },
         {
           __component: categoriesBlock.__component,
           title: categoriesBlock.title,
-          categoriesCards: {
-            id: categoriesBlock.categoriesCards.id,
-            text: categoriesBlock.categoriesCards.text,
-            price: categoriesBlock.categoriesCards.price,
-            rules: {
-              terms: categoriesBlock.categoriesCards.rules.terms,
-              info: categoriesBlock.categoriesCards.rules.info,
-              docs: categoriesBlock.categoriesCards.rules.docs,
-              basis: {
-                title: categoriesBlock.categoriesCards.rules.basis.title,
-                link: categoriesBlock.categoriesCards.rules.basis.link,
-              }
-            }
-          },
           remark: {
             title: categoriesBlock.remark.title,
             link: categoriesBlock.remark.link,
