@@ -42,6 +42,9 @@ async function checkDiscountsPageResponseTest() {
     populate: [
       "blocks.rulesCards",
       "blocks.remark",
+      "blocks.discountsCards.rules.basis",
+      'blocks.discountsCards.rules.docs',
+      'blocks.discountsCards.rules.terms',
       `seo`,
     ],
   };
@@ -49,6 +52,7 @@ async function checkDiscountsPageResponseTest() {
   const discountsPageResponse = (await axios.get(getStrapiUrl({
     path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
+  console.log(discountsPageResponse)
 
   const termsBlock = discountsPageResponse.data.blocks.find((block) => block.__component === 'discounts.terms');
   const categoriesBlock = discountsPageResponse.data.blocks.find((block) => block.__component === 'discounts.categories');
@@ -67,6 +71,24 @@ async function checkDiscountsPageResponseTest() {
         {
           __component: categoriesBlock.__component,
           title: categoriesBlock.title,
+          discountsCards: [{
+            title: categoriesBlock.discountsCards[0].title,
+            price: categoriesBlock.discountsCards[0].price,
+            note: categoriesBlock.discountsCards[0].note,
+            rules: {
+              info: categoriesBlock.discountsCards[0].rules.info,
+              terms: [{
+                text: categoriesBlock.discountsCards[0].rules.terms[0].text
+              }],
+              docs: [{
+                text: categoriesBlock.discountsCards[0].rules.docs[0].text
+              }],
+              basis: [{
+                title: categoriesBlock.discountsCards[0].rules.basis[0].title,
+                link: categoriesBlock.discountsCards[0].rules.basis[0].link,
+              }]
+            }
+          }],
           remark: {
             title: categoriesBlock.remark.title,
             link: categoriesBlock.remark.link,
@@ -97,6 +119,7 @@ async function createDiscountsPage() {
 
   await expect(response.status, 'Discounts page updating')
     .toEqual(HttpStatusCode.Ok);
+
 }
 
 async function deleteDiscountsPage() {

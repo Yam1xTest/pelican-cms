@@ -1,15 +1,10 @@
 {
-  "kind": "collectionType",
-  "collectionName": "discounts",
+  "collectionName": "components_discounts_discounts_cards",
   "info": {
-    "singularName": "discount",
-    "pluralName": "discounts",
-    "displayName": "Льготы",
-    "description": ""
+    "displayName": "discountsCard",
+    "icon": "dashboard"
   },
-  "options": {
-    "draftAndPublish": true
-  },
+  "options": {},
   "attributes": {
     "title": {
       "type": "string",
@@ -20,7 +15,7 @@
       "required": true
     },
     "note": {
-      "type": "string"
+      "type": "text"
     },
     "rules": {
       "type": "component",

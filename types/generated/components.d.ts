@@ -70,8 +70,26 @@ export interface DiscountsCategories extends Struct.ComponentSchema {
     icon: 'dashboard';
   };
   attributes: {
+    discountsCards: Schema.Attribute.Component<
+      'discounts.discounts-card',
+      true
+    >;
     remark: Schema.Attribute.Component<'discounts.basis', false>;
     title: Schema.Attribute.String;
+  };
+}
+
+export interface DiscountsDiscountsCard extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_discounts_cards';
+  info: {
+    displayName: 'discountsCard';
+    icon: 'dashboard';
+  };
+  attributes: {
+    note: Schema.Attribute.Text;
+    price: Schema.Attribute.String & Schema.Attribute.Required;
+    rules: Schema.Attribute.Component<'discounts.rules', false>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -526,6 +544,7 @@ declare module '@strapi/strapi' {
       'card.label': CardLabel;
       'discounts.basis': DiscountsBasis;
       'discounts.categories': DiscountsCategories;
+      'discounts.discounts-card': DiscountsDiscountsCard;
       'discounts.rules': DiscountsRules;
       'discounts.terms': DiscountsTerms;
       'discounts.text': DiscountsText;
