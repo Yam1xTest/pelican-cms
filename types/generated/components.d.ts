@@ -453,6 +453,18 @@ export interface TicketsTickets extends Struct.ComponentSchema {
   };
 }
 
+export interface VisitingRulesDocumentLink extends Struct.ComponentSchema {
+  collectionName: 'components_visiting_rules_document_links';
+  info: {
+    displayName: 'documentLink';
+    icon: 'file';
+  };
+  attributes: {
+    file: Schema.Attribute.Media<'files'> & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface VisitingRulesEmergencyPhones extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_emergency_phones';
   info: {
@@ -548,7 +560,10 @@ export interface VisitingRulesVisitingRulesMain extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.Text & Schema.Attribute.Required;
-    documentLink: Schema.Attribute.Component<'button.button', false> &
+    documentLink: Schema.Attribute.Component<
+      'visiting-rules.document-link',
+      false
+    > &
       Schema.Attribute.Required;
     mainRules: Schema.Attribute.Component<'visiting-rules.main-rules', false> &
       Schema.Attribute.Required;
@@ -600,6 +615,7 @@ declare module '@strapi/strapi' {
       'tickets-popup.visiting-rules-accordion': TicketsPopupVisitingRulesAccordion;
       'tickets.ticket': TicketsTicket;
       'tickets.tickets': TicketsTickets;
+      'visiting-rules.document-link': VisitingRulesDocumentLink;
       'visiting-rules.emergency-phones': VisitingRulesEmergencyPhones;
       'visiting-rules.emergency-phones-card': VisitingRulesEmergencyPhonesCard;
       'visiting-rules.main-rules': VisitingRulesMainRules;

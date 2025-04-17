@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import qs from "qs";
 import {
   MOCK_VISITING_RULES_MAIN,
@@ -14,7 +14,7 @@ const ENDPOINT = `/api/visiting-rules-page`;
 
 test.describe(`VisitingRules page response tests`, () => {
   test.beforeEach(async () => {
-    await createVisitingRulesPage();
+    await updateVisitingRulesPage();
   });
 
   test.afterEach(async () => {
@@ -47,7 +47,7 @@ async function checkVisitingRulesPageResponseTest() {
 
   const queryParams = {
     populate: [
-      `blocks.documentLink`,
+      `blocks.documentLink.file`,
       `blocks.mainRules.mainRulesCards.image`,
       `blocks.warningsCards`,
       `blocks.photosPolicyCards`,
@@ -73,7 +73,6 @@ async function checkVisitingRulesPageResponseTest() {
           title: mainBlock.title,
           documentLink: {
             label: mainBlock.documentLink.label,
-            link: mainBlock.documentLink.link,
           },
           description: mainBlock.description,
           mainRules: {
@@ -125,47 +124,62 @@ async function checkVisitingRulesPageResponseTest() {
   await expect(mainBlock.mainRules.mainRulesCards[0].image)
     .not
     .toBeNull();
+
+  await expect(mainBlock.documentLink.file.url)
+    .not
+    .toBeNull();
 }
 
-async function createVisitingRulesPage() {
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      blocks: [
-        {
-          __component: MOCK_VISITING_RULES_MAIN.__component,
-          title: MOCK_VISITING_RULES_MAIN.title,
-          documentLink: {
-            label: MOCK_VISITING_RULES_MAIN.documentLink.label,
-            link: MOCK_VISITING_RULES_MAIN.documentLink.link,
+async function updateVisitingRulesPage() {
+  try {
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        blocks: [
+          {
+            __component: MOCK_VISITING_RULES_MAIN.__component,
+            title: MOCK_VISITING_RULES_MAIN.title,
+            documentLink: {
+              label: MOCK_VISITING_RULES_MAIN.documentLink.label,
+              file: await getFileIdByName({
+                name: '[E2E-SMOKE]-new-document.pdf'
+              }),
+            },
+            description: MOCK_VISITING_RULES_MAIN.description,
+            mainRules: {
+              title: MOCK_VISITING_RULES_MAIN.mainRules.title,
+              mainRulesCards: [
+                {
+                  image: await getFileIdByName(),
+                  label: MOCK_VISITING_RULES_MAIN.mainRules.mainRulesCards[0].label,
+                },
+              ],
+            },
           },
-          description: MOCK_VISITING_RULES_MAIN.description,
-          mainRules: {
-            title: MOCK_VISITING_RULES_MAIN.mainRules.title,
-            mainRulesCards: [
-              {
-                image: await getFileIdByName(),
-                label: MOCK_VISITING_RULES_MAIN.mainRules.mainRulesCards[0].label,
-              },
-            ],
-          },
-        },
-        MOCK_VISITING_RULES_WARNINGS,
-        MOCK_VISITING_RULES_PHOTOS_POLICY,
-        MOCK_VISITING_RULES_EMERGENCY_PHONES,
-      ],
-      seo: MOCK_SEO
-    },
-  });
+          MOCK_VISITING_RULES_WARNINGS,
+          MOCK_VISITING_RULES_PHOTOS_POLICY,
+          MOCK_VISITING_RULES_EMERGENCY_PHONES,
+        ],
+        seo: MOCK_SEO
+      },
+    });
 
-  await expect(response.status, 'Visiting rules page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'Visiting rules page should be updated with status 200')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Failed to update test visiting rules page: ${(error as AxiosError).message}`)
+  }
+
 }
 
 async function deleteVisitingRulesPage() {
-  const response = await axios.delete(getStrapiUrl({
-    path: ENDPOINT
-  }));
+  try {
+    const response = await axios.delete(getStrapiUrl({
+      path: ENDPOINT
+    }));
 
-  await expect(response.status, 'Visiting rules page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'Visiting rules page should be deleted with status 200')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test visiting rules page: ${(error as AxiosError).message}`)
+  }
 }

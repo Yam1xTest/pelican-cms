@@ -11,12 +11,6 @@
       "type": "string",
       "required": true
     },
-    "documentLink": {
-      "type": "component",
-      "repeatable": false,
-      "component": "button.button",
-      "required": true
-    },
     "description": {
       "type": "text",
       "required": true
@@ -25,6 +19,12 @@
       "type": "component",
       "repeatable": false,
       "component": "visiting-rules.main-rules",
+      "required": true
+    },
+    "documentLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "visiting-rules.document-link",
       "required": true
     }
   }
