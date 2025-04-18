@@ -2,12 +2,14 @@
   "collectionName": "components_discounts_texts",
   "info": {
     "displayName": "text",
-    "icon": "dashboard"
+    "icon": "dashboard",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "text": {
-      "type": "text"
+      "type": "text",
+      "required": true
     }
   }
 }

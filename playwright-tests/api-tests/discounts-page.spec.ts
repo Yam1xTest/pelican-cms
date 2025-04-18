@@ -1,14 +1,14 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_DISCOUNTS_CATEGORIES, MOCK_DISCOUNTS_TERMS, MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl } from "../helpers/global-helpers";
+import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/discount-page`;
 
 test.describe(`Discounts page response tests`, () => {
   test.beforeEach(async () => {
-    await createDiscountsPage();
+    await updateDiscountsPage();
   });
 
   test.afterEach(async () => {
@@ -40,9 +40,9 @@ async function checkDiscountsPageResponseTest() {
 
   const queryParams = {
     populate: [
+      "blocks.remark.file",
       "blocks.rulesCards",
-      "blocks.remark",
-      "blocks.discountsCards.rules.basis",
+      "blocks.discountsCards.rules.basis.file",
       'blocks.discountsCards.rules.docs',
       'blocks.discountsCards.rules.terms',
       `seo`,
@@ -91,7 +91,6 @@ async function checkDiscountsPageResponseTest() {
           }],
           remark: {
             title: categoriesBlock.remark.title,
-            link: categoriesBlock.remark.link,
           },
         },
       ],
@@ -103,30 +102,69 @@ async function checkDiscountsPageResponseTest() {
     }
   }, 'Discounts page response corrected')
     .toEqual(expectedDiscountsPageResponse);
+
+  await expect(categoriesBlock.remark.file.url)
+    .not.
+    toBeNull()
 }
 
-async function createDiscountsPage() {
+async function updateDiscountsPage() {
 
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      blocks: [
-        MOCK_DISCOUNTS_TERMS,
-        MOCK_DISCOUNTS_CATEGORIES,
-      ],
-      seo: MOCK_SEO
-    }
-  });
+  try {
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        blocks: [
+          {
+            __component: MOCK_DISCOUNTS_CATEGORIES.__component,
+            title: MOCK_DISCOUNTS_CATEGORIES.title,
+            discountsCards: [{
+              title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].title,
+              price: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].price,
+              note: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].note,
+              rules: {
+                info: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.info,
+                terms: [{
+                  text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.terms[0].text
+                }],
+                docs: [{
+                  text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.docs[0].text
+                }],
+                basis: [{
+                  title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].title,
+                  link: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].link,
+                }]
+              }
+            }],
+            remark: {
+              title: MOCK_DISCOUNTS_CATEGORIES.remark.title,
+              file: await getFileIdByName({
+                name: '[E2E-SMOKE]-new-document.pdf'
+              })
+            },
+          },
+          MOCK_DISCOUNTS_TERMS,
+        ],
+        seo: MOCK_SEO
+      }
+    });
 
-  await expect(response.status, 'Discounts page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'Discounts page updating')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Faled to update test discounts page: ${(error as AxiosError).message}`)
+  }
 
 }
 
 async function deleteDiscountsPage() {
-  const response = await axios.delete(getStrapiUrl({
-    path: ENDPOINT
-  }));
+  try {
+    const response = await axios.delete(getStrapiUrl({
+      path: ENDPOINT
+    }));
 
-  await expect(response.status, 'Discounts page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'Discounts page should be deleted with status 200')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test visiting rules page: ${(error as AxiosError).message}`)
+  }
 }

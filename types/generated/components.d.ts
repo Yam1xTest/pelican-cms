@@ -53,12 +53,14 @@ export interface CardLabel extends Struct.ComponentSchema {
 export interface DiscountsBasis extends Struct.ComponentSchema {
   collectionName: 'components_discounts_bases';
   info: {
+    description: '';
     displayName: 'basis';
     icon: 'dashboard';
   };
   attributes: {
+    file: Schema.Attribute.Media<'files'>;
     link: Schema.Attribute.Text;
-    title: Schema.Attribute.Text;
+    title: Schema.Attribute.Text & Schema.Attribute.Required;
   };
 }
 
@@ -75,7 +77,7 @@ export interface DiscountsCategories extends Struct.ComponentSchema {
       true
     >;
     remark: Schema.Attribute.Component<'discounts.basis', false>;
-    title: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -111,24 +113,26 @@ export interface DiscountsRules extends Struct.ComponentSchema {
 export interface DiscountsTerms extends Struct.ComponentSchema {
   collectionName: 'components_discounts_terms';
   info: {
+    description: '';
     displayName: 'terms';
     icon: 'dashboard';
   };
   attributes: {
     rulesCards: Schema.Attribute.Component<'discounts.text', true>;
-    subtitle: Schema.Attribute.Text;
-    title: Schema.Attribute.String;
+    subtitle: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
 export interface DiscountsText extends Struct.ComponentSchema {
   collectionName: 'components_discounts_texts';
   info: {
+    description: '';
     displayName: 'text';
     icon: 'dashboard';
   };
   attributes: {
-    text: Schema.Attribute.Text;
+    text: Schema.Attribute.Text & Schema.Attribute.Required;
   };
 }
 

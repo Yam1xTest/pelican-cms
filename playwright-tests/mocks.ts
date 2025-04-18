@@ -196,6 +196,5 @@ export const MOCK_DISCOUNTS_CATEGORIES = {
   ],
   remark: {
     title: `Приказом № 188 от 19.06.2020 г. "Об установлении категорий граждан без оплаты входных билетов МБУК "Зоопарк" (с изм. № 3 от 31.05.2024г.)`,
-    link: `/documents/Izmeneniya-po-lgote.pdf`,
   },
 };
