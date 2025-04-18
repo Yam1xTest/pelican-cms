@@ -81,15 +81,16 @@ async function checkDocumentsResponseTest() {
 
 async function createDocuments() {
   try {
-    const documentCategory = await createDocumentsCategoryByTitle({
+    const documentCategoryId = await createDocumentsCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE
     });
+
     const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
 
     const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
       data: {
         title: DOCUMENT_TITLE,
-        category: documentCategory.data.data.id,
+        category: documentCategoryId,
         subtitle: SUBTITLE,
         description: DESCRIPTION,
         files: [fileId],

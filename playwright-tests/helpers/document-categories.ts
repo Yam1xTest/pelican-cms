@@ -22,7 +22,7 @@ export async function createDocumentsCategoryByTitle({
     await expect(response.status, 'Documents categories should be created with status 201')
       .toEqual(HttpStatusCode.Created);
 
-    return response
+    return response.data.data.id;
   } catch (error) {
     throw new Error(`Failed to create test documents categories: ${(error as AxiosError).message}`)
   }
