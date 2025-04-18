@@ -1,4 +1,4 @@
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { getStrapiUrl } from "./global-helpers";
 import { MOCK_SEO } from "../mocks";
 import { SeoBlock } from "../types";
@@ -11,17 +11,21 @@ export async function createDocumentsCategoryByTitle({
 }: {
   title: string;
 }) {
-  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      title,
-      seo: MOCK_SEO
-    }
-  });
+  try {
+    const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        title,
+        seo: MOCK_SEO
+      }
+    });
 
-  await expect(response.status, 'Documents categories creation')
-    .toEqual(HttpStatusCode.Created);
+    await expect(response.status, 'Documents categories should be created with status 201')
+      .toEqual(HttpStatusCode.Created);
 
-  return response
+    return response.data.data.id;
+  } catch (error) {
+    throw new Error(`Failed to create test documents categories: ${(error as AxiosError).message}`)
+  }
 }
 
 export async function deleteDocumentCategoryByTitle({
@@ -29,20 +33,24 @@ export async function deleteDocumentCategoryByTitle({
 }: {
   title: string;
 }) {
-  const documentCategoriesResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
+  try {
+    const documentCategoriesResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
 
-  const documentCategory = getDocumentCategoryByTitle({
-    documentCategories: documentCategoriesResponse,
-    title
-  });
+    const documentCategory = getDocumentCategoryByTitle({
+      documentCategories: documentCategoriesResponse,
+      title
+    });
 
-  if (documentCategory) {
-    const response = await axios.delete(getStrapiUrl({
-      path: `${ENDPOINT}/${documentCategory.documentId}`
-    }));
+    if (documentCategory) {
+      const response = await axios.delete(getStrapiUrl({
+        path: `${ENDPOINT}/${documentCategory.documentId}`
+      }));
 
-    await expect(response.status, 'Documents categories deletion')
-      .toEqual(HttpStatusCode.NoContent);
+      await expect(response.status, 'Documents categories should be deleted with status 204')
+        .toEqual(HttpStatusCode.NoContent);
+    }
+  } catch (error) {
+    throw new Error(`Failed to delete test documents categories: ${(error as AxiosError).message}`)
   }
 }
 

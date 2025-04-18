@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
@@ -76,18 +76,22 @@ async function checkNewsResponseTest() {
 }
 
 async function createNewsAsync() {
-  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      title: NEWS_TITLE,
-      description: DESCRIPTION,
-      image: await getFileIdByName(),
-      innerContent: INNER_CONTENT,
-      seo: MOCK_SEO
-    }
-  });
+  try {
+    const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        title: NEWS_TITLE,
+        description: DESCRIPTION,
+        image: await getFileIdByName(),
+        innerContent: INNER_CONTENT,
+        seo: MOCK_SEO
+      }
+    });
 
-  await expect(response.status, 'News page creating')
-    .toEqual(HttpStatusCode.Created);
+    await expect(response.status, 'News should be created with status 201')
+      .toEqual(HttpStatusCode.Created);
+  } catch (error) {
+    throw new Error(`Failed to create test news: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteNewsByTitle({
@@ -95,20 +99,24 @@ async function deleteNewsByTitle({
 }: {
   title: string;
 }) {
-  const newsResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
+  try {
+    const newsResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
 
-  const news = getNewsByTitle({
-    news: newsResponse,
-    title
-  });
+    const news = getNewsByTitle({
+      news: newsResponse,
+      title
+    });
 
-  if (news) {
-    const response = await axios.delete(getStrapiUrl({
-      path: `${ENDPOINT}/${news.documentId}`
-    }));
+    if (news) {
+      const response = await axios.delete(getStrapiUrl({
+        path: `${ENDPOINT}/${news.documentId}`
+      }));
 
-    await expect(response.status, 'News deletion')
-      .toEqual(HttpStatusCode.NoContent);
+      await expect(response.status, 'News should be deleted with status 204')
+        .toEqual(HttpStatusCode.NoContent);
+    }
+  } catch (error) {
+    throw new Error(`Failed to delete test news: ${(error as AxiosError).message}`)
   }
 }
 

@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import qs from "qs";
 import {
   MOCK_HERO,
@@ -15,7 +15,7 @@ const ENDPOINT = `/api/contact-zoo`;
 
 test.describe(`ContactZoo page response tests`, () => {
   test.beforeEach(async () => {
-    await createContactZooPage();
+    await updateContactZooPage();
   });
 
   test.afterEach(async () => {
@@ -31,7 +31,6 @@ test.describe(`ContactZoo page response tests`, () => {
     checkContactZooPageResponseTest
   );
 });
-
 
 async function checkContactZooPageResponseTest() {
   const expectedConcatZooPageResponse = {
@@ -175,50 +174,58 @@ async function checkContactZooPageResponseTest() {
     .toBeNull();
 }
 
-async function createContactZooPage() {
-  const fileId = await getFileIdByName();
+async function updateContactZooPage() {
+  try {
+    const fileId = await getFileIdByName();
 
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      blocks: [
-        {
-          ...MOCK_HERO,
-          image: fileId
-        },
-        {
-          ...MOCK_TEXT_AND_MEDIA,
-          media: fileId
-        },
-        {
-          ...MOCK_IMAGE_WITH_BUTTON_GRID,
-          largeImage: fileId,
-          smallImage: fileId
-        },
-        MOCK_TICKETS,
-        {
-          __component: `shared.cards`,
-          title: MOCK_HOME_SERVICES.cards.title,
-          cards: [
-            {
-              ...MOCK_HOME_SERVICES.cards.cards[0],
-              image: fileId
-            }
-          ],
-        }
-      ],
-      seo: MOCK_SEO
-    },
-  });
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        blocks: [
+          {
+            ...MOCK_HERO,
+            image: fileId
+          },
+          {
+            ...MOCK_TEXT_AND_MEDIA,
+            media: fileId
+          },
+          {
+            ...MOCK_IMAGE_WITH_BUTTON_GRID,
+            largeImage: fileId,
+            smallImage: fileId
+          },
+          MOCK_TICKETS,
+          {
+            __component: `shared.cards`,
+            title: MOCK_HOME_SERVICES.cards.title,
+            cards: [
+              {
+                ...MOCK_HOME_SERVICES.cards.cards[0],
+                image: fileId
+              }
+            ],
+          }
+        ],
+        seo: MOCK_SEO
+      },
+    });
 
-  await expect(response.status, 'Contact zoo page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'Contact zoo page should be updated with status 200')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Failed to update test contact zoo page: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteContactZooPage() {
-  const response = await axios.delete(getStrapiUrl({
-    path: ENDPOINT
-  }));
+  try {
+    const response = await axios.delete(getStrapiUrl({
+      path: ENDPOINT
+    }));
 
-  await expect(response.status, 'Contact zoo page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'Contact zoo page should be deleted with status 204')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test contact zoo page: ${(error as AxiosError).message}`)
+  }
 }

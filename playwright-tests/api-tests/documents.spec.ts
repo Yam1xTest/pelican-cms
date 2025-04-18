@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 
@@ -79,26 +79,30 @@ async function checkDocumentsResponseTest() {
     .toBeNull();
 }
 
-
 async function createDocuments() {
-  const documentCategory = await createDocumentsCategoryByTitle({
-    title: DOCUMENT_CATEGORY_TITLE
-  });
-  const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
+  try {
+    const documentCategoryId = await createDocumentsCategoryByTitle({
+      title: DOCUMENT_CATEGORY_TITLE
+    });
 
-  const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      title: DOCUMENT_TITLE,
-      category: documentCategory.data.data.id,
-      subtitle: SUBTITLE,
-      description: DESCRIPTION,
-      files: [fileId],
-      showDate: false
-    }
-  });
+    const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
 
-  await expect(response.status, 'Documents creation')
-    .toEqual(HttpStatusCode.Created);
+    const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        title: DOCUMENT_TITLE,
+        category: documentCategoryId,
+        subtitle: SUBTITLE,
+        description: DESCRIPTION,
+        files: [fileId],
+        showDate: false
+      }
+    });
+
+    await expect(response.status, 'Documents should be created with status 201')
+      .toEqual(HttpStatusCode.Created);
+  } catch (error) {
+    throw new Error(`Failed to create test documents: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteDocument({
@@ -106,20 +110,24 @@ async function deleteDocument({
 }: {
   title: string;
 }) {
-  const documentsResponse = (await axios.get(getStrapiUrl({
-    path: `${ENDPOINT}?populate=*`
-  }))).data;
+  try {
+    const documentsResponse = (await axios.get(getStrapiUrl({
+      path: `${ENDPOINT}?populate=*`
+    }))).data;
 
-  const document = getDocumentByTitle({
-    documents: documentsResponse,
-    title
-  });
+    const document = getDocumentByTitle({
+      documents: documentsResponse,
+      title
+    });
 
-  if (document) {
-    const response = await axios.delete(getStrapiUrl({ path: `${ENDPOINT}/${document.documentId}` }));
+    if (document) {
+      const response = await axios.delete(getStrapiUrl({ path: `${ENDPOINT}/${document.documentId}` }));
 
-    await expect(response.status, 'Documents deletion')
-      .toEqual(HttpStatusCode.NoContent);
+      await expect(response.status, 'Documents should be deleted with status 204')
+        .toEqual(HttpStatusCode.NoContent);
+    }
+  } catch (error) {
+    throw new Error(`Failed to delete test documents: ${(error as AxiosError).message}`)
   }
 }
 
