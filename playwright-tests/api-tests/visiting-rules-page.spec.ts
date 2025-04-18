@@ -177,7 +177,7 @@ async function deleteVisitingRulesPage() {
       path: ENDPOINT
     }));
 
-    await expect(response.status, 'Visiting rules page should be deleted with status 200')
+    await expect(response.status, 'Visiting rules page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
   } catch (error) {
     throw new Error(`Failed to delete test visiting rules page: ${(error as AxiosError).message}`)
