@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
 import { getStrapiUrl } from "../helpers/global-helpers";
@@ -16,7 +16,6 @@ test.describe(`Documents page response tests`, () => {
     await deleteDocumentsPage();
   });
 
-
   test(`
       GIVEN an empty documents page
       WHEN call method PUT ${ENDPOINT}
@@ -26,7 +25,6 @@ test.describe(`Documents page response tests`, () => {
     checkDocumentsPageResponseTest
   );
 });
-
 
 async function checkDocumentsPageResponseTest() {
   const expectedDocumentsPageResponse = {
@@ -46,7 +44,6 @@ async function checkDocumentsPageResponseTest() {
     path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
 
-
   await expect({
     data: {
       title: documentsPageResponse.data.title,
@@ -61,22 +58,30 @@ async function checkDocumentsPageResponseTest() {
 }
 
 async function updateDocumentsPage() {
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      title: DOCUMENT_TITLE,
-      seo: MOCK_SEO
-    }
-  });
+  try {
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        title: DOCUMENT_TITLE,
+        seo: MOCK_SEO
+      }
+    });
 
-  await expect(response.status, 'Documents page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'Documents page should be updated with status 200')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Failed to update test documents page: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteDocumentsPage() {
-  const response = await axios.delete(getStrapiUrl({
-    path: ENDPOINT
-  }));
+  try {
+    const response = await axios.delete(getStrapiUrl({
+      path: ENDPOINT
+    }));
 
-  await expect(response.status, 'Documents page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'Documents page should be deleted with status 204')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test documents page: ${(error as AxiosError).message}`)
+  }
 }

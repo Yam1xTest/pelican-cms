@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import {
   MOCK_HERO,
   MOCK_HOME_SERVICES,
@@ -16,7 +16,7 @@ const ENDPOINT = '/api/home';
 
 test.describe(`Home page response tests`, () => {
   test.beforeEach(async () => {
-    await updateCreateHomePage();
+    await updateHomePage();
   });
 
   test.afterEach(async () => {
@@ -32,7 +32,6 @@ test.describe(`Home page response tests`, () => {
     checkHomepageResponseTest
   );
 });
-
 
 async function checkHomepageResponseTest() {
   const expectedHomepageResponse = {
@@ -205,54 +204,62 @@ async function checkHomepageResponseTest() {
 }
 
 
-async function updateCreateHomePage() {
-  const fileId = await getFileIdByName();
+async function updateHomePage() {
+  try {
+    const fileId = await getFileIdByName();
 
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      blocks: [
-        {
-          ...MOCK_HERO,
-          image: fileId
-        },
-        {
-          ...MOCK_HOME_SERVICES,
-          cards: {
-            title: MOCK_HOME_SERVICES.cards.title,
-            cards: [
-              {
-                ...MOCK_HOME_SERVICES.cards.cards[0],
-                image: fileId
-              }
-            ]
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        blocks: [
+          {
+            ...MOCK_HERO,
+            image: fileId
           },
-        },
-        {
-          ...MOCK_TEXT_AND_MEDIA,
-          media: fileId
-        },
-        {
-          ...MOCK_IMAGE_WITH_BUTTON_GRID,
-          largeImage: fileId,
-          smallImage: fileId
-        },
-        {
-          ...MOCK_HOME_MAP_CARD,
-          image: fileId
-        },
-        MOCK_HOME_TICKETS,
-      ],
-      seo: MOCK_SEO
-    },
-  });
+          {
+            ...MOCK_HOME_SERVICES,
+            cards: {
+              title: MOCK_HOME_SERVICES.cards.title,
+              cards: [
+                {
+                  ...MOCK_HOME_SERVICES.cards.cards[0],
+                  image: fileId
+                }
+              ]
+            },
+          },
+          {
+            ...MOCK_TEXT_AND_MEDIA,
+            media: fileId
+          },
+          {
+            ...MOCK_IMAGE_WITH_BUTTON_GRID,
+            largeImage: fileId,
+            smallImage: fileId
+          },
+          {
+            ...MOCK_HOME_MAP_CARD,
+            image: fileId
+          },
+          MOCK_HOME_TICKETS,
+        ],
+        seo: MOCK_SEO
+      },
+    });
 
-  await expect(response.status, 'Home page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'Home page should be updated with status 200')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Failed to update test home page: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteHomePage() {
-  const response = await axios.delete(getStrapiUrl({ path: ENDPOINT }));
+  try {
+    const response = await axios.delete(getStrapiUrl({ path: ENDPOINT }));
 
-  await expect(response.status, 'Home page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'Home page should be deleted with status 204')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test home page: ${(error as AxiosError).message}`)
+  }
 }
