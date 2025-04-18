@@ -1,5 +1,5 @@
 import test, { expect } from "@playwright/test";
-import axios, { HttpStatusCode } from "axios";
+import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
 import { getStrapiUrl } from "../helpers/global-helpers";
@@ -58,22 +58,30 @@ async function checkNewsPageResponseTest() {
 }
 
 async function updateNewsPage() {
-  const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
-    data: {
-      title: NEWS_TITLE,
-      seo: MOCK_SEO,
-    },
-  });
+  try {
+    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+      data: {
+        title: NEWS_TITLE,
+        seo: MOCK_SEO,
+      },
+    });
 
-  await expect(response.status, 'News page updating')
-    .toEqual(HttpStatusCode.Ok);
+    await expect(response.status, 'News page should be updated with status 200')
+      .toEqual(HttpStatusCode.Ok);
+  } catch (error) {
+    throw new Error(`Failed to update test news page: ${(error as AxiosError).message}`)
+  }
 }
 
 async function deleteNewsPage() {
-  const response = await axios.delete(getStrapiUrl({
-    path: ENDPOINT
-  }));
+  try {
+    const response = await axios.delete(getStrapiUrl({
+      path: ENDPOINT
+    }));
 
-  await expect(response.status, 'News page deletion')
-    .toEqual(HttpStatusCode.NoContent);
+    await expect(response.status, 'News page should be deleted with status 204')
+      .toEqual(HttpStatusCode.NoContent);
+  } catch (error) {
+    throw new Error(`Failed to delete test news page: ${(error as AxiosError).message}`)
+  }
 }
