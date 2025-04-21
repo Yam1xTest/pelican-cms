@@ -133,6 +133,17 @@ export default ({ env }) => ({
                     },
                 },
                 {
+                    uid: 'api::discount-page.discount-page',
+                    draft: {
+                        url: `${env('FRONTEND_URL')}/api/preview`,
+                        query: {
+                            slug: 'discounts',
+                            secret: env('PREVIEW_SECRET')
+                        },
+                        openTarget: 'StrapiPreviewPage',
+                    },
+                },
+                {
                     uid: 'api::visiting-rules-page.visiting-rules-page',
                     draft: {
                         url: `${env('FRONTEND_URL')}/api/preview`,

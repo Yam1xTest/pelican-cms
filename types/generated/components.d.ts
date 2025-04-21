@@ -50,6 +50,97 @@ export interface CardLabel extends Struct.ComponentSchema {
   };
 }
 
+export interface DiscountsBasis extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_bases';
+  info: {
+    description: '';
+    displayName: 'basis';
+    icon: 'dashboard';
+  };
+  attributes: {
+    file: Schema.Attribute.Media<'files'>;
+    link: Schema.Attribute.Text;
+    title: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
+export interface DiscountsCategories extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_categories';
+  info: {
+    description: '';
+    displayName: 'categories';
+    icon: 'dashboard';
+  };
+  attributes: {
+    discountsCards: Schema.Attribute.Component<
+      'discounts.discounts-card',
+      true
+    > &
+      Schema.Attribute.Required;
+    remark: Schema.Attribute.Component<'discounts.basis', false> &
+      Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface DiscountsDiscountsCard extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_discounts_cards';
+  info: {
+    description: '';
+    displayName: 'discountsCard';
+    icon: 'dashboard';
+  };
+  attributes: {
+    note: Schema.Attribute.Text;
+    price: Schema.Attribute.String & Schema.Attribute.Required;
+    rules: Schema.Attribute.Component<'discounts.rules', false> &
+      Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface DiscountsRules extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_rules';
+  info: {
+    description: '';
+    displayName: 'rules';
+    icon: 'dashboard';
+  };
+  attributes: {
+    basis: Schema.Attribute.Component<'discounts.basis', true>;
+    docs: Schema.Attribute.Component<'discounts.text', true>;
+    info: Schema.Attribute.Text;
+    terms: Schema.Attribute.Component<'discounts.text', true>;
+  };
+}
+
+export interface DiscountsTerms extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_terms';
+  info: {
+    description: '';
+    displayName: 'terms';
+    icon: 'dashboard';
+  };
+  attributes: {
+    rulesCards: Schema.Attribute.Component<'discounts.text', true> &
+      Schema.Attribute.Required;
+    subtitle: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface DiscountsText extends Struct.ComponentSchema {
+  collectionName: 'components_discounts_texts';
+  info: {
+    description: '';
+    displayName: 'text';
+    icon: 'dashboard';
+  };
+  attributes: {
+    text: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
 export interface HeroInfoCard extends Struct.ComponentSchema {
   collectionName: 'components_hero_info_cards';
   info: {
@@ -593,6 +684,12 @@ declare module '@strapi/strapi' {
       'button.button-with-text': ButtonButtonWithText;
       'card.card': CardCard;
       'card.label': CardLabel;
+      'discounts.basis': DiscountsBasis;
+      'discounts.categories': DiscountsCategories;
+      'discounts.discounts-card': DiscountsDiscountsCard;
+      'discounts.rules': DiscountsRules;
+      'discounts.terms': DiscountsTerms;
+      'discounts.text': DiscountsText;
       'hero.info-card': HeroInfoCard;
       'hero.schedule-card': HeroScheduleCard;
       'home.map-card': HomeMapCard;

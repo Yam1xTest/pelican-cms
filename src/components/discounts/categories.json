@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_discounts_categories",
+  "info": {
+    "displayName": "categories",
+    "icon": "dashboard",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "remark": {
+      "type": "component",
+      "repeatable": false,
+      "component": "discounts.basis",
+      "required": true
+    },
+    "discountsCards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "discounts.discounts-card",
+      "required": true
+    }
+  }
+}
