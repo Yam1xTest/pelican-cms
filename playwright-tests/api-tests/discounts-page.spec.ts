@@ -151,7 +151,7 @@ async function updateDiscountsPage() {
     await expect(response.status, 'Discounts page updating')
       .toEqual(HttpStatusCode.Ok);
   } catch (error) {
-    throw new Error(`Faled to update test discounts page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to update test discounts page: ${(error as AxiosError).message}`)
   }
 
 }
