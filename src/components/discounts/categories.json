@@ -14,12 +14,14 @@
     "remark": {
       "type": "component",
       "repeatable": false,
-      "component": "discounts.basis"
+      "component": "discounts.basis",
+      "required": true
     },
     "discountsCards": {
       "type": "component",
       "repeatable": true,
-      "component": "discounts.discounts-card"
+      "component": "discounts.discounts-card",
+      "required": true
     }
   }
 }

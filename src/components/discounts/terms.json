@@ -18,7 +18,8 @@
     "rulesCards": {
       "type": "component",
       "repeatable": true,
-      "component": "discounts.text"
+      "component": "discounts.text",
+      "required": true
     }
   }
 }

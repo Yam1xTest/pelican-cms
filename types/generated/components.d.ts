@@ -75,8 +75,10 @@ export interface DiscountsCategories extends Struct.ComponentSchema {
     discountsCards: Schema.Attribute.Component<
       'discounts.discounts-card',
       true
-    >;
-    remark: Schema.Attribute.Component<'discounts.basis', false>;
+    > &
+      Schema.Attribute.Required;
+    remark: Schema.Attribute.Component<'discounts.basis', false> &
+      Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -84,13 +86,15 @@ export interface DiscountsCategories extends Struct.ComponentSchema {
 export interface DiscountsDiscountsCard extends Struct.ComponentSchema {
   collectionName: 'components_discounts_discounts_cards';
   info: {
+    description: '';
     displayName: 'discountsCard';
     icon: 'dashboard';
   };
   attributes: {
     note: Schema.Attribute.Text;
     price: Schema.Attribute.String & Schema.Attribute.Required;
-    rules: Schema.Attribute.Component<'discounts.rules', false>;
+    rules: Schema.Attribute.Component<'discounts.rules', false> &
+      Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -118,7 +122,8 @@ export interface DiscountsTerms extends Struct.ComponentSchema {
     icon: 'dashboard';
   };
   attributes: {
-    rulesCards: Schema.Attribute.Component<'discounts.text', true>;
+    rulesCards: Schema.Attribute.Component<'discounts.text', true> &
+      Schema.Attribute.Required;
     subtitle: Schema.Attribute.Text & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };

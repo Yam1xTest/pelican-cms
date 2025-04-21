@@ -2,7 +2,8 @@
   "collectionName": "components_discounts_discounts_cards",
   "info": {
     "displayName": "discountsCard",
-    "icon": "dashboard"
+    "icon": "dashboard",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -20,7 +21,8 @@
     "rules": {
       "type": "component",
       "repeatable": false,
-      "component": "discounts.rules"
+      "component": "discounts.rules",
+      "required": true
     }
   }
 }
