@@ -52,7 +52,6 @@ async function checkDiscountsPageResponseTest() {
   const discountsPageResponse = (await axios.get(getStrapiUrl({
     path: `${ENDPOINT}?${qs.stringify(queryParams)}`
   }))).data;
-  console.log(discountsPageResponse)
 
   const termsBlock = discountsPageResponse.data.blocks.find((block) => block.__component === 'discounts.terms');
   const categoriesBlock = discountsPageResponse.data.blocks.find((block) => block.__component === 'discounts.categories');
@@ -109,7 +108,6 @@ async function checkDiscountsPageResponseTest() {
 }
 
 async function updateDiscountsPage() {
-
   try {
     const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
       data: {
