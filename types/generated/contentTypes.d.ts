@@ -337,6 +337,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    enableTotp: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     firstname: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 1;
@@ -362,6 +363,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
     roles: Schema.Attribute.Relation<'manyToMany', 'admin::role'> &
       Schema.Attribute.Private;
+    totpSecret: Schema.Attribute.String & Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -730,6 +732,36 @@ export interface ApiNewsPageNewsPage extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiOtpOtp extends Struct.CollectionTypeSchema {
+  collectionName: 'otps';
+  info: {
+    displayName: 'OTP';
+    pluralName: 'otps';
+    singularName: 'otp';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    code: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    expiresAt: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::otp.otp'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1240,12 +1272,14 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    enableTotp: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    otps: Schema.Attribute.Relation<'oneToMany', 'api::otp.otp'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
@@ -1258,6 +1292,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    totpSecret: Schema.Attribute.String & Schema.Attribute.Private;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1289,6 +1324,7 @@ declare module '@strapi/strapi' {
       'api::home.home': ApiHomeHome;
       'api::news-collection.news-collection': ApiNewsCollectionNewsCollection;
       'api::news-page.news-page': ApiNewsPageNewsPage;
+      'api::otp.otp': ApiOtpOtp;
       'api::visiting-rules-page.visiting-rules-page': ApiVisitingRulesPageVisitingRulesPage;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
