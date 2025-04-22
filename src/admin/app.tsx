@@ -119,6 +119,5 @@ export default {
   },
 
   bootstrap(app: any) {
-    console.log(app);
   },
 };
