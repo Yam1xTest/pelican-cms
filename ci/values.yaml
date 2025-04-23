@@ -11,7 +11,7 @@ containerPorts:
   http: 1337
   https: ""
 
-replicaCount: 1
+replicaCount: 2
 
 # 1000m means 100% of processor time 
 # 1m means 0.1% of processor time.
@@ -35,15 +35,15 @@ livenessProbe:
   enabled: true
   path: /cms
   # initialDelaySeconds defines how many seconds after the container is started, the probes start
-  initialDelaySeconds: 20
+  initialDelaySeconds: 45
   # periodSeconds defines how long to wait before starting a new probe in case of a failed check.
-  periodSeconds: 5
+  periodSeconds: 60
 
 readinessProbe:
   enabled: true
   path: /cms
-  initialDelaySeconds: 20
-  periodSeconds: 5
+  initialDelaySeconds: 15
+  periodSeconds: 30
 
 service:
   type: ClusterIP
