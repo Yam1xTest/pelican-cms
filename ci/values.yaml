@@ -25,6 +25,7 @@ resources:
     memory: 512Mi
 
 updateStrategy:
+  # RollingUpdate strategy allows to update service without long downtime
   rollingUpdate:
     maxUnavailable: 1
     maxSurge: 1
@@ -33,14 +34,16 @@ updateStrategy:
 livenessProbe:
   enabled: true
   path: /cms
-  initialDelaySeconds: 45
-  periodSeconds: 60
+  # initialDelaySeconds defines how many seconds after the container is started, the probes start
+  initialDelaySeconds: 5
+  # periodSeconds defines how long to wait before starting a new probe in case of a failed check.
+  periodSeconds: 5
 
 readinessProbe:
   enabled: true
   path: /cms
-  initialDelaySeconds: 15
-  periodSeconds: 30
+  initialDelaySeconds: 5
+  periodSeconds: 5
 
 service:
   type: ClusterIP
