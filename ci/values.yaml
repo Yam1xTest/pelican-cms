@@ -26,8 +26,8 @@ resources:
 
 updateStrategy:
   rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+    maxUnavailable: 1
+    maxSurge: 1
 
 # Here you can read more about container probes https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
@@ -50,7 +50,6 @@ service:
 
 ingress:
   enabled: true
-  hostname: "pelican.tourmalinecore.com"
   path: /cms(/|$)(.*)
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
