@@ -35,7 +35,7 @@ livenessProbe:
   enabled: true
   path: /cms
   # initialDelaySeconds defines how many seconds after the container is started, the probes start
-  initialDelaySeconds: 45
+  initialDelaySeconds: 15
   # periodSeconds defines how long to wait before starting a new probe in case of a failed check.
   periodSeconds: 5
 
