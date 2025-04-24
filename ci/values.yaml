@@ -11,8 +11,6 @@ containerPorts:
   http: 1337
   https: ""
 
-replicaCount: 2
-
 # 1000m means 100% of processor time 
 # 1m means 0.1% of processor time.
 # at start pod is being allocated with resources from requests, if it needs more consumption can grow until limits.
@@ -24,8 +22,10 @@ resources:
     cpu: 200m
     memory: 512Mi
 
+replicaCount: 2
+
 updateStrategy:
-  # RollingUpdate strategy allows to update service without long downtime
+  # RollingUpdate strategy allows to update service without downtime (hopefully)
   rollingUpdate:
     maxUnavailable: 1
     maxSurge: 1
@@ -36,7 +36,7 @@ livenessProbe:
   path: /cms
   # initialDelaySeconds defines how many seconds after the container is started, the probes start
   initialDelaySeconds: 15
-  # periodSeconds defines how long to wait before starting a new probe in case of a failed check.
+  # periodSeconds defines how long to wait before starting a new probe in case of a failed check
   periodSeconds: 5
 
 readinessProbe:
