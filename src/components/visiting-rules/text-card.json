@@ -1,8 +1,9 @@
 {
   "collectionName": "components_visiting_rules_text_cards",
   "info": {
-    "displayName": "textCard",
-    "icon": "file"
+    "displayName": "Карточка с текстом",
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
