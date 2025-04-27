@@ -32,15 +32,6 @@ async function translitAndAddSuffix(params: any) {
       strict: true
     });
 
-    const maxLength = 50;
-    if (slug.length > maxLength) {
-      slug = slug.substring(0, maxLength);
-
-      if (slug.endsWith('-')) {
-        slug = slug.slice(0, -1);
-      }
-    }
-
     const existingEntries = await strapi.entityService.findMany('api::news-collection.news-collection', {
       filters: {
         slug: { $startsWith: slug },
