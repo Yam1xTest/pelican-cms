@@ -1,8 +1,9 @@
 {
   "collectionName": "components_visiting_rules_document_links",
   "info": {
-    "displayName": "documentLink",
-    "icon": "file"
+    "displayName": "Ссылка на документ",
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -11,12 +12,12 @@
       "required": true
     },
     "file": {
-      "allowedTypes": [
-        "files"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "files"
+      ]
     }
   }
 }

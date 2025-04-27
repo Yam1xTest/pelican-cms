@@ -1,18 +1,19 @@
 {
   "collectionName": "components_visiting_rules_main_rules_cards",
   "info": {
-    "displayName": "mainRulesCard",
-    "icon": "file"
+    "displayName": "Карточка правил посещения",
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "image": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "label": {
       "type": "text",

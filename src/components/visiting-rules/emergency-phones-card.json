@@ -1,8 +1,9 @@
 {
   "collectionName": "components_visiting_rules_emergency_phones_cards",
   "info": {
-    "displayName": "emergencyPhonesCard",
-    "icon": "file"
+    "displayName": "Карточка с телефоном экстренной службы",
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {

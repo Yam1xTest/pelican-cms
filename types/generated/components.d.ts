@@ -54,7 +54,7 @@ export interface DiscountsBasis extends Struct.ComponentSchema {
   collectionName: 'components_discounts_bases';
   info: {
     description: '';
-    displayName: 'basis';
+    displayName: '\u0411\u043B\u043E\u043A "\u041E\u0441\u043D\u043E\u0432\u0430\u043D\u0438\u0435 \u043B\u044C\u0433\u043E\u0442\u044B"';
     icon: 'dashboard';
   };
   attributes: {
@@ -68,7 +68,7 @@ export interface DiscountsCategories extends Struct.ComponentSchema {
   collectionName: 'components_discounts_categories';
   info: {
     description: '';
-    displayName: 'categories';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0430\u043C\u0438 \u043B\u044C\u0433\u043E\u0442\u043D\u044B\u0445 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0439';
     icon: 'dashboard';
   };
   attributes: {
@@ -87,7 +87,7 @@ export interface DiscountsDiscountsCard extends Struct.ComponentSchema {
   collectionName: 'components_discounts_discounts_cards';
   info: {
     description: '';
-    displayName: 'discountsCard';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u043B\u044C\u0433\u043E\u0442\u043D\u043E\u0439 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438';
     icon: 'dashboard';
   };
   attributes: {
@@ -103,7 +103,7 @@ export interface DiscountsRules extends Struct.ComponentSchema {
   collectionName: 'components_discounts_rules';
   info: {
     description: '';
-    displayName: 'rules';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0442\u0440\u0435\u0431\u043E\u0432\u0430\u043D\u0438\u044F\u043C\u0438 \u0434\u043B\u044F \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u044F \u043B\u044C\u0433\u043E\u0442\u044B';
     icon: 'dashboard';
   };
   attributes: {
@@ -118,7 +118,7 @@ export interface DiscountsTerms extends Struct.ComponentSchema {
   collectionName: 'components_discounts_terms';
   info: {
     description: '';
-    displayName: 'terms';
+    displayName: '\u041F\u0435\u0440\u0432\u044B\u0439 \u0431\u043B\u043E\u043A \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u043B\u044C\u0433\u043E\u0442\u043D\u044B\u0445 \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0439';
     icon: 'dashboard';
   };
   attributes: {
@@ -133,7 +133,7 @@ export interface DiscountsText extends Struct.ComponentSchema {
   collectionName: 'components_discounts_texts';
   info: {
     description: '';
-    displayName: 'text';
+    displayName: '\u041F\u043E\u043B\u0435 \u0442\u0435\u043A\u0441\u0442\u0430';
     icon: 'dashboard';
   };
   attributes: {
@@ -321,7 +321,6 @@ export interface SharedSeo extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 1000;
-        minLength: 50;
       }>;
     metaImage: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     metaRobots: Schema.Attribute.String;
@@ -547,7 +546,8 @@ export interface TicketsTickets extends Struct.ComponentSchema {
 export interface VisitingRulesDocumentLink extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_document_links';
   info: {
-    displayName: 'documentLink';
+    description: '';
+    displayName: '\u0421\u0441\u044B\u043B\u043A\u0430 \u043D\u0430 \u0434\u043E\u043A\u0443\u043C\u0435\u043D\u0442';
     icon: 'file';
   };
   attributes: {
@@ -560,7 +560,7 @@ export interface VisitingRulesEmergencyPhones extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_emergency_phones';
   info: {
     description: '';
-    displayName: 'emergencyPhones';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430\u043C\u0438 \u044D\u043A\u0441\u0442\u0440\u0435\u043D\u043D\u044B\u0445 \u0441\u043B\u0443\u0436\u0431';
     icon: 'file';
   };
   attributes: {
@@ -577,7 +577,8 @@ export interface VisitingRulesEmergencyPhonesCard
   extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_emergency_phones_cards';
   info: {
-    displayName: 'emergencyPhonesCard';
+    description: '';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0441 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u043E\u043C \u044D\u043A\u0441\u0442\u0440\u0435\u043D\u043D\u043E\u0439 \u0441\u043B\u0443\u0436\u0431\u044B';
     icon: 'file';
   };
   attributes: {
@@ -590,7 +591,7 @@ export interface VisitingRulesMainRules extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_main_rules';
   info: {
     description: '';
-    displayName: 'mainRules';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043F\u0440\u0430\u0432\u0438\u043B\u0430\u043C\u0438 \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u044F';
     icon: 'file';
   };
   attributes: {
@@ -606,7 +607,8 @@ export interface VisitingRulesMainRules extends Struct.ComponentSchema {
 export interface VisitingRulesMainRulesCard extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_main_rules_cards';
   info: {
-    displayName: 'mainRulesCard';
+    description: '';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u043F\u0440\u0430\u0432\u0438\u043B \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u044F';
     icon: 'file';
   };
   attributes: {
@@ -618,7 +620,8 @@ export interface VisitingRulesMainRulesCard extends Struct.ComponentSchema {
 export interface VisitingRulesPhotosPolicy extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_photos_policies';
   info: {
-    displayName: 'photosPolicy';
+    description: '';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043A\u0430\u0440\u0442\u043E\u0447\u043A\u0430\u043C\u0438';
     icon: 'file';
   };
   attributes: {
@@ -634,7 +637,8 @@ export interface VisitingRulesPhotosPolicy extends Struct.ComponentSchema {
 export interface VisitingRulesTextCard extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_text_cards';
   info: {
-    displayName: 'textCard';
+    description: '';
+    displayName: '\u041A\u0430\u0440\u0442\u043E\u0447\u043A\u0430 \u0441 \u0442\u0435\u043A\u0441\u0442\u043E\u043C';
     icon: 'file';
   };
   attributes: {
@@ -646,7 +650,7 @@ export interface VisitingRulesVisitingRulesMain extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_visiting_rules_mains';
   info: {
     description: '';
-    displayName: 'visitingRulesMain';
+    displayName: '\u041F\u0435\u0440\u0432\u044B\u0439 \u0431\u043B\u043E\u043A \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u044B \u043F\u0440\u0430\u0432\u0438\u043B \u043F\u043E\u0441\u0435\u0449\u0435\u043D\u0438\u044F';
     icon: 'file';
   };
   attributes: {
@@ -665,7 +669,8 @@ export interface VisitingRulesVisitingRulesMain extends Struct.ComponentSchema {
 export interface VisitingRulesWarnings extends Struct.ComponentSchema {
   collectionName: 'components_visiting_rules_warnings';
   info: {
-    displayName: 'warnings';
+    description: '';
+    displayName: '\u0411\u043B\u043E\u043A \u0441 \u043F\u0440\u0435\u0434\u0443\u043F\u0440\u0435\u0436\u0434\u0435\u043D\u0438\u044F\u043C\u0438';
     icon: 'file';
   };
   attributes: {

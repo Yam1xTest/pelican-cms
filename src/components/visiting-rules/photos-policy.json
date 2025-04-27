@@ -1,8 +1,9 @@
 {
   "collectionName": "components_visiting_rules_photos_policies",
   "info": {
-    "displayName": "photosPolicy",
-    "icon": "file"
+    "displayName": "Блок с карточками",
+    "icon": "file",
+    "description": ""
   },
   "options": {},
   "attributes": {
