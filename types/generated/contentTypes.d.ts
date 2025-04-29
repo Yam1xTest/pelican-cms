@@ -661,6 +661,7 @@ export interface ApiNewsCollectionNewsCollection
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
     description: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
         versions: {

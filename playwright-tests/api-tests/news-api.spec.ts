@@ -7,6 +7,7 @@ import { SeoBlock } from "../types";
 const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;
 const INNER_CONTENT = `В зоопарке появился амурский тигр, приходите посмотреть!`;
+const DATE = '2025-02-15'
 const ENDPOINT = '/api/news';
 
 test.describe(`News response tests`, () => {
@@ -15,7 +16,7 @@ test.describe(`News response tests`, () => {
       title: NEWS_TITLE
     });
 
-    await createNewsAsync();
+    await createNews();
   });
 
   test.afterEach(async () => {
@@ -41,7 +42,8 @@ async function checkNewsResponseTest() {
         title: NEWS_TITLE,
         description: DESCRIPTION,
         innerContent: INNER_CONTENT,
-        slug: 'e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr',
+        slug: '2025/02/15/e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr',
+        date: DATE,
         seo: MOCK_SEO
       }
     ]
@@ -59,6 +61,7 @@ async function checkNewsResponseTest() {
         title: newsTest.title,
         description: newsTest.description,
         innerContent: newsTest.innerContent,
+        date: newsTest.date,
         slug: newsTest.slug,
         seo: {
           metaTitle: newsTest.seo.metaTitle,
@@ -75,7 +78,7 @@ async function checkNewsResponseTest() {
     .toBeNull();
 }
 
-async function createNewsAsync() {
+async function createNews() {
   try {
     const response = await axios.post(`${getStrapiUrl({ path: ENDPOINT })}`, {
       data: {
@@ -83,6 +86,7 @@ async function createNewsAsync() {
         description: DESCRIPTION,
         image: await getFileIdByName(),
         innerContent: INNER_CONTENT,
+        date: DATE,
         seo: MOCK_SEO
       }
     });
@@ -137,6 +141,7 @@ type NewsResponse = {
     title: string;
     description?: string;
     innerContent: string;
+    date: string;
     image: {
       url: string;
       alternativeText: string;

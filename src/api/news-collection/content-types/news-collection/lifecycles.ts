@@ -1,57 +1,38 @@
 import slugify from "slugify";
 
 module.exports = {
-  async beforeCreate({ params }) {
-    await translitAndAddSuffix(params)
+  beforeCreate({ params }) {
+    const { data } = params;
+
+    generateSlug(data)
   },
 
-  async beforeUpdate({ params }) {
-    const currentEntry = await strapi.entityService.findMany('api::news-collection.news-collection', {
-      fields: ['title', 'slug'],
-      filters: {
-        id: { $eq: params.where.id }
-      },
-    });
+  beforeUpdate({ params }) {
+    const { data } = params;
 
-    const isTitleChanged = params.data.title && params.data.title !== currentEntry[0].title;
-    const isSlugChanged = params.data.slug && params.data.slug !== currentEntry[0].slug;
-
-    if (!isTitleChanged && !isSlugChanged) {
-      return;
-    }
-
-    await translitAndAddSuffix(params)
+    generateSlug(data)
   },
 }
 
+function generateSlug(data: any) {
+  if (!data.date) {
+    data.date = new Date();
+  }
 
-async function translitAndAddSuffix(params: any) {
-  if (params.data.title) {
-    let slug = slugify(params.data.title, {
+  if (data.title) {
+    let slug = slugify(data.title, {
       lower: true,
       strict: true
     });
 
-    const existingEntries = await strapi.entityService.findMany('api::news-collection.news-collection', {
-      filters: {
-        slug: { $startsWith: slug },
-        documentId: { $ne: params.data.documentId }
-      },
-    });
+    if (typeof data.date === 'string') {
+      const splitDate = data.date.split('T')[0].split('-');
 
-    if (existingEntries.length) {
-      const suffixNumbers = existingEntries
-        .map((entry) => {
-          const match = entry.slug.match(new RegExp(`^${slug}-(\\d+)$`));
-          return match ? parseInt(match[1], 10) : 0;
-        })
-        .filter(number => !isNaN(number));
-
-      const nextSuffix = suffixNumbers.length > 0 ? Math.max(...suffixNumbers) + 1 : 1;
-
-      params.data.slug = `${slug}-${nextSuffix}`;
+      data.slug = `${splitDate[0]}/${splitDate[1]}/${splitDate[2]}/${slug}`;
     } else {
-      params.data.slug = slug;
+      const splitDate = data.date.toISOString().split('T')[0].split('-');
+
+      data.slug = `${splitDate[0]}/${splitDate[1]}/${splitDate[2]}/${slug}`;
     }
   }
 }
