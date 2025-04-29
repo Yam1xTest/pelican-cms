@@ -19,7 +19,7 @@ function generateSlug(data: any) {
     data.date = new Date();
   }
 
-  if (data.title) {
+  if (data.title && !data.slug) {
     let slug = slugify(data.title, {
       lower: true,
       strict: true
