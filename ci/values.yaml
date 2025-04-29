@@ -3,7 +3,7 @@
 image:
   registry: ghcr.io
   repository: tourmalinecore/pelican-cms
-  tag: "latest"
+  tag: "sha-daece9090f1a20cfabab109f99be3f6e066cff62"
   pullPolicy: Always
   debug: true
 
