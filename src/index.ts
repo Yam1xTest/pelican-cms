@@ -28,6 +28,11 @@ export default {
       .forEach((permission) => {
         const controller = Object.keys(_public.permissions[permission].controllers)[0];
 
+        if (permission === 'api::health-check') {
+          _public.permissions[permission].controllers[controller].check.enabled = true;
+          return;
+        }
+
         // Enable find
         _public.permissions[permission].controllers[controller].find.enabled = true;
 
