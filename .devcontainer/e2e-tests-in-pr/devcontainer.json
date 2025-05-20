@@ -8,9 +8,6 @@
 	"image": "mcr.microsoft.com/playwright:v1.52.0-noble",
 	// let's install playwright itself
 	"onCreateCommand": "npm ci",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1.6.0": {}
-	},
 	"runArgs": [
 		"--network=host"
 	],
