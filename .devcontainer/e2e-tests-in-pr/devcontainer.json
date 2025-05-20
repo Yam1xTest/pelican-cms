@@ -10,10 +10,5 @@
 	"onCreateCommand": "npm ci",
 	"runArgs": [
 		"--network=host"
-	],
-	"remoteEnv": {
-		// https://stackoverflow.com/q/65343518
-		// the original host directory which is needed for volume mount commands from inside the container (Docker in Docker)
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	}
+	]
 }
