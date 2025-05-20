@@ -7,8 +7,5 @@
 	// https://playwright.dev/docs/docker
 	"image": "mcr.microsoft.com/playwright:v1.52.0-noble",
 	// let's install playwright itself
-	"onCreateCommand": "npm ci",
-	"runArgs": [
-		"--network=host"
-	]
+	"onCreateCommand": "npm ci"
 }
