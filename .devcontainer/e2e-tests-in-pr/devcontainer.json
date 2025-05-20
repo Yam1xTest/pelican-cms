@@ -7,7 +7,7 @@
 	// https://playwright.dev/docs/docker
 	"image": "mcr.microsoft.com/playwright:v1.52.0-noble",
 	// let's install playwright itself
-	"onCreateCommand": "npm install playwright@1.52.0",
+	"onCreateCommand": "npm install --no-package-lock --no-save playwright@1.52.0",
 	// it is needed so that our tests can make calls to the parent container network 
 	// it is where our local-env is running
 	"runArgs": [
