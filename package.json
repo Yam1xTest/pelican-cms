@@ -24,7 +24,6 @@
     "@strapi/strapi": "5.10.2",
     "dotenv": "^16.4.7",
     "pg": "^8.8.0",
-    "qs": "^6.14.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
@@ -45,6 +44,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.52.0"
+    "@playwright/test": "^1.52.0",
+    "qs": "^6.14.0"
   }
 }
