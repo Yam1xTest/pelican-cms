@@ -186,7 +186,7 @@ async function updateContactZooPage({
 }) {
   try {
     const fileId = await getFileIdByName();
-
+    console.log(process.env.SERVER_URL);
     const response = await request.put(ENDPOINT, {
       data: {
         data: {
