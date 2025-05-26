@@ -1,6 +1,6 @@
 import test, { APIRequestContext, expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
 
 const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
@@ -54,13 +54,13 @@ async function checkNewsResponseTest({
     ]
   };
 
-  const newsResponse = await request.get(`${ENDPOINT}?populate=*`);
+  const newsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
   const newsData = await newsResponse.json();
 
   const newsTest = getNewsByTitle({
     news: newsData,
     title: NEWS_TITLE
-  });
+  })!;
 
   await expect({
     data: [
@@ -91,7 +91,7 @@ async function createNews({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.post(ENDPOINT, {
+    const response = await request.post(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           title: NEWS_TITLE,
@@ -119,7 +119,7 @@ async function deleteNewsByTitle({
   request: APIRequestContext;
 }) {
   try {
-    const newsResponse = await request.get(`${ENDPOINT}?populate=*`);
+    const newsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
     const newsData = await newsResponse.json();
 
     const news = getNewsByTitle({
@@ -128,7 +128,7 @@ async function deleteNewsByTitle({
     });
 
     if (news) {
-      const response = await request.delete(`${ENDPOINT}/${news.documentId}`);
+      const response = await request.delete(`${getStrapiUrl({ path: ENDPOINT })}/${news.documentId}`);
 
       await expect(response.status(), 'News should be deleted with status 204')
         .toEqual(HttpStatusCode.NoContent);

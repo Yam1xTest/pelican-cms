@@ -1,7 +1,7 @@
 import { MOCK_SEO } from "../mocks";
 import { SeoBlock } from "../types";
 import { APIRequestContext, expect } from "@playwright/test";
-import { HttpStatusCode } from "./global-helpers";
+import { getStrapiUrl, HttpStatusCode } from "./global-helpers";
 
 const ENDPOINT = `/api/documents-categories`;
 
@@ -13,7 +13,7 @@ export async function createDocumentsCategoryByTitle({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.post(ENDPOINT, {
+    const response = await request.post(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           title,
@@ -41,7 +41,7 @@ export async function deleteDocumentCategoryByTitle({
   request: APIRequestContext;
 }) {
   try {
-    const documentCategoriesResponse = (await request.get(`${ENDPOINT}?populate=*`));
+    const documentCategoriesResponse = (await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`));
     const documentCategoriesData = await documentCategoriesResponse.json();
 
     const documentCategory = getDocumentCategoryByTitle({
@@ -50,7 +50,7 @@ export async function deleteDocumentCategoryByTitle({
     });
 
     if (documentCategory) {
-      const response = await request.delete(`${ENDPOINT}/${documentCategory.documentId}`);
+      const response = await request.delete(`${getStrapiUrl({ path: ENDPOINT })}/${documentCategory.documentId}`);
 
       await expect(response.status(), 'Documents categories should be deleted with status 204')
         .toEqual(HttpStatusCode.NoContent);

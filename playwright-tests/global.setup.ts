@@ -1,6 +1,7 @@
-import { test as setup } from "@playwright/test";
+import { expect, test as setup } from "@playwright/test";
 import fs from 'fs';
 import FormData from 'form-data';
+import { getStrapiUrl, HttpStatusCode } from "./helpers/global-helpers";
 
 setup('upload test files', async ({ request }) => {
   const files = [
@@ -24,8 +25,15 @@ setup('upload test files', async ({ request }) => {
     );
   });
 
-  await request.post('/api/upload', {
-    headers: formData.getHeaders(),
-    data: formData.getBuffer()
-  });
+  try {
+    const response = await request.post(getStrapiUrl({ path: '/api/upload' }), {
+      headers: formData.getHeaders(),
+      data: formData.getBuffer()
+    });
+
+    expect(response.status(), 'Files should be uploaded with status 201')
+      .toEqual(HttpStatusCode.Created);
+  } catch (error) {
+    throw new Error(`Failed to upload files: ${error.message}`)
+  }
 });

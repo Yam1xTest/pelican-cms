@@ -8,7 +8,7 @@ import {
   MOCK_TICKETS,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/contact-zoo`;
 
@@ -187,7 +187,7 @@ async function updateContactZooPage({
   try {
     const fileId = await getFileIdByName();
 
-    const response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           blocks: [
@@ -234,9 +234,7 @@ async function deleteContactZooPage({
   request: APIRequestContext
 }) {
   try {
-    const response = await request.delete(
-      ENDPOINT
-    );
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Contact zoo page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

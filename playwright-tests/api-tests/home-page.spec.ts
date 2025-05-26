@@ -71,7 +71,7 @@ async function checkHomepageResponseTest({
     ],
   };
 
-  const homepageResponse = await request.get(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const homepageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
   const homepageData = await homepageResponse.json();
 
   const heroBlock = homepageData.data.blocks.find((block) => block.__component === 'shared.hero');
@@ -214,7 +214,7 @@ async function updateHomePage({
   try {
     const fileId = await getFileIdByName();
 
-    const response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           blocks: [
@@ -267,7 +267,7 @@ async function deleteHomePage({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.delete(ENDPOINT);
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Home page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

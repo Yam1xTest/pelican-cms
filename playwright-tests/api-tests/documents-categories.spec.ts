@@ -1,5 +1,5 @@
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
+import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl } from "../helpers/global-helpers";
 import test, { APIRequestContext, expect } from "@playwright/test";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
 
@@ -51,14 +51,14 @@ async function checkDocumentsCategoriesResponseTest({
     ]
   };
 
-  const documentsCategoriesResponse = await request.get(`${ENDPOINT}?populate=*`);
+  const documentsCategoriesResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
 
   const documentsCategoriesData = await documentsCategoriesResponse.json();
 
   const documentCategoryTest = getDocumentCategoryByTitle({
     documentCategories: documentsCategoriesData,
     title: DOCUMENT_CATEGORY_TITLE
-  });
+  })!;
 
   await expect({
     data: [

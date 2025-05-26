@@ -1,7 +1,7 @@
 import test, { APIRequestContext, expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { HttpStatusCode } from "../helpers/global-helpers";
+import { getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 
 const DOCUMENT_TITLE = 'Информация о деятельности МБУК «Зоопарк»';
 const ENDPOINT = `/api/documents-page`;
@@ -43,7 +43,7 @@ async function checkDocumentsPageResponseTest({
     ],
   };
 
-  const documentsPageResponse = await request.get(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const documentsPageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
   const documentsPageData = await documentsPageResponse.json()
 
   await expect({
@@ -65,7 +65,7 @@ async function updateDocumentsPage({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           title: DOCUMENT_TITLE,
@@ -87,7 +87,7 @@ async function deleteDocumentsPage({
   request: APIRequestContext
 }) {
   try {
-    const response = await request.delete(ENDPOINT);
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Documents page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

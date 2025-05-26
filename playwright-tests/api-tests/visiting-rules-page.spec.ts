@@ -7,7 +7,7 @@ import {
   MOCK_VISITING_RULES_EMERGENCY_PHONES,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/visiting-rules-page`;
 
@@ -59,7 +59,7 @@ async function checkVisitingRulesPageResponseTest({
     ],
   };
 
-  const visitingRulesPageResponse = await request.get(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const visitingRulesPageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
   const visitingRulesPageData = await visitingRulesPageResponse.json();
 
   const mainBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
@@ -138,7 +138,7 @@ async function updateVisitingRulesPage({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           blocks: [
@@ -185,7 +185,7 @@ async function deleteVisitingRulesPage({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.delete(ENDPOINT);
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Visiting rules page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

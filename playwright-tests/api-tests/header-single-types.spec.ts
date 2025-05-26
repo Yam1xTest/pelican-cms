@@ -1,6 +1,6 @@
 import test, { APIRequestContext, expect } from "@playwright/test";
 import qs from "qs";
-import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 import { MOCK_TICKETS_POPUP } from "../mocks";
 
 const ENDPOINT = `/api/header`;
@@ -46,7 +46,7 @@ async function checkHeaderSingleTypeResponseTest({
     ],
   };
 
-  const headerSingleTypeResponse = await request.get(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const headerSingleTypeResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
 
   const headerSingleTypeData = await headerSingleTypeResponse.json()
 
@@ -116,7 +116,7 @@ async function updateHeaderSingleTypes({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           ticketsPopup: {
@@ -147,7 +147,7 @@ async function deleteHeaderSingleType({
   request: APIRequestContext;
 }) {
   try {
-    const response = await request.delete(ENDPOINT);
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Header single types should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

@@ -1,7 +1,7 @@
 import test, { APIRequestContext, expect } from "@playwright/test";
 import { MOCK_DISCOUNTS_CATEGORIES, MOCK_DISCOUNTS_TERMS, MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 
 const ENDPOINT = `/api/discount-page`;
 
@@ -53,7 +53,7 @@ async function checkDiscountsPageResponseTest({
   };
 
   const discountsPageResponse = await request.get(
-    `${ENDPOINT}?${qs.stringify(queryParams)}`
+    `${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`
   );
 
   const discountsPageData = await discountsPageResponse.json();
@@ -118,45 +118,44 @@ async function updateDiscountsPage({
   request: APIRequestContext
 }) {
   try {
-    const
-      response = await request.put(ENDPOINT, {
+    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+      data: {
         data: {
-          data: {
-            blocks: [
-              {
-                __component: MOCK_DISCOUNTS_CATEGORIES.__component,
-                title: MOCK_DISCOUNTS_CATEGORIES.title,
-                discountsCards: [{
-                  title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].title,
-                  price: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].price,
-                  note: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].note,
-                  rules: {
-                    info: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.info,
-                    terms: [{
-                      text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.terms[0].text
-                    }],
-                    docs: [{
-                      text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.docs[0].text
-                    }],
-                    basis: [{
-                      title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].title,
-                      link: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].link,
-                    }]
-                  }
-                }],
-                remark: {
-                  title: MOCK_DISCOUNTS_CATEGORIES.remark.title,
-                  file: await getFileIdByName({
-                    name: '[E2E-SMOKE]-new-document.pdf'
-                  })
-                },
+          blocks: [
+            {
+              __component: MOCK_DISCOUNTS_CATEGORIES.__component,
+              title: MOCK_DISCOUNTS_CATEGORIES.title,
+              discountsCards: [{
+                title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].title,
+                price: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].price,
+                note: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].note,
+                rules: {
+                  info: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.info,
+                  terms: [{
+                    text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.terms[0].text
+                  }],
+                  docs: [{
+                    text: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.docs[0].text
+                  }],
+                  basis: [{
+                    title: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].title,
+                    link: MOCK_DISCOUNTS_CATEGORIES.discountsCards[0].rules.basis[0].link,
+                  }]
+                }
+              }],
+              remark: {
+                title: MOCK_DISCOUNTS_CATEGORIES.remark.title,
+                file: await getFileIdByName({
+                  name: '[E2E-SMOKE]-new-document.pdf'
+                })
               },
-              MOCK_DISCOUNTS_TERMS,
-            ],
-            seo: MOCK_SEO
-          }
+            },
+            MOCK_DISCOUNTS_TERMS,
+          ],
+          seo: MOCK_SEO
         }
-      });
+      }
+    });
 
     await expect(response.status(), 'Discounts page updating')
       .toEqual(HttpStatusCode.Ok);
@@ -172,9 +171,7 @@ async function deleteDiscountsPage({
   request: APIRequestContext
 }) {
   try {
-    const response = await request.delete(
-      ENDPOINT
-    );
+    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
 
     await expect(response.status(), 'Discounts page should be deleted with status 200')
       .toEqual(HttpStatusCode.NoContent);

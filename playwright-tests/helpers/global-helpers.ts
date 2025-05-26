@@ -3,6 +3,14 @@ import 'dotenv/config';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
+export function getStrapiUrl({
+  path
+}: {
+  path: string
+}) {
+  return `${process.env.SERVER_URL || 'http://localhost:1337'}${path}`
+}
+
 export async function getFileIdByName({
   name = '[E2E-SMOKE]-tiger.png'
 }: {
@@ -10,29 +18,12 @@ export async function getFileIdByName({
 } = {}) {
   const apiContext = await request.newContext();
 
-  const filesResponse = await apiContext.get('/api/upload/files');
+  const filesResponse = await apiContext.get(getStrapiUrl({ path: '/api/upload/files' }));
   const filesData = await filesResponse.json();
 
   await apiContext.dispose();
 
   return filesData.find((file) => file.name === name).id;
-}
-
-export async function deleteFiles() {
-  const apiContext = await request.newContext();
-
-  const filesResponse = await apiContext.get('/api/upload/files');
-  const filesData = await filesResponse.json();
-
-  const filesDelete = filesData.filter((file) => file.name?.startsWith(E2E_SMOKE_NAME_PREFIX));
-
-  if (filesDelete.length) {
-    for (const { id } of filesDelete) {
-      await apiContext.delete(`/api/upload/files/${id}`);
-    }
-  }
-
-  await apiContext.dispose();
 }
 
 export enum HttpStatusCode {

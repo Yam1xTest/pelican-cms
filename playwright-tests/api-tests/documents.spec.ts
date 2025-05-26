@@ -1,5 +1,5 @@
 import test, { APIRequestContext, expect } from "@playwright/test";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
@@ -62,13 +62,13 @@ async function checkDocumentsResponseTest({
     ]
   };
 
-  const documentsResponse = await request.get(`${ENDPOINT}?populate=*`);
+  const documentsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
   const documentsData = await documentsResponse.json();
 
   const documentTest = getDocumentByTitle({
     documents: documentsData,
     title: DOCUMENT_TITLE
-  });
+  })!;
 
   await expect({
     data: [
@@ -101,7 +101,7 @@ async function createDocuments({
 
     const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
 
-    const response = await request.post(ENDPOINT, {
+    const response = await request.post(getStrapiUrl({ path: ENDPOINT }), {
       data: {
         data: {
           title: DOCUMENT_TITLE,
@@ -129,7 +129,7 @@ async function deleteDocument({
   request: APIRequestContext;
 }) {
   try {
-    const documentsResponse = await request.get(`${ENDPOINT}?populate=*`);
+    const documentsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
     const documentsData = await documentsResponse.json();
 
     const document = getDocumentByTitle({
@@ -138,7 +138,7 @@ async function deleteDocument({
     });
 
     if (document) {
-      const response = await request.delete(`${ENDPOINT}/${document.documentId}`);
+      const response = await request.delete(`${getStrapiUrl({ path: ENDPOINT })}/${document.documentId}`);
 
       await expect(response.status(), 'Documents should be deleted with status 204')
         .toEqual(HttpStatusCode.NoContent);
