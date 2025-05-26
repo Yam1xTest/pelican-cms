@@ -13,7 +13,9 @@ export type ApiTestFixtures = {
 // https://playwright.dev/docs/test-fixtures
 // Extend base test by providing "apiRequest"
 export const test = base.extend<ApiTestFixtures>({
+
   apiRequest: async ({ }, use) => {
+    console.log(process.env.SERVER_URL)
     // Create apiContext with default settings
     const apiContext = await request.newContext({
       baseURL: process.env.SERVER_URL || 'http://localhost:1337',
