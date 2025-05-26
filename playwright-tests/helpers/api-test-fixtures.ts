@@ -18,7 +18,7 @@ export const test = base.extend<ApiTestFixtures>({
     console.log(process.env.SERVER_URL)
     // Create apiContext with default settings
     const apiContext = await request.newContext({
-      baseURL: process.env.SERVER_URL || 'http://localhost:1337',
+      baseURL: 'http://localhost:40110/cms',
       extraHTTPHeaders: {
         // Disable cache for test request
         'Cache-Control': 'no-cache',
