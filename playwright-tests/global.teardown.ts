@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test';
-import { test as teardown } from './helpers/api-test-fixtures';
+import { expect, test as teardown } from './helpers/api-test-fixtures';
 import { E2E_SMOKE_NAME_PREFIX, HttpStatusCode } from './helpers/global-helpers';
 
 teardown('remove test files', async ({ apiRequest }) => {

@@ -1,8 +1,7 @@
-import { expect } from "@playwright/test";
 import qs from "qs";
 import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { MOCK_TICKETS_POPUP } from "../mocks";
-import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/header`;
 

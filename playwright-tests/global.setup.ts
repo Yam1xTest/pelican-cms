@@ -1,5 +1,4 @@
-import { expect } from "@playwright/test";
-import { test as setup } from './helpers/api-test-fixtures';
+import { expect, test as setup } from './helpers/api-test-fixtures';
 import fs from 'fs';
 import FormData from 'form-data';
 import { HttpStatusCode } from "./helpers/global-helpers";

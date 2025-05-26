@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { ApiTestFixtures } from './api-test-fixtures';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
@@ -8,7 +7,7 @@ export async function getFileIdByName({
   apiRequest
 }: {
   name?: string;
-  apiRequest: ApiTestFixtures['apiRequest']
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const filesResponse = await apiRequest('/api/upload/files');
   const filesData = await filesResponse.json();

@@ -1,7 +1,6 @@
-import { expect } from "@playwright/test";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
-import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
 const DOCUMENT_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;

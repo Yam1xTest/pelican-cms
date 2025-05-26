@@ -1,8 +1,7 @@
-import { expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
 import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
-import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;

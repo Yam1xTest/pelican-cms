@@ -1,8 +1,7 @@
 import { MOCK_SEO } from "../mocks";
 import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
-import { expect } from "@playwright/test";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
-import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
 const ENDPOINT = `/api/documents-categories`;

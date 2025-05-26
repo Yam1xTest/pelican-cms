@@ -1,8 +1,7 @@
 import { MOCK_SEO } from "../mocks";
 import { SeoBlock } from "../types";
-import { expect } from "@playwright/test";
 import { HttpStatusCode } from "./global-helpers";
-import { ApiTestFixtures } from "./api-test-fixtures";
+import { ApiTestFixtures, expect } from "./api-test-fixtures";
 
 const ENDPOINT = `/api/documents-categories`;
 

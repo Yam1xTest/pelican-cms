@@ -38,3 +38,5 @@ export const test = base.extend<ApiTestFixtures>({
     await apiContext.dispose();
   },
 });
+
+export { expect } from '@playwright/test';

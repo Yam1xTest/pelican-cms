@@ -1,8 +1,7 @@
-import { expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
 import { HttpStatusCode } from "../helpers/global-helpers";
-import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const NEWS_TITLE = 'Новости';
 const ENDPOINT = `/api/news-page`;
