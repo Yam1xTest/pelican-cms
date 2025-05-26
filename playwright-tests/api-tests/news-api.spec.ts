@@ -1,7 +1,8 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { SeoBlock } from "../types";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;
@@ -10,19 +11,19 @@ const DATE = '2025-02-15'
 const ENDPOINT = '/api/news';
 
 test.describe(`News response tests`, () => {
-  test.beforeEach(async ({ request }) => {
+  test.beforeEach(async ({ apiRequest }) => {
     await deleteNewsByTitle({
       title: NEWS_TITLE,
-      request
+      apiRequest
     });
 
-    await createNews({ request });
+    await createNews({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
+  test.afterEach(async ({ apiRequest }) => {
     await deleteNewsByTitle({
       title: NEWS_TITLE,
-      request
+      apiRequest
     });
   });
 
@@ -37,9 +38,9 @@ test.describe(`News response tests`, () => {
 })
 
 async function checkNewsResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedNewsResponse = {
     data: [
@@ -54,7 +55,7 @@ async function checkNewsResponseTest({
     ]
   };
 
-  const newsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
+  const newsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
   const newsData = await newsResponse.json();
 
   const newsTest = getNewsByTitle({
@@ -86,17 +87,20 @@ async function checkNewsResponseTest({
 }
 
 async function createNews({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.post(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'POST',
       data: {
         data: {
           title: NEWS_TITLE,
           description: DESCRIPTION,
-          image: await getFileIdByName(),
+          image: await getFileIdByName({
+            apiRequest
+          }),
           innerContent: INNER_CONTENT,
           date: DATE,
           seo: MOCK_SEO
@@ -113,13 +117,13 @@ async function createNews({
 
 async function deleteNewsByTitle({
   title,
-  request
+  apiRequest
 }: {
   title: string;
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const newsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
+    const newsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
     const newsData = await newsResponse.json();
 
     const news = getNewsByTitle({
@@ -128,7 +132,9 @@ async function deleteNewsByTitle({
     });
 
     if (news) {
-      const response = await request.delete(`${getStrapiUrl({ path: ENDPOINT })}/${news.documentId}`);
+      const response = await apiRequest(`${ENDPOINT}/${news.documentId}`, {
+        method: 'DELETE'
+      });
 
       await expect(response.status(), 'News should be deleted with status 204')
         .toEqual(HttpStatusCode.NoContent);

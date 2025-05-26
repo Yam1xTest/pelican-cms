@@ -1,28 +1,29 @@
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl } from "../helpers/global-helpers";
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
+import { expect } from "@playwright/test";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
 const ENDPOINT = `/api/documents-categories`;
 
 test.describe(`Documents categories response tests`, () => {
-  test.beforeEach(async ({ request }) => {
+  test.beforeEach(async ({ apiRequest }) => {
     await deleteDocumentCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE,
-      request
+      apiRequest
     });
 
     await createDocumentsCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE,
-      request
+      apiRequest
     });
   });
 
-  test.afterEach(async ({ request }) => {
+  test.afterEach(async ({ apiRequest }) => {
     await deleteDocumentCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE,
-      request
+      apiRequest
     });
   });
 
@@ -37,9 +38,9 @@ test.describe(`Documents categories response tests`, () => {
 });
 
 async function checkDocumentsCategoriesResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest']
 }) {
   const expectedDocumentsCategoriesResponse = {
     data: [
@@ -51,7 +52,7 @@ async function checkDocumentsCategoriesResponseTest({
     ]
   };
 
-  const documentsCategoriesResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
+  const documentsCategoriesResponse = await apiRequest(`${ENDPOINT}?populate=*`);
 
   const documentsCategoriesData = await documentsCategoriesResponse.json();
 

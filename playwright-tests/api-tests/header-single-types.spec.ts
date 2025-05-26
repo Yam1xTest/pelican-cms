@@ -1,17 +1,18 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import qs from "qs";
-import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { MOCK_TICKETS_POPUP } from "../mocks";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/header`;
 
 test.describe(`Header Single Type response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateHeaderSingleTypes({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateHeaderSingleTypes({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteHeaderSingleType({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteHeaderSingleType({ apiRequest });
   });
 
   test(`
@@ -25,9 +26,9 @@ test.describe(`Header Single Type response tests`, () => {
 });
 
 async function checkHeaderSingleTypeResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedHeaderSingleTypeResponse = {
     data: MOCK_TICKETS_POPUP
@@ -46,7 +47,7 @@ async function checkHeaderSingleTypeResponseTest({
     ],
   };
 
-  const headerSingleTypeResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
+  const headerSingleTypeResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
 
   const headerSingleTypeData = await headerSingleTypeResponse.json()
 
@@ -111,12 +112,13 @@ async function checkHeaderSingleTypeResponseTest({
 }
 
 async function updateHeaderSingleTypes({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           ticketsPopup: {
@@ -125,7 +127,9 @@ async function updateHeaderSingleTypes({
               button: MOCK_TICKETS_POPUP.ticketsPopup.visitingRulesAccordion.button,
               images: [
                 {
-                  id: await getFileIdByName()
+                  id: await getFileIdByName({
+                    apiRequest
+                  })
                 }
               ]
             }
@@ -142,12 +146,14 @@ async function updateHeaderSingleTypes({
 }
 
 async function deleteHeaderSingleType({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Header single types should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

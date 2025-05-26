@@ -1,18 +1,19 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_TITLE = 'Информация о деятельности МБУК «Зоопарк»';
 const ENDPOINT = `/api/documents-page`;
 
 test.describe(`Documents page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateDocumentsPage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateDocumentsPage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteDocumentsPage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteDocumentsPage({ apiRequest });
   });
 
   test(`
@@ -26,9 +27,9 @@ test.describe(`Documents page response tests`, () => {
 });
 
 async function checkDocumentsPageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest']
 }) {
   const expectedDocumentsPageResponse = {
     data: {
@@ -43,7 +44,7 @@ async function checkDocumentsPageResponseTest({
     ],
   };
 
-  const documentsPageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
+  const documentsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const documentsPageData = await documentsPageResponse.json()
 
   await expect({
@@ -60,12 +61,13 @@ async function checkDocumentsPageResponseTest({
 }
 
 async function updateDocumentsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           title: DOCUMENT_TITLE,
@@ -82,12 +84,14 @@ async function updateDocumentsPage({
 }
 
 async function deleteDocumentsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest']
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Documents page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

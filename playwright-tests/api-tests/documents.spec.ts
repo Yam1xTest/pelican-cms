@@ -1,6 +1,7 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { expect } from "@playwright/test";
+import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
 const DOCUMENT_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
@@ -9,26 +10,26 @@ const DESCRIPTION = `Контракт заключен по результата
 const ENDPOINT = `/api/documents`;
 
 test.describe(`Documents response tests`, () => {
-  test.beforeEach(async ({ request }) => {
+  test.beforeEach(async ({ apiRequest }) => {
     await deleteDocument({
       title: DOCUMENT_TITLE,
-      request
+      apiRequest
     });
 
     await createDocuments({
-      request
+      apiRequest
     });
   });
 
-  test.afterEach(async ({ request }) => {
+  test.afterEach(async ({ apiRequest }) => {
     await deleteDocumentCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE,
-      request
+      apiRequest
     });
 
     await deleteDocument({
       title: DOCUMENT_TITLE,
-      request
+      apiRequest
     });
   });
 
@@ -43,9 +44,9 @@ test.describe(`Documents response tests`, () => {
 });
 
 async function checkDocumentsResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const showDate = false;
   const description = DESCRIPTION;
@@ -62,7 +63,7 @@ async function checkDocumentsResponseTest({
     ]
   };
 
-  const documentsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
+  const documentsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
   const documentsData = await documentsResponse.json();
 
   const documentTest = getDocumentByTitle({
@@ -89,19 +90,20 @@ async function checkDocumentsResponseTest({
 }
 
 async function createDocuments({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
     const documentCategoryId = await createDocumentsCategoryByTitle({
       title: DOCUMENT_CATEGORY_TITLE,
-      request
+      apiRequest
     });
 
-    const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf' });
+    const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf', apiRequest });
 
-    const response = await request.post(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'POST',
       data: {
         data: {
           title: DOCUMENT_TITLE,
@@ -123,13 +125,13 @@ async function createDocuments({
 
 async function deleteDocument({
   title,
-  request
+  apiRequest
 }: {
   title: string;
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const documentsResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?populate=*`);
+    const documentsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
     const documentsData = await documentsResponse.json();
 
     const document = getDocumentByTitle({
@@ -138,7 +140,9 @@ async function deleteDocument({
     });
 
     if (document) {
-      const response = await request.delete(`${getStrapiUrl({ path: ENDPOINT })}/${document.documentId}`);
+      const response = await apiRequest(`${ENDPOINT}/${document.documentId}`, {
+        method: 'DELETE'
+      });
 
       await expect(response.status(), 'Documents should be deleted with status 204')
         .toEqual(HttpStatusCode.NoContent);

@@ -1,9 +1,10 @@
-import { expect, test as setup } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { test as setup } from './helpers/api-test-fixtures';
 import fs from 'fs';
 import FormData from 'form-data';
-import { getStrapiUrl, HttpStatusCode } from "./helpers/global-helpers";
+import { HttpStatusCode } from "./helpers/global-helpers";
 
-setup('upload test files', async ({ request }) => {
+setup('upload test files', async ({ apiRequest }) => {
   const files = [
     {
       name: '[E2E-SMOKE]-tiger.png',
@@ -26,8 +27,11 @@ setup('upload test files', async ({ request }) => {
   });
 
   try {
-    const response = await request.post(getStrapiUrl({ path: '/api/upload' }), {
-      headers: formData.getHeaders(),
+    const response = await apiRequest('/api/upload', {
+      method: 'POST',
+      headers: {
+        ...formData.getHeaders(),
+      },
       data: formData.getBuffer()
     });
 

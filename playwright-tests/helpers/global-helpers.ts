@@ -1,27 +1,17 @@
-import { request } from "@playwright/test";
 import 'dotenv/config';
+import { ApiTestFixtures } from './api-test-fixtures';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 
-export function getStrapiUrl({
-  path
-}: {
-  path: string
-}) {
-  return `${process.env.SERVER_URL || 'http://localhost:1337'}${path}`
-}
-
 export async function getFileIdByName({
-  name = '[E2E-SMOKE]-tiger.png'
+  name = '[E2E-SMOKE]-tiger.png',
+  apiRequest
 }: {
-  name?: string
-} = {}) {
-  const apiContext = await request.newContext();
-
-  const filesResponse = await apiContext.get(getStrapiUrl({ path: '/api/upload/files' }));
+  name?: string;
+  apiRequest: ApiTestFixtures['apiRequest']
+}) {
+  const filesResponse = await apiRequest('/api/upload/files');
   const filesData = await filesResponse.json();
-
-  await apiContext.dispose();
 
   return filesData.find((file) => file.name === name).id;
 }

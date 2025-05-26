@@ -1,4 +1,4 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import qs from "qs";
 import {
   MOCK_HERO,
@@ -8,17 +8,18 @@ import {
   MOCK_TICKETS,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/contact-zoo`;
 
 test.describe(`ContactZoo page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateContactZooPage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateContactZooPage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteContactZooPage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteContactZooPage({ apiRequest });
   });
 
   test(`
@@ -32,9 +33,9 @@ test.describe(`ContactZoo page response tests`, () => {
 });
 
 async function checkContactZooPageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedConcatZooPageResponse = {
     data: {
@@ -70,7 +71,7 @@ async function checkContactZooPageResponseTest({
     ],
   };
 
-  const contactZooPageResponse = await request.get(
+  const contactZooPageResponse = await apiRequest(
     `${ENDPOINT}?${qs.stringify(queryParams)}`
   );
 
@@ -180,14 +181,15 @@ async function checkContactZooPageResponseTest({
 }
 
 async function updateContactZooPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const fileId = await getFileIdByName();
+    const fileId = await getFileIdByName({ apiRequest });
 
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           blocks: [
@@ -229,12 +231,14 @@ async function updateContactZooPage({
 }
 
 async function deleteContactZooPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Contact zoo page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

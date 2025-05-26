@@ -1,4 +1,4 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import {
   MOCK_HERO,
   MOCK_HOME_SERVICES,
@@ -10,16 +10,17 @@ import {
 } from "../mocks";
 import qs from "qs";
 import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = '/api/home';
 
 test.describe(`Home page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateHomePage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateHomePage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteHomePage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteHomePage({ apiRequest });
   });
 
   test(`
@@ -33,9 +34,9 @@ test.describe(`Home page response tests`, () => {
 });
 
 async function checkHomepageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedHomepageResponse = {
     data: {
@@ -71,7 +72,7 @@ async function checkHomepageResponseTest({
     ],
   };
 
-  const homepageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
+  const homepageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const homepageData = await homepageResponse.json();
 
   const heroBlock = homepageData.data.blocks.find((block) => block.__component === 'shared.hero');
@@ -207,14 +208,17 @@ async function checkHomepageResponseTest({
 
 
 async function updateHomePage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const fileId = await getFileIdByName();
+    const fileId = await getFileIdByName({
+      apiRequest
+    });
 
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           blocks: [
@@ -262,12 +266,14 @@ async function updateHomePage({
 }
 
 async function deleteHomePage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Home page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

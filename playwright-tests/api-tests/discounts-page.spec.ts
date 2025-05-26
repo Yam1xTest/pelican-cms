@@ -1,17 +1,18 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { MOCK_DISCOUNTS_CATEGORIES, MOCK_DISCOUNTS_TERMS, MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/discount-page`;
 
 test.describe(`Discounts page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateDiscountsPage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateDiscountsPage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteDiscountsPage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteDiscountsPage({ apiRequest });
   });
 
 
@@ -27,9 +28,9 @@ test.describe(`Discounts page response tests`, () => {
 
 
 async function checkDiscountsPageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedDiscountsPageResponse = {
     data: {
@@ -52,8 +53,8 @@ async function checkDiscountsPageResponseTest({
     ],
   };
 
-  const discountsPageResponse = await request.get(
-    `${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`
+  const discountsPageResponse = await apiRequest(
+    `${ENDPOINT}?${qs.stringify(queryParams)}`
   );
 
   const discountsPageData = await discountsPageResponse.json();
@@ -113,12 +114,13 @@ async function checkDiscountsPageResponseTest({
 }
 
 async function updateDiscountsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           blocks: [
@@ -146,7 +148,8 @@ async function updateDiscountsPage({
               remark: {
                 title: MOCK_DISCOUNTS_CATEGORIES.remark.title,
                 file: await getFileIdByName({
-                  name: '[E2E-SMOKE]-new-document.pdf'
+                  name: '[E2E-SMOKE]-new-document.pdf',
+                  apiRequest
                 })
               },
             },
@@ -166,12 +169,14 @@ async function updateDiscountsPage({
 }
 
 async function deleteDiscountsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Discounts page should be deleted with status 200')
       .toEqual(HttpStatusCode.NoContent);

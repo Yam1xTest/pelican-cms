@@ -1,4 +1,4 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import qs from "qs";
 import {
   MOCK_VISITING_RULES_MAIN,
@@ -7,17 +7,18 @@ import {
   MOCK_VISITING_RULES_EMERGENCY_PHONES,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/visiting-rules-page`;
 
 test.describe(`VisitingRules page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateVisitingRulesPage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateVisitingRulesPage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteVisitingRulesPage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteVisitingRulesPage({ apiRequest });
   });
 
   test(`
@@ -32,9 +33,9 @@ test.describe(`VisitingRules page response tests`, () => {
 
 
 async function checkVisitingRulesPageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedVisitingRulesPageResponse = {
     data: {
@@ -59,7 +60,7 @@ async function checkVisitingRulesPageResponseTest({
     ],
   };
 
-  const visitingRulesPageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
+  const visitingRulesPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const visitingRulesPageData = await visitingRulesPageResponse.json();
 
   const mainBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
@@ -133,12 +134,13 @@ async function checkVisitingRulesPageResponseTest({
 }
 
 async function updateVisitingRulesPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           blocks: [
@@ -148,7 +150,8 @@ async function updateVisitingRulesPage({
               documentLink: {
                 label: MOCK_VISITING_RULES_MAIN.documentLink.label,
                 file: await getFileIdByName({
-                  name: '[E2E-SMOKE]-new-document.pdf'
+                  name: '[E2E-SMOKE]-new-document.pdf',
+                  apiRequest
                 }),
               },
               description: MOCK_VISITING_RULES_MAIN.description,
@@ -156,7 +159,9 @@ async function updateVisitingRulesPage({
                 title: MOCK_VISITING_RULES_MAIN.mainRules.title,
                 mainRulesCards: [
                   {
-                    image: await getFileIdByName(),
+                    image: await getFileIdByName({
+                      apiRequest
+                    }),
                     label: MOCK_VISITING_RULES_MAIN.mainRules.mainRulesCards[0].label,
                   },
                 ],
@@ -180,12 +185,14 @@ async function updateVisitingRulesPage({
 }
 
 async function deleteVisitingRulesPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'Visiting rules page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);

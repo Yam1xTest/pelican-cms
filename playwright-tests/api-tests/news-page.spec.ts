@@ -1,18 +1,19 @@
-import test, { APIRequestContext, expect } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl, HttpStatusCode } from "../helpers/global-helpers";
+import { HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, test } from "../helpers/api-test-fixtures";
 
 const NEWS_TITLE = 'Новости';
 const ENDPOINT = `/api/news-page`;
 
 test.describe(`News page response tests`, () => {
-  test.beforeEach(async ({ request }) => {
-    await updateNewsPage({ request });
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateNewsPage({ apiRequest });
   });
 
-  test.afterEach(async ({ request }) => {
-    await deleteNewsPage({ request });
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteNewsPage({ apiRequest });
   });
 
   test(`
@@ -26,9 +27,9 @@ test.describe(`News page response tests`, () => {
 });
 
 async function checkNewsPageResponseTest({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedNewsPageResponse = {
     data: {
@@ -43,7 +44,7 @@ async function checkNewsPageResponseTest({
     ],
   };
 
-  const newsPageResponse = await request.get(`${getStrapiUrl({ path: ENDPOINT })}?${qs.stringify(queryParams)}`);
+  const newsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const newsPageData = await newsPageResponse.json();
 
   await expect({
@@ -60,12 +61,13 @@ async function checkNewsPageResponseTest({
 }
 
 async function updateNewsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.put(getStrapiUrl({ path: ENDPOINT }), {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
         data: {
           title: NEWS_TITLE,
@@ -82,12 +84,14 @@ async function updateNewsPage({
 }
 
 async function deleteNewsPage({
-  request
+  apiRequest
 }: {
-  request: APIRequestContext;
+  apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await request.delete(getStrapiUrl({ path: ENDPOINT }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
     await expect(response.status(), 'News page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
