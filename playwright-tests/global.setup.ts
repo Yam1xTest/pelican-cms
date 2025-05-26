@@ -23,7 +23,6 @@ setup('upload test files', async ({ request }) => {
       file.name
     );
   });
-  console.log(process.env.SERVER_URL);
 
   await request.post('/api/upload', {
     headers: formData.getHeaders(),
