@@ -28,9 +28,7 @@ setup('upload test files', async ({ apiRequest }) => {
   try {
     const response = await apiRequest('/api/upload', {
       method: 'POST',
-      headers: {
-        ...formData.getHeaders(),
-      },
+      headers: formData.getHeaders(),
       data: formData.getBuffer()
     });
 

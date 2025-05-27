@@ -13,12 +13,10 @@ export type ApiTestFixtures = {
 // https://playwright.dev/docs/test-fixtures
 // Extend base test by providing "apiRequest"
 export const test = base.extend<ApiTestFixtures>({
-
   apiRequest: async ({ }, use) => {
-    console.log(process.env.SERVER_URL)
     // Create apiContext with default settings
     const apiContext = await request.newContext({
-      baseURL: 'http://localhost:40110/cms',
+      baseURL: process.env.SERVER_URL || 'http://localhost:1337',
       extraHTTPHeaders: {
         // Disable cache for test request
         'Cache-Control': 'no-cache',
@@ -30,7 +28,9 @@ export const test = base.extend<ApiTestFixtures>({
       options: PlaywrightRequestOptions = {}
     ) => {
       const method = options.method?.toLowerCase() || 'get';
-      return apiContext[method](endpoint, options);
+      const response = await apiContext[method](endpoint, options)
+      console.log(response)
+      return response;
     };
 
     // Use the fixture value in the test
