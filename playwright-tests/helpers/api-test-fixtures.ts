@@ -16,7 +16,6 @@ export const test = base.extend<ApiTestFixtures>({
   apiRequest: async ({ }, use) => {
     // Create apiContext with default settings
     const apiContext = await request.newContext({
-      baseURL: process.env.SERVER_URL || 'http://localhost:1337',
       extraHTTPHeaders: {
         // Disable cache for test request
         'Cache-Control': 'no-cache',
@@ -27,6 +26,7 @@ export const test = base.extend<ApiTestFixtures>({
       endpoint: string,
       options: PlaywrightRequestOptions = {}
     ) => {
+      const baseUrl = process.env.SERVER_URL || 'http://localhost:1337';
       const method = options.method?.toLowerCase() || 'get';
       const response = await apiContext[method](`${baseUrl}${endpoint}`, options)
       return response;
