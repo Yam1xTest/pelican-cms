@@ -28,8 +28,7 @@ export const test = base.extend<ApiTestFixtures>({
       options: PlaywrightRequestOptions = {}
     ) => {
       const method = options.method?.toLowerCase() || 'get';
-      console.log(endpoint)
-      const response = await apiContext[method](endpoint, options)
+      const response = await apiContext[method](`${baseUrl}${endpoint}`, options)
       return response;
     };
 
