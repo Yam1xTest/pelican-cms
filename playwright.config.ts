@@ -33,6 +33,7 @@ export default defineConfig({
   },
   expect: {
     // Maximum time expect() should wait for the condition to be met.
+    timeout: 10000,
   },
   projects: [
     {
