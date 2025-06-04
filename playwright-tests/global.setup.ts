@@ -1,12 +1,9 @@
-import { test as setup } from "@playwright/test";
+import { expect, test as setup } from './helpers/api-test-fixtures';
 import fs from 'fs';
-import axios from "axios";
-import { getStrapiUrl } from "./helpers/global-helpers";
 import FormData from 'form-data';
+import { HttpStatusCode } from "./helpers/global-helpers";
 
-setup('upload test files', async () => {
-  const formData = new FormData();
-
+setup('upload test files', async ({ apiRequest }) => {
   const files = [
     {
       name: '[E2E-SMOKE]-tiger.png',
@@ -18,23 +15,26 @@ setup('upload test files', async () => {
     },
   ];
 
+  const formData = new FormData();
+
   files.forEach((file) => {
     formData.append(
       'files',
-      fs.createReadStream(file.path),
-      {
-        filename: file.name
-      }
+      fs.readFileSync(file.path),
+      file.name
     );
-  })
+  });
 
-  await axios.post(
-    getStrapiUrl({ path: '/api/upload' }),
-    formData,
-    {
-      headers: {
-        ...formData.getHeaders(),
-      },
-    }
-  );
+  try {
+    const response = await apiRequest('/api/upload', {
+      method: 'POST',
+      headers: formData.getHeaders(),
+      data: formData.getBuffer()
+    });
+
+    expect(response.status(), 'Files should be uploaded with status 201')
+      .toEqual(HttpStatusCode.Created);
+  } catch (error) {
+    throw new Error(`Failed to upload files: ${error.message}`)
+  }
 });

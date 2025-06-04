@@ -1,18 +1,17 @@
-import test, { expect } from "@playwright/test";
-import axios, { AxiosError, HttpStatusCode } from "axios";
 import qs from "qs";
-import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { MOCK_TICKETS_POPUP } from "../mocks";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/header`;
 
 test.describe(`Header Single Type response tests`, () => {
-  test.beforeEach(async () => {
-    await updateHeaderSingleTypes();
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateHeaderSingleTypes({ apiRequest });
   });
 
-  test.afterEach(async () => {
-    await deleteHeaderSingleType();
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteHeaderSingleType({ apiRequest });
   });
 
   test(`
@@ -25,7 +24,11 @@ test.describe(`Header Single Type response tests`, () => {
   );
 });
 
-async function checkHeaderSingleTypeResponseTest() {
+async function checkHeaderSingleTypeResponseTest({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   const expectedHeaderSingleTypeResponse = {
     data: MOCK_TICKETS_POPUP
   };
@@ -43,11 +46,11 @@ async function checkHeaderSingleTypeResponseTest() {
     ],
   };
 
-  const headerSingleTypeResponse = (await axios.get(getStrapiUrl({
-    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
-  }))).data;
+  const headerSingleTypeResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
 
-  const ticketsPopupBlock = headerSingleTypeResponse.data.ticketsPopup;
+  const headerSingleTypeData = await headerSingleTypeResponse.json()
+
+  const ticketsPopupBlock = headerSingleTypeData.data.ticketsPopup;
 
   await expect({
     data: {
@@ -107,40 +110,53 @@ async function checkHeaderSingleTypeResponseTest() {
     .toBeNull();
 }
 
-async function updateHeaderSingleTypes() {
+async function updateHeaderSingleTypes({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
-        ticketsPopup: {
-          ...MOCK_TICKETS_POPUP.ticketsPopup,
-          visitingRulesAccordion: {
-            button: MOCK_TICKETS_POPUP.ticketsPopup.visitingRulesAccordion.button,
-            images: [
-              {
-                id: await getFileIdByName()
-              }
-            ]
+        data: {
+          ticketsPopup: {
+            ...MOCK_TICKETS_POPUP.ticketsPopup,
+            visitingRulesAccordion: {
+              button: MOCK_TICKETS_POPUP.ticketsPopup.visitingRulesAccordion.button,
+              images: [
+                {
+                  id: await getFileIdByName({
+                    apiRequest
+                  })
+                }
+              ]
+            }
           }
-        }
-      },
+        },
+      }
     });
 
-    await expect(response.status, 'Header single types should be updated with status 200')
+    await expect(response.status(), 'Header single types should be updated with status 200')
       .toEqual(HttpStatusCode.Ok);
   } catch (error) {
-    throw new Error(`Failed to update test header single types: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to update test header single types: ${error.message}`)
   }
 }
 
-async function deleteHeaderSingleType() {
+async function deleteHeaderSingleType({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.delete(getStrapiUrl({
-      path: ENDPOINT
-    }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
-    await expect(response.status, 'Header single types should be deleted with status 204')
+    await expect(response.status(), 'Header single types should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
   } catch (error) {
-    throw new Error(`Failed to delete test header single types: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to delete test header single types: ${error.message}`)
   }
 }

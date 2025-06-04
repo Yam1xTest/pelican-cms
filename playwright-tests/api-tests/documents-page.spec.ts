@@ -1,19 +1,18 @@
-import test, { expect } from "@playwright/test";
-import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl } from "../helpers/global-helpers";
+import { HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_TITLE = 'Информация о деятельности МБУК «Зоопарк»';
 const ENDPOINT = `/api/documents-page`;
 
 test.describe(`Documents page response tests`, () => {
-  test.beforeEach(async () => {
-    await updateDocumentsPage();
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateDocumentsPage({ apiRequest });
   });
 
-  test.afterEach(async () => {
-    await deleteDocumentsPage();
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteDocumentsPage({ apiRequest });
   });
 
   test(`
@@ -26,7 +25,11 @@ test.describe(`Documents page response tests`, () => {
   );
 });
 
-async function checkDocumentsPageResponseTest() {
+async function checkDocumentsPageResponseTest({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest']
+}) {
   const expectedDocumentsPageResponse = {
     data: {
       title: DOCUMENT_TITLE,
@@ -40,48 +43,58 @@ async function checkDocumentsPageResponseTest() {
     ],
   };
 
-  const documentsPageResponse = (await axios.get(getStrapiUrl({
-    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
-  }))).data;
+  const documentsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const documentsPageData = await documentsPageResponse.json()
 
   await expect({
     data: {
-      title: documentsPageResponse.data.title,
+      title: documentsPageData.data.title,
       seo: {
-        metaTitle: documentsPageResponse.data.seo.metaTitle,
-        metaDescription: documentsPageResponse.data.seo.metaDescription,
-        keywords: documentsPageResponse.data.seo.keywords
+        metaTitle: documentsPageData.data.seo.metaTitle,
+        metaDescription: documentsPageData.data.seo.metaDescription,
+        keywords: documentsPageData.data.seo.keywords
       }
     }
   }, 'Documents page response corrected')
     .toEqual(expectedDocumentsPageResponse);
 }
 
-async function updateDocumentsPage() {
+async function updateDocumentsPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
-        title: DOCUMENT_TITLE,
-        seo: MOCK_SEO
+        data: {
+          title: DOCUMENT_TITLE,
+          seo: MOCK_SEO
+        }
       }
     });
 
-    await expect(response.status, 'Documents page should be updated with status 200')
+    await expect(response.status(), 'Documents page should be updated with status 200')
       .toEqual(HttpStatusCode.Ok);
   } catch (error) {
-    throw new Error(`Failed to update test documents page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to update test documents page: ${error.message}`)
   }
 }
 
-async function deleteDocumentsPage() {
+async function deleteDocumentsPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest']
+}) {
   try {
-    const response = await axios.delete(getStrapiUrl({
-      path: ENDPOINT
-    }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
-    await expect(response.status, 'Documents page should be deleted with status 204')
+    await expect(response.status(), 'Documents page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
   } catch (error) {
-    throw new Error(`Failed to delete test documents page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to delete test documents page: ${error.message}`)
   }
 }

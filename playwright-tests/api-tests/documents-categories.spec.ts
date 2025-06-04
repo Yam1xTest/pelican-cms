@@ -1,26 +1,28 @@
-import axios from "axios";
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getStrapiUrl } from "../helpers/global-helpers";
-import test, { expect } from "@playwright/test";
+import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
 import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
 const ENDPOINT = `/api/documents-categories`;
 
 test.describe(`Documents categories response tests`, () => {
-  test.beforeEach(async () => {
+  test.beforeEach(async ({ apiRequest }) => {
     await deleteDocumentCategoryByTitle({
-      title: DOCUMENT_CATEGORY_TITLE
+      title: DOCUMENT_CATEGORY_TITLE,
+      apiRequest
     });
 
     await createDocumentsCategoryByTitle({
-      title: DOCUMENT_CATEGORY_TITLE
+      title: DOCUMENT_CATEGORY_TITLE,
+      apiRequest
     });
   });
 
-  test.afterEach(async () => {
+  test.afterEach(async ({ apiRequest }) => {
     await deleteDocumentCategoryByTitle({
-      title: DOCUMENT_CATEGORY_TITLE
+      title: DOCUMENT_CATEGORY_TITLE,
+      apiRequest
     });
   });
 
@@ -34,7 +36,11 @@ test.describe(`Documents categories response tests`, () => {
   );
 });
 
-async function checkDocumentsCategoriesResponseTest() {
+async function checkDocumentsCategoriesResponseTest({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest']
+}) {
   const expectedDocumentsCategoriesResponse = {
     data: [
       {
@@ -45,11 +51,14 @@ async function checkDocumentsCategoriesResponseTest() {
     ]
   };
 
-  const documentsCategoriesResponse = (await axios.get(getStrapiUrl({ path: `${ENDPOINT}?populate=*` }))).data;
+  const documentsCategoriesResponse = await apiRequest(`${ENDPOINT}?populate=*`);
+
+  const documentsCategoriesData = await documentsCategoriesResponse.json();
+
   const documentCategoryTest = getDocumentCategoryByTitle({
-    documentCategories: documentsCategoriesResponse,
+    documentCategories: documentsCategoriesData,
     title: DOCUMENT_CATEGORY_TITLE
-  });
+  })!;
 
   await expect({
     data: [
