@@ -1,19 +1,18 @@
-import test, { expect } from "@playwright/test";
-import axios, { AxiosError, HttpStatusCode } from "axios";
 import { MOCK_SEO } from "../mocks";
 import qs from "qs";
-import { getStrapiUrl } from "../helpers/global-helpers";
+import { HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const NEWS_TITLE = 'Новости';
 const ENDPOINT = `/api/news-page`;
 
 test.describe(`News page response tests`, () => {
-  test.beforeEach(async () => {
-    await updateNewsPage();
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateNewsPage({ apiRequest });
   });
 
-  test.afterEach(async () => {
-    await deleteNewsPage();
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteNewsPage({ apiRequest });
   });
 
   test(`
@@ -26,7 +25,11 @@ test.describe(`News page response tests`, () => {
   );
 });
 
-async function checkNewsPageResponseTest() {
+async function checkNewsPageResponseTest({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   const expectedNewsPageResponse = {
     data: {
       title: NEWS_TITLE,
@@ -40,48 +43,58 @@ async function checkNewsPageResponseTest() {
     ],
   };
 
-  const newsPageResponse = (await axios.get(getStrapiUrl({
-    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
-  }))).data;
+  const newsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const newsPageData = await newsPageResponse.json();
 
   await expect({
     data: {
-      title: newsPageResponse.data.title,
+      title: newsPageData.data.title,
       seo: {
-        metaTitle: newsPageResponse.data.seo.metaTitle,
-        metaDescription: newsPageResponse.data.seo.metaDescription,
-        keywords: newsPageResponse.data.seo.keywords
+        metaTitle: newsPageData.data.seo.metaTitle,
+        metaDescription: newsPageData.data.seo.metaDescription,
+        keywords: newsPageData.data.seo.keywords
       }
     }
   }, 'News page response corrected')
     .toEqual(expectedNewsPageResponse);
 }
 
-async function updateNewsPage() {
+async function updateNewsPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
-        title: NEWS_TITLE,
-        seo: MOCK_SEO,
-      },
+        data: {
+          title: NEWS_TITLE,
+          seo: MOCK_SEO,
+        },
+      }
     });
 
-    await expect(response.status, 'News page should be updated with status 200')
+    await expect(response.status(), 'News page should be updated with status 200')
       .toEqual(HttpStatusCode.Ok);
   } catch (error) {
-    throw new Error(`Failed to update test news page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to update test news page: ${error.message}`)
   }
 }
 
-async function deleteNewsPage() {
+async function deleteNewsPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.delete(getStrapiUrl({
-      path: ENDPOINT
-    }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
-    await expect(response.status, 'News page should be deleted with status 204')
+    await expect(response.status(), 'News page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
   } catch (error) {
-    throw new Error(`Failed to delete test news page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to delete test news page: ${error.message}`)
   }
 }

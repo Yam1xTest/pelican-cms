@@ -1,5 +1,3 @@
-import test, { expect } from "@playwright/test";
-import axios, { AxiosError, HttpStatusCode } from "axios";
 import qs from "qs";
 import {
   MOCK_VISITING_RULES_MAIN,
@@ -8,17 +6,18 @@ import {
   MOCK_VISITING_RULES_EMERGENCY_PHONES,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, getStrapiUrl } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/visiting-rules-page`;
 
 test.describe(`VisitingRules page response tests`, () => {
-  test.beforeEach(async () => {
-    await updateVisitingRulesPage();
+  test.beforeEach(async ({ apiRequest }) => {
+    await updateVisitingRulesPage({ apiRequest });
   });
 
-  test.afterEach(async () => {
-    await deleteVisitingRulesPage();
+  test.afterEach(async ({ apiRequest }) => {
+    await deleteVisitingRulesPage({ apiRequest });
   });
 
   test(`
@@ -32,7 +31,11 @@ test.describe(`VisitingRules page response tests`, () => {
 });
 
 
-async function checkVisitingRulesPageResponseTest() {
+async function checkVisitingRulesPageResponseTest({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   const expectedVisitingRulesPageResponse = {
     data: {
       blocks: [
@@ -56,14 +59,13 @@ async function checkVisitingRulesPageResponseTest() {
     ],
   };
 
-  const visitingRulesPageResponse = (await axios.get(getStrapiUrl({
-    path: `${ENDPOINT}?${qs.stringify(queryParams)}`
-  }))).data;
+  const visitingRulesPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
+  const visitingRulesPageData = await visitingRulesPageResponse.json();
 
-  const mainBlock = visitingRulesPageResponse.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
-  const warningsBlock = visitingRulesPageResponse.data.blocks.find((block) => block.__component === 'visiting-rules.warnings');
-  const photosPolicyBlock = visitingRulesPageResponse.data.blocks.find((block) => block.__component === 'visiting-rules.photos-policy');
-  const emergencyPhonesBlock = visitingRulesPageResponse.data.blocks.find((block) => block.__component === 'visiting-rules.emergency-phones');
+  const mainBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
+  const warningsBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.warnings');
+  const photosPolicyBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.photos-policy');
+  const emergencyPhonesBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.emergency-phones');
 
   await expect({
     data: {
@@ -113,9 +115,9 @@ async function checkVisitingRulesPageResponseTest() {
         },
       ],
       seo: {
-        metaTitle: visitingRulesPageResponse.data.seo.metaTitle,
-        metaDescription: visitingRulesPageResponse.data.seo.metaDescription,
-        keywords: visitingRulesPageResponse.data.seo.keywords
+        metaTitle: visitingRulesPageData.data.seo.metaTitle,
+        metaDescription: visitingRulesPageData.data.seo.metaDescription,
+        keywords: visitingRulesPageData.data.seo.keywords
       }
     }
   }, 'Visiting rules page response corrected')
@@ -130,56 +132,70 @@ async function checkVisitingRulesPageResponseTest() {
     .toBeNull();
 }
 
-async function updateVisitingRulesPage() {
+async function updateVisitingRulesPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.put(`${getStrapiUrl({ path: ENDPOINT })}`, {
+    const response = await apiRequest(ENDPOINT, {
+      method: 'PUT',
       data: {
-        blocks: [
-          {
-            __component: MOCK_VISITING_RULES_MAIN.__component,
-            title: MOCK_VISITING_RULES_MAIN.title,
-            documentLink: {
-              label: MOCK_VISITING_RULES_MAIN.documentLink.label,
-              file: await getFileIdByName({
-                name: '[E2E-SMOKE]-new-document.pdf'
-              }),
+        data: {
+          blocks: [
+            {
+              __component: MOCK_VISITING_RULES_MAIN.__component,
+              title: MOCK_VISITING_RULES_MAIN.title,
+              documentLink: {
+                label: MOCK_VISITING_RULES_MAIN.documentLink.label,
+                file: await getFileIdByName({
+                  name: '[E2E-SMOKE]-new-document.pdf',
+                  apiRequest
+                }),
+              },
+              description: MOCK_VISITING_RULES_MAIN.description,
+              mainRules: {
+                title: MOCK_VISITING_RULES_MAIN.mainRules.title,
+                mainRulesCards: [
+                  {
+                    image: await getFileIdByName({
+                      apiRequest
+                    }),
+                    label: MOCK_VISITING_RULES_MAIN.mainRules.mainRulesCards[0].label,
+                  },
+                ],
+              },
             },
-            description: MOCK_VISITING_RULES_MAIN.description,
-            mainRules: {
-              title: MOCK_VISITING_RULES_MAIN.mainRules.title,
-              mainRulesCards: [
-                {
-                  image: await getFileIdByName(),
-                  label: MOCK_VISITING_RULES_MAIN.mainRules.mainRulesCards[0].label,
-                },
-              ],
-            },
-          },
-          MOCK_VISITING_RULES_WARNINGS,
-          MOCK_VISITING_RULES_PHOTOS_POLICY,
-          MOCK_VISITING_RULES_EMERGENCY_PHONES,
-        ],
-        seo: MOCK_SEO
-      },
+            MOCK_VISITING_RULES_WARNINGS,
+            MOCK_VISITING_RULES_PHOTOS_POLICY,
+            MOCK_VISITING_RULES_EMERGENCY_PHONES,
+          ],
+          seo: MOCK_SEO
+        },
+      }
     });
 
-    await expect(response.status, 'Visiting rules page should be updated with status 200')
+    await expect(response.status(), 'Visiting rules page should be updated with status 200')
       .toEqual(HttpStatusCode.Ok);
   } catch (error) {
-    throw new Error(`Failed to update test visiting rules page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to update test visiting rules page: ${error.message}`)
   }
 
 }
 
-async function deleteVisitingRulesPage() {
+async function deleteVisitingRulesPage({
+  apiRequest
+}: {
+  apiRequest: ApiTestFixtures['apiRequest'];
+}) {
   try {
-    const response = await axios.delete(getStrapiUrl({
-      path: ENDPOINT
-    }));
+    const response = await apiRequest(ENDPOINT, {
+      method: 'DELETE'
+    });
 
-    await expect(response.status, 'Visiting rules page should be deleted with status 204')
+    await expect(response.status(), 'Visiting rules page should be deleted with status 204')
       .toEqual(HttpStatusCode.NoContent);
   } catch (error) {
-    throw new Error(`Failed to delete test visiting rules page: ${(error as AxiosError).message}`)
+    throw new Error(`Failed to delete test visiting rules page: ${error.message}`)
   }
 }
