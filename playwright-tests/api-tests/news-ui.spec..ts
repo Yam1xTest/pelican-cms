@@ -1,7 +1,7 @@
-import test, { Page } from "@playwright/test";
+import test, { expect, Page } from "@playwright/test";
 import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "../helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "../helpers/news-helpers";
-import { createAndPublishNewsPage, deleteNewsPage } from "../helpers/news-page-helpers";
+import { MOCK_SEO } from "../mocks";
 
 test.describe(`Checking the interaction between CMS and UI`, () => {
   let page: Page;
@@ -24,15 +24,11 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
     test.beforeEach(async () => {
       await deleteNews();
 
-      await deleteNewsPage();
-
       await deleteFiles();
     });
 
     test.afterEach(async () => {
       await deleteNews();
-
-      await deleteNewsPage();
 
       await deleteFiles();
     });
@@ -57,18 +53,13 @@ async function e2eNewsCreateAndViewTest({
   const description = `На фотографии изображен амурский тигр!`;
   const innerContent = `В зоопарке появился амурский тигр, приходите посмотреть!`;
 
-
-  await createAndPublishNewsPage({
-    page,
-    newsTitle: 'Новости',
-  });
-
   await createAndPublishNews({
     page,
     title,
     description,
     innerContent,
     filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+    seo: MOCK_SEO,
   });
 
   await gotoUI({
@@ -76,15 +67,16 @@ async function e2eNewsCreateAndViewTest({
     path: '/news'
   })
 
+  await expect(page.getByText(title))
+    .toBeVisible();
 
-  await page.getByText(title).waitFor();
-
-
-  await page.getByText(description).waitFor();
+  await expect(page.getByText(description))
+    .toBeVisible();
 
   await page.getByTestId(`cards-card`)
     .first()
     .click();
 
-  await page.getByText(innerContent).waitFor();
+  await expect(page.getByText(innerContent))
+    .toBeVisible();
 }
