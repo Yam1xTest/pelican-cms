@@ -1,5 +1,5 @@
 import test, { expect, Page } from "@playwright/test";
-import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS, gotoUI } from "../helpers/global-helpers";
+import { authenticate, E2E_SMOKE_NAME_PREFIX, gotoCMS, deleteFiles } from "../helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "../helpers/news-helpers";
 import { MOCK_SEO } from "../mocks";
 
@@ -58,20 +58,26 @@ async function e2eNewsCreateAndViewTest({
     title,
     description,
     innerContent,
-    filePath: `./playwright-tests/e2e/fixtures/[E2E-SMOKE]-tiger.png`,
+    filePath: `./playwright-tests/fixtures/[E2E-SMOKE]-tiger.png`,
     seo: MOCK_SEO,
   });
 
-  await gotoUI({
-    page,
-    path: '/news'
-  })
+  await page.goto('http://localhost:3000/news')
+
+  await page.waitForTimeout(5000);
+
 
   await expect(page.getByText(title))
     .toBeVisible();
 
   await expect(page.getByText(description))
     .toBeVisible();
+
+  await page.getByTestId(`cards-card`)
+    .first()
+    .click();
+
+  await page.waitForTimeout(5000);
 
   await page.getByTestId(`cards-card`)
     .first()
