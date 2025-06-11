@@ -1,5 +1,5 @@
 import test, { expect, Page } from "@playwright/test";
-import { authenticate, E2E_SMOKE_NAME_PREFIX, gotoCMS, deleteFiles } from "../helpers/global-helpers";
+import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS } from "../helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "../helpers/news-helpers";
 import { MOCK_SEO } from "../mocks";
 
@@ -62,22 +62,15 @@ async function e2eNewsCreateAndViewTest({
     seo: MOCK_SEO,
   });
 
-  await page.goto('http://localhost:3000/news')
-
-  await page.waitForTimeout(5000);
-
+  await page.goto('http://localhost:3000/news', {
+    waitUntil: 'networkidle'
+  })
 
   await expect(page.getByText(title))
     .toBeVisible();
 
   await expect(page.getByText(description))
     .toBeVisible();
-
-  await page.getByTestId(`cards-card`)
-    .first()
-    .click();
-
-  await page.waitForTimeout(5000);
 
   await page.getByTestId(`cards-card`)
     .first()
