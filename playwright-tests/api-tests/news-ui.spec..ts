@@ -1,5 +1,5 @@
 import test, { expect, Page } from "@playwright/test";
-import { authenticate, deleteFiles, E2E_SMOKE_NAME_PREFIX, gotoCMS } from "../helpers/global-helpers";
+import { authenticate, E2E_SMOKE_NAME_PREFIX, gotoCMS } from "../helpers/global-helpers";
 import { createAndPublishNews, deleteNews } from "../helpers/news-helpers";
 import { MOCK_SEO } from "../mocks";
 
@@ -23,14 +23,10 @@ test.describe(`Checking the interaction between CMS and UI`, () => {
   test.describe(`News E2E test`, () => {
     test.beforeEach(async () => {
       await deleteNews();
-
-      await deleteFiles();
     });
 
     test.afterEach(async () => {
       await deleteNews();
-
-      await deleteFiles();
     });
 
     test(`
@@ -75,6 +71,8 @@ async function e2eNewsCreateAndViewTest({
   await page.getByTestId(`cards-card`)
     .first()
     .click();
+
+  await page.waitForTimeout(10000);
 
   await expect(page.getByText(innerContent))
     .toBeVisible();
