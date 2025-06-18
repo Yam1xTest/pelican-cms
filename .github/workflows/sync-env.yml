@@ -1,0 +1,32 @@
+name: Trigger Local Env
+
+on:
+  push:
+    branches:
+      - feature/sync_local_env 
+  
+jobs:
+  Trigger_Local_Env:
+    runs-on: ubuntu-24.04
+    steps: 
+      - name: Checkout 
+        uses: actions/checkout@v3
+        
+      - name: Write short-sha to GitHub Env 
+        run: |
+          echo "SHORT_SHA=$(git rev-parse --short ${{ github.sha }})" >> $GITHUB_ENV
+         
+      - name: Trigger Local Env
+        run: |
+          curl -X POST https://api.github.com/repos/Yam1xTest/pelican-local-env/dispatches \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          -u ${{ secrets.PELICAN_ENV_SYNC_TRIGGER_TOKEN  }} \
+          -d '{
+          "event_type": "latest-cms-image-tag",
+          "client_payload": {
+            "image_tag": "${{ github.sha }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
+            "repository": "${{ github.event.repository.name }}",
+            "short_sha": "${{ env.SHORT_SHA }}",
+            "path_to_values": "deploy/values-ui.yaml.gotmpl"
+            }}' 
