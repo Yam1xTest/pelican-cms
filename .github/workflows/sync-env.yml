@@ -28,5 +28,5 @@ jobs:
             "commit_message": "${{ github.event.head_commit.message }}",
             "repository": "${{ github.event.repository.name }}",
             "short_sha": "${{ env.SHORT_SHA }}",
-            "path_to_values": "deploy/values-ui.yaml.gotmpl"
+            "path_to_values": "deploy/values-cms.yaml.gotmpl"
             }}' 
