@@ -1,4 +1,4 @@
-name: Run E2E tests
+name: Run Playwright tests
 
 on: 
   push:
@@ -14,7 +14,7 @@ jobs:
     # without this it cannot login to the registry
     secrets: inherit
 
-  e2e-tests:
+  run-playwright-tests:
     runs-on: ubuntu-24.04
     needs: push_to_registry
 
@@ -87,7 +87,7 @@ jobs:
         run: npx playwright install chromium --with-deps
 
       - name: Playwright run
-        run: npx playwright test --reporter=html 
+        run: npm run playwright:run --reporter=html 
     
         env:
           FRONTEND_URL: http://localhost:40110 

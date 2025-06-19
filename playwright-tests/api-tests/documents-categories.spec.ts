@@ -1,9 +1,9 @@
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
-import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
+import { API_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
+import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
 
-const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
+const DOCUMENT_CATEGORY_TITLE = `${API_SMOKE_NAME_PREFIX} Договора`;
 const ENDPOINT = `/api/documents-categories`;
 
 test.describe(`Documents categories response tests`, () => {
@@ -45,7 +45,7 @@ async function checkDocumentsCategoriesResponseTest({
     data: [
       {
         title: DOCUMENT_CATEGORY_TITLE,
-        slug: 'e2e-smoke-dogovora',
+        slug: 'api-smoke-dogovora',
         seo: MOCK_SEO
       }
     ]

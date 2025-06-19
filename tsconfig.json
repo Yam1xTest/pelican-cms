@@ -20,6 +20,7 @@
     "**/*.test.*",
     "src/plugins/**",
     "playwright-tests/**",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "playwright.e2e.config.ts"
   ]
 }

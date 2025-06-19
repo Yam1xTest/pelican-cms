@@ -1,9 +1,9 @@
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
-import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
+import { API_SMOKE_NAME_PREFIX, getFileIdByName, TEST_FILE_NAME_PREFIX, HttpStatusCode } from "../helpers/global-helpers";
+import { createDocumentsCategoryByTitle, deleteDocumentCategoryByTitle } from "../helpers/document-categories";
 
-const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Отчёты`;
-const DOCUMENT_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договор №350474`;
+const DOCUMENT_CATEGORY_TITLE = `${API_SMOKE_NAME_PREFIX} Отчёты`;
+const DOCUMENT_TITLE = `${API_SMOKE_NAME_PREFIX} Договор №350474`;
 const SUBTITLE = `Договор на поставку продукции животноводства (мясо говядина) для нужд муниципального бюджетного учреждения культуры «зоопарк»`;
 const DESCRIPTION = `Контракт заключен по результатам электронного аукциона в рамках 223-ФЗ. Извещение №31907985126 в электронной форме размещены на сайте по адресу в сети Интернет: www.zakupki.gov.ru и на электронной площадке tender.otc.ru процедура №4442641 лот №7816638. Протокол №U4442641-7816638-3 от 07.07.2019 г.`;
 const ENDPOINT = `/api/documents`;
@@ -99,7 +99,7 @@ async function createDocuments({
       apiRequest
     });
 
-    const fileId = await getFileIdByName({ name: '[E2E-SMOKE]-new-document.pdf', apiRequest });
+    const fileId = await getFileIdByName({ name: `${TEST_FILE_NAME_PREFIX}-new-document.pdf`, apiRequest });
 
     const response = await apiRequest(ENDPOINT, {
       method: 'POST',

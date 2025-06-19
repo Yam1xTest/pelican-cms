@@ -1,13 +1,12 @@
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
-import { SeoBlock } from "../types";
+import { API_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
+import { deleteNewsByTitle, getNewsByTitle, NEWS_ENDPOINT } from "../helpers/news-helper";
 
-const NEWS_TITLE = `${E2E_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
+const NEWS_TITLE = `${API_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;
 const INNER_CONTENT = `В зоопарке появился амурский тигр, приходите посмотреть!`;
 const DATE = '2025-02-15'
-const ENDPOINT = '/api/news';
 
 test.describe(`News response tests`, () => {
   test.beforeEach(async ({ apiRequest }) => {
@@ -28,8 +27,8 @@ test.describe(`News response tests`, () => {
 
   test(`
       GIVEN an empty news collection
-      WHEN call method POST ${ENDPOINT}
-      AND call method GET ${ENDPOINT}
+      WHEN call method POST ${NEWS_ENDPOINT}
+      AND call method GET ${NEWS_ENDPOINT}
       SHOULD get a correct response
       `,
     checkNewsResponseTest
@@ -47,14 +46,14 @@ async function checkNewsResponseTest({
         title: NEWS_TITLE,
         description: DESCRIPTION,
         innerContent: INNER_CONTENT,
-        slug: '2025/02/15/e2e-smoke-v-zooparke-poyavilsya-amurskij-tigr',
+        slug: '2025/02/15/api-smoke-v-zooparke-poyavilsya-amurskij-tigr',
         date: DATE,
         seo: MOCK_SEO
       }
     ]
   };
 
-  const newsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
+  const newsResponse = await apiRequest(`${NEWS_ENDPOINT}?populate=*`);
   const newsData = await newsResponse.json();
 
   const newsTest = getNewsByTitle({
@@ -91,7 +90,7 @@ async function createNews({
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   try {
-    const response = await apiRequest(ENDPOINT, {
+    const response = await apiRequest(NEWS_ENDPOINT, {
       method: 'POST',
       data: {
         data: {
@@ -112,60 +111,4 @@ async function createNews({
   } catch (error) {
     throw new Error(`Failed to create test news: ${error.message}`)
   }
-}
-
-async function deleteNewsByTitle({
-  title,
-  apiRequest
-}: {
-  title: string;
-  apiRequest: ApiTestFixtures['apiRequest'];
-}) {
-  try {
-    const newsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
-    const newsData = await newsResponse.json();
-
-    const news = getNewsByTitle({
-      news: newsData,
-      title
-    });
-
-    if (news) {
-      const response = await apiRequest(`${ENDPOINT}/${news.documentId}`, {
-        method: 'DELETE'
-      });
-
-      await expect(response.status(), 'News should be deleted with status 204')
-        .toEqual(HttpStatusCode.NoContent);
-    }
-  } catch (error) {
-    throw new Error(`Failed to delete test news: ${error.message}`)
-  }
-}
-
-function getNewsByTitle({
-  news,
-  title,
-}: {
-  news: NewsResponse;
-  title: string;
-}) {
-  return news.data.find((news) => news.title === title);
-}
-
-type NewsResponse = {
-  data: {
-    id?: number;
-    documentId: string;
-    title: string;
-    description?: string;
-    innerContent: string;
-    date: string;
-    image: {
-      url: string;
-      alternativeText: string;
-    },
-    slug: string;
-    seo: SeoBlock;
-  }[]
 }
