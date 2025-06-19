@@ -21,6 +21,6 @@
     "src/plugins/**",
     "playwright-tests/**",
     "playwright.config.ts",
-    "playwright.config-e2e.ts"
+    "playwright.e2e.config.ts"
   ]
 }
