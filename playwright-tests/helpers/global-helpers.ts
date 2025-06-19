@@ -3,7 +3,6 @@ import { SeoBlock } from "../types";
 import { ApiTestFixtures } from './api-test-fixtures';
 import 'dotenv/config';
 
-export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
 export const API_SMOKE_NAME_PREFIX = `[API-SMOKE]`;
 export const TEST_FILE_NAME_PREFIX = `[TEST-FILE]`;
 

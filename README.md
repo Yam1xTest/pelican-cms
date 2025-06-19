@@ -68,21 +68,6 @@ npm run playwright:run
 npm run playwright:open
 ```
 
-#### E2E
-Перед запуском E2E тестов убедитесь, что у вас запущен проект [pelican-ui](https://github.com/TourmalineCore/pelican-ui) в режиме работы с API.
-
-Запуск e2e тестов в headless-режиме (без пользовательского интерфейса браузера):
-
-```bash
-npm run playwright:run:e2e
-```
-
-Запуск тестов e2e в режиме с интерфейсом Playwright:
-
-```bash
-npm run playwright:open:e2e
-```
-
 ### Запуск в Docker
 
 #### Profiles

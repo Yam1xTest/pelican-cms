@@ -30,7 +30,6 @@
 **/playwright-report
 **/playwright-tests
 playwright.config.ts
-playwright.e2e.config.ts
 
 **/charts
 

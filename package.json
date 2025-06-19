@@ -12,9 +12,7 @@
     "strapi": "strapi",
     "deploy": "strapi deploy",
     "playwright:run": "npx playwright test",
-    "playwright:open": "npx playwright test --ui",
-    "playwright:run:e2e": "npx playwright test --config=playwright.e2e.config.ts",
-    "playwright:open:e2e": "npx playwright test --ui --config=playwright.e2e.config.ts"
+    "playwright:open": "npx playwright test --ui"
   },
   "dependencies": {
     "@_sh/strapi-plugin-ckeditor": "^5.0.1",
