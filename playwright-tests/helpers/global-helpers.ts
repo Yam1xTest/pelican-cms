@@ -1,5 +1,4 @@
 import { ApiTestFixtures } from './api-test-fixtures';
-import 'dotenv/config';
 
 export const API_SMOKE_NAME_PREFIX = `[API-SMOKE]`;
 export const TEST_FILE_NAME_PREFIX = `[TEST-FILE]`;
