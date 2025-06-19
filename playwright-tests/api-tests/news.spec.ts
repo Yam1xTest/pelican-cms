@@ -1,6 +1,7 @@
 import { MOCK_SEO } from "../mocks";
 import { API_SMOKE_NAME_PREFIX, getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
+import { SeoBlock } from "../types";
 
 const NEWS_TITLE = `${API_SMOKE_NAME_PREFIX} В зоопарке появился амурский тигр`;
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;
