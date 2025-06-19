@@ -4,9 +4,11 @@ import { ApiTestFixtures } from './api-test-fixtures';
 import 'dotenv/config';
 
 export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
+export const API_SMOKE_NAME_PREFIX = `[API-SMOKE]`;
+export const TEST_FILE_NAME_PREFIX = `[TEST-FILE]`;
 
 export async function getFileIdByName({
-  name = '[E2E-SMOKE]-tiger.png',
+  name = `${TEST_FILE_NAME_PREFIX}-tiger.png`,
   apiRequest
 }: {
   name?: string;
@@ -131,27 +133,22 @@ export async function authenticate({
     .click();
 }
 
-export async function uploadFile({
+export async function chooseFile({
   page,
-  filePath,
 }: {
   page: Page
-  filePath: string,
 }) {
   await page.getByText(`Click to add an asset or drag and drop one in this area`)
     .first()
     .click();
 
   await page.getByRole(`button`, {
-    name: `Add more assets`,
+    name: `API Uploads`,
   })
     .click();
 
-  await page.locator('input[name="files"]')
-    .setInputFiles(filePath);
-
-
-  await page.getByText(`Upload 1 asset to the library`)
+  await page.locator('[role="checkbox"]')
+    .first()
     .click();
 
   await page.getByRole(`button`, {
@@ -160,27 +157,11 @@ export async function uploadFile({
     .click();
 }
 
-export async function saveAndPublish({
+export async function clickPublishButton({
   page
 }: {
   page: Page
 }) {
-  const saveResponsePromise = page.waitForResponse((response) => {
-    const responseType = (response.url().includes('/single-types/') ? 'PUT' : 'POST');
-
-    return (
-      response.url().includes('/content-manager/') &&
-      response.request().method() === responseType
-    )
-  });
-
-  await page.getByRole(`button`, {
-    name: 'Save'
-  })
-    .click();
-
-  await saveResponsePromise;
-
   const publishResponsePromise = page.waitForResponse((response) =>
     response.url().includes('/content-manager/') &&
     response.request().method() === 'POST'

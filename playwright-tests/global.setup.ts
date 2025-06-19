@@ -1,17 +1,17 @@
 import { expect, test as setup } from './helpers/api-test-fixtures';
 import fs from 'fs';
 import FormData from 'form-data';
-import { HttpStatusCode } from "./helpers/global-helpers";
+import { HttpStatusCode, TEST_FILE_NAME_PREFIX } from "./helpers/global-helpers";
 
 setup('upload test files', async ({ apiRequest }) => {
   const files = [
     {
-      name: '[E2E-SMOKE]-tiger.png',
-      path: './playwright-tests/fixtures/[E2E-SMOKE]-tiger.png'
+      name: `${TEST_FILE_NAME_PREFIX}-tiger.png`,
+      path: `./playwright-tests/fixtures/${TEST_FILE_NAME_PREFIX}-tiger.png`
     },
     {
-      name: '[E2E-SMOKE]-new-document.pdf',
-      path: './playwright-tests/fixtures/[E2E-SMOKE]-new-document.pdf'
+      name: `${TEST_FILE_NAME_PREFIX}-new-document.pdf`,
+      path: `./playwright-tests/fixtures/${TEST_FILE_NAME_PREFIX}-new-document.pdf`
     },
   ];
 

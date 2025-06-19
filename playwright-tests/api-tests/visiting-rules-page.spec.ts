@@ -6,7 +6,7 @@ import {
   MOCK_VISITING_RULES_EMERGENCY_PHONES,
   MOCK_SEO
 } from "../mocks";
-import { getFileIdByName, HttpStatusCode } from "../helpers/global-helpers";
+import { getFileIdByName, HttpStatusCode, TEST_FILE_NAME_PREFIX } from "../helpers/global-helpers";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
 
 const ENDPOINT = `/api/visiting-rules-page`;
@@ -149,7 +149,7 @@ async function updateVisitingRulesPage({
               documentLink: {
                 label: MOCK_VISITING_RULES_MAIN.documentLink.label,
                 file: await getFileIdByName({
-                  name: '[E2E-SMOKE]-new-document.pdf',
+                  name: `${TEST_FILE_NAME_PREFIX}-new-document.pdf`,
                   apiRequest
                 }),
               },
