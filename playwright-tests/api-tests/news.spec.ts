@@ -7,8 +7,7 @@ const NEWS_TITLE = `${API_SMOKE_NAME_PREFIX} В зоопарке появилс�
 const DESCRIPTION = `На фотографии изображен амурский тигр!`;
 const INNER_CONTENT = `В зоопарке появился амурский тигр, приходите посмотреть!`;
 const DATE = '2025-02-15'
-
-export const ENDPOINT = '/api/news';
+const ENDPOINT = '/api/news';
 
 test.describe(`News response tests`, () => {
   test.beforeEach(async ({ apiRequest }) => {
