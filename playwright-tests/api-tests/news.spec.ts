@@ -60,7 +60,7 @@ async function checkNewsResponseTest({
     title: NEWS_TITLE
   })!;
 
-  await expect(newsData.data, 'News response corrected')
+  await expect(newsData.data, 'News response is correct')
     .toMatchObject(expectedNewsResponse);
 
   await expect(newsTest.image.url)

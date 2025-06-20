@@ -78,7 +78,7 @@ async function checkHomepageResponseTest({
   const servicesBlock = homepageData.data.blocks.find((block) => block.__component === 'home.services');
   const mapCardBlock = homepageData.data.blocks.find((block) => block.__component === 'home.map-card');
 
-  await expect(homepageData.data, 'Home page response corrected')
+  await expect(homepageData.data, 'Home page response is correct')
     .toMatchObject(expectedHomepageResponse);
 
   await expect(heroBlock.image.url)

@@ -62,7 +62,7 @@ async function checkVisitingRulesPageResponseTest({
 
   const mainBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
 
-  await expect(visitingRulesPageData.data, 'Visiting rules page response corrected')
+  await expect(visitingRulesPageData.data, 'Visiting rules page response is correct')
     .toMatchObject(expectedVisitingRulesPageResponse);
 
   await expect(mainBlock.mainRules.mainRulesCards[0].image)

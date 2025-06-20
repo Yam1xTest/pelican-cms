@@ -53,6 +53,6 @@ async function checkDocumentsCategoriesResponseTest({
 
   const documentsCategoriesData = await documentsCategoriesResponse.json();
 
-  await expect(documentsCategoriesData.data, 'Documents categories response corrected')
+  await expect(documentsCategoriesData.data, 'Documents categories response is correct')
     .toMatchObject(expectedDocumentsCategoriesResponse);
 }

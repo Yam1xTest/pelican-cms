@@ -50,7 +50,7 @@ async function checkHeaderSingleTypeResponseTest({
 
   const ticketsPopupBlock = headerSingleTypeData.data.ticketsPopup;
 
-  await expect(headerSingleTypeData.data, 'Header single types response corrected')
+  await expect(headerSingleTypeData.data, 'Header single types response is correct')
     .toMatchObject(expectedHeaderSingleTypeResponse);
 
   await expect(ticketsPopupBlock.visitingRulesAccordion.images[0].url)

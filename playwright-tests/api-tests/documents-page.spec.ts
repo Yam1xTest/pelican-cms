@@ -44,7 +44,7 @@ async function checkDocumentsPageResponseTest({
   const documentsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const documentsPageData = await documentsPageResponse.json()
 
-  await expect(documentsPageData.data, 'Documents page response corrected')
+  await expect(documentsPageData.data, 'Documents page response is correct')
     .toMatchObject(expectedDocumentsPageResponse);
 }
 

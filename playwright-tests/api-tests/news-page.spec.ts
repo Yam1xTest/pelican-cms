@@ -44,7 +44,7 @@ async function checkNewsPageResponseTest({
   const newsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const newsPageData = await newsPageResponse.json();
 
-  await expect(newsPageData.data, 'News page response corrected')
+  await expect(newsPageData.data, 'News page response is correct')
     .toMatchObject(expectedNewsPageResponse);
 }
 

@@ -69,7 +69,7 @@ async function checkDocumentsResponseTest({
     title: DOCUMENT_TITLE
   })!;
 
-  await expect(documentsData.data, 'Documents response corrected')
+  await expect(documentsData.data, 'Documents response is correct')
     .toMatchObject(expectedDocumentsResponse);
 
   await expect(documentTest.files[0].url)

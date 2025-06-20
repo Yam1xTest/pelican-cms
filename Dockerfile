@@ -6,7 +6,7 @@ FROM node:18.18.2-alpine3.17 AS build
 RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev libpng-dev vips-dev git > /dev/null 2>&1
 ENV NODE_ENV=production
 
-# Sets the maximum size for the "old spice" (the main part of heap memory) in the V8 engine that is used Node.js.
+# Sets the maximum size for the "old space" (the main part of heap memory) in the V8 engine that is used Node.js.
 # We set this value because with the default value, the build was executed with an error.
 ENV NODE_OPTIONS="--max-old-space-size=3072"
 

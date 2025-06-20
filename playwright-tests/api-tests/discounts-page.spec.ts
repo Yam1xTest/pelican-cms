@@ -58,7 +58,7 @@ async function checkDiscountsPageResponseTest({
 
   const categoriesBlock = discountsPageData.data.blocks.find((block) => block.__component === 'discounts.categories');
 
-  await expect(discountsPageData.data, 'Discounts page response corrected')
+  await expect(discountsPageData.data, 'Discounts page response is correct')
     .toMatchObject(expectedDiscountsPageResponse);
 
   await expect(categoriesBlock.remark.file.url)

@@ -79,7 +79,7 @@ async function checkContactZooPageResponseTest({
   const imageWithButtonGridBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
   const servicesBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.cards');
 
-  await expect(contactZooPageData.data, 'Contact zoo page response corrected')
+  await expect(contactZooPageData.data, 'Contact zoo page response is correct')
     .toMatchObject(expectedContactZooPageResponse);
 
   await expect(heroBlock.image.url)
