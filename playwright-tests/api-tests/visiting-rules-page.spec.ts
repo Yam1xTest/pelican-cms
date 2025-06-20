@@ -37,15 +37,13 @@ async function checkVisitingRulesPageResponseTest({
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedVisitingRulesPageResponse = {
-    data: {
-      blocks: [
-        MOCK_VISITING_RULES_MAIN,
-        MOCK_VISITING_RULES_WARNINGS,
-        MOCK_VISITING_RULES_PHOTOS_POLICY,
-        MOCK_VISITING_RULES_EMERGENCY_PHONES,
-      ],
-      seo: MOCK_SEO
-    }
+    blocks: [
+      MOCK_VISITING_RULES_MAIN,
+      MOCK_VISITING_RULES_WARNINGS,
+      MOCK_VISITING_RULES_PHOTOS_POLICY,
+      MOCK_VISITING_RULES_EMERGENCY_PHONES,
+    ],
+    seo: MOCK_SEO
   };
 
   const queryParams = {
@@ -63,65 +61,9 @@ async function checkVisitingRulesPageResponseTest({
   const visitingRulesPageData = await visitingRulesPageResponse.json();
 
   const mainBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.visiting-rules-main');
-  const warningsBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.warnings');
-  const photosPolicyBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.photos-policy');
-  const emergencyPhonesBlock = visitingRulesPageData.data.blocks.find((block) => block.__component === 'visiting-rules.emergency-phones');
 
-  await expect({
-    data: {
-      blocks: [
-        {
-          __component: mainBlock.__component,
-          title: mainBlock.title,
-          documentLink: {
-            label: mainBlock.documentLink.label,
-          },
-          description: mainBlock.description,
-          mainRules: {
-            title: mainBlock.mainRules.title,
-            mainRulesCards: [
-              {
-                label: mainBlock.mainRules.mainRulesCards[0].label,
-              },
-            ],
-          },
-        },
-        {
-          __component: warningsBlock.__component,
-          warningsCards: [
-            {
-              label: warningsBlock.warningsCards[0].label,
-            },
-          ],
-        },
-        {
-          __component: photosPolicyBlock.__component,
-          title: photosPolicyBlock.title,
-          photosPolicyCards: [
-            {
-              label: photosPolicyBlock.photosPolicyCards[0].label,
-            },
-          ],
-        },
-        {
-          __component: emergencyPhonesBlock.__component,
-          title: emergencyPhonesBlock.title,
-          emergencyPhonesCards: [
-            {
-              phone: emergencyPhonesBlock.emergencyPhonesCards[0].phone,
-              label: emergencyPhonesBlock.emergencyPhonesCards[0].label,
-            },
-          ],
-        },
-      ],
-      seo: {
-        metaTitle: visitingRulesPageData.data.seo.metaTitle,
-        metaDescription: visitingRulesPageData.data.seo.metaDescription,
-        keywords: visitingRulesPageData.data.seo.keywords
-      }
-    }
-  }, 'Visiting rules page response corrected')
-    .toEqual(expectedVisitingRulesPageResponse);
+  await expect(visitingRulesPageData.data, 'Visiting rules page response corrected')
+    .toMatchObject(expectedVisitingRulesPageResponse);
 
   await expect(mainBlock.mainRules.mainRulesCards[0].image)
     .not

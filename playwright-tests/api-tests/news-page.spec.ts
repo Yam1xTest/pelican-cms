@@ -31,10 +31,8 @@ async function checkNewsPageResponseTest({
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedNewsPageResponse = {
-    data: {
-      title: NEWS_TITLE,
-      seo: MOCK_SEO
-    }
+    title: NEWS_TITLE,
+    seo: MOCK_SEO
   };
 
   const queryParams = {
@@ -46,17 +44,8 @@ async function checkNewsPageResponseTest({
   const newsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const newsPageData = await newsPageResponse.json();
 
-  await expect({
-    data: {
-      title: newsPageData.data.title,
-      seo: {
-        metaTitle: newsPageData.data.seo.metaTitle,
-        metaDescription: newsPageData.data.seo.metaDescription,
-        keywords: newsPageData.data.seo.keywords
-      }
-    }
-  }, 'News page response corrected')
-    .toEqual(expectedNewsPageResponse);
+  await expect(newsPageData.data, 'News page response corrected')
+    .toMatchObject(expectedNewsPageResponse);
 }
 
 async function updateNewsPage({

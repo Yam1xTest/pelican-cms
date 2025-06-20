@@ -50,17 +50,16 @@ async function checkDocumentsResponseTest({
   const showDate = false;
   const description = DESCRIPTION;
   const date = new Date();
-  const expectedDocumentsResponse = {
-    data: [
-      {
-        date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, `0`)}-${(date.getDate()).toString().padStart(2, '0')}`,
-        showDate,
-        title: DOCUMENT_TITLE,
-        subtitle: SUBTITLE,
-        description: description,
-      }
-    ]
-  };
+  const expectedDocumentsResponse = [
+    {
+      date: `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, `0`)}-${(date.getDate()).toString().padStart(2, '0')}`,
+      showDate,
+      title: DOCUMENT_TITLE,
+      subtitle: SUBTITLE,
+      description: description,
+    }
+  ];
+
 
   const documentsResponse = await apiRequest(`${ENDPOINT}?populate=*`);
   const documentsData = await documentsResponse.json();
@@ -70,18 +69,8 @@ async function checkDocumentsResponseTest({
     title: DOCUMENT_TITLE
   })!;
 
-  await expect({
-    data: [
-      {
-        date: documentTest.date,
-        showDate: documentTest.showDate,
-        title: documentTest.title,
-        subtitle: documentTest.subtitle,
-        description: documentTest.description,
-      }
-    ]
-  }, 'Documents response corrected')
-    .toEqual(expectedDocumentsResponse);
+  await expect(documentsData.data, 'Documents response corrected')
+    .toMatchObject(expectedDocumentsResponse);
 
   await expect(documentTest.files[0].url)
     .not

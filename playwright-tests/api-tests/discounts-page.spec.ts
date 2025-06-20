@@ -32,13 +32,11 @@ async function checkDiscountsPageResponseTest({
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedDiscountsPageResponse = {
-    data: {
-      blocks: [
-        MOCK_DISCOUNTS_TERMS,
-        MOCK_DISCOUNTS_CATEGORIES,
-      ],
-      seo: MOCK_SEO
-    }
+    blocks: [
+      MOCK_DISCOUNTS_CATEGORIES,
+      MOCK_DISCOUNTS_TERMS,
+    ],
+    seo: MOCK_SEO
   };
 
   const queryParams = {
@@ -58,54 +56,10 @@ async function checkDiscountsPageResponseTest({
 
   const discountsPageData = await discountsPageResponse.json();
 
-  const termsBlock = discountsPageData.data.blocks.find((block) => block.__component === 'discounts.terms');
   const categoriesBlock = discountsPageData.data.blocks.find((block) => block.__component === 'discounts.categories');
 
-  await expect({
-    data: {
-      blocks: [
-        {
-          __component: termsBlock.__component,
-          title: termsBlock.title,
-          subtitle: termsBlock.subtitle,
-          rulesCards: [{
-            text: termsBlock.rulesCards[0].text
-          }],
-        },
-        {
-          __component: categoriesBlock.__component,
-          title: categoriesBlock.title,
-          discountsCards: [{
-            title: categoriesBlock.discountsCards[0].title,
-            price: categoriesBlock.discountsCards[0].price,
-            note: categoriesBlock.discountsCards[0].note,
-            rules: {
-              info: categoriesBlock.discountsCards[0].rules.info,
-              terms: [{
-                text: categoriesBlock.discountsCards[0].rules.terms[0].text
-              }],
-              docs: [{
-                text: categoriesBlock.discountsCards[0].rules.docs[0].text
-              }],
-              basis: [{
-                title: categoriesBlock.discountsCards[0].rules.basis[0].title,
-                link: categoriesBlock.discountsCards[0].rules.basis[0].link,
-              }]
-            }
-          }],
-          remark: {
-            title: categoriesBlock.remark.title,
-          },
-        },
-      ],
-      seo: {
-        metaTitle: discountsPageData.data.seo.metaTitle,
-        metaDescription: discountsPageData.data.seo.metaDescription,
-        keywords: discountsPageData.data.seo.keywords
-      }
-    }
-  }, 'Discounts page response corrected')
-    .toEqual(expectedDiscountsPageResponse);
+  await expect(discountsPageData.data, 'Discounts page response corrected')
+    .toMatchObject(expectedDiscountsPageResponse);
 
   await expect(categoriesBlock.remark.file.url)
     .not.
