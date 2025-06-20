@@ -38,7 +38,7 @@ jobs:
         with:
           runCmd: |
             # we need to override "latest" image tag of ui inside local-env to run e2e against the current commit ui version and not against latest from master
-            yq -i '.image.tag = "sha-${{ github.sha }}"' deploy/values-cms.yaml.gotmpl
+            sed -i "0,/tag:.*/s//tag: \"sha-${{ github.sha }}\"/" deploy/values-ui.yaml.gotmpl
 
             kind create cluster --name pelican --config kind-local-config.yaml --kubeconfig ./.pelican-cluster-kubeconfig
             
