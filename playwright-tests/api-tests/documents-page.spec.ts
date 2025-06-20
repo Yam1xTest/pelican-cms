@@ -31,10 +31,8 @@ async function checkDocumentsPageResponseTest({
   apiRequest: ApiTestFixtures['apiRequest']
 }) {
   const expectedDocumentsPageResponse = {
-    data: {
-      title: DOCUMENT_TITLE,
-      seo: MOCK_SEO
-    }
+    title: DOCUMENT_TITLE,
+    seo: MOCK_SEO
   };
 
   const queryParams = {
@@ -46,17 +44,8 @@ async function checkDocumentsPageResponseTest({
   const documentsPageResponse = await apiRequest(`${ENDPOINT}?${qs.stringify(queryParams)}`);
   const documentsPageData = await documentsPageResponse.json()
 
-  await expect({
-    data: {
-      title: documentsPageData.data.title,
-      seo: {
-        metaTitle: documentsPageData.data.seo.metaTitle,
-        metaDescription: documentsPageData.data.seo.metaDescription,
-        keywords: documentsPageData.data.seo.keywords
-      }
-    }
-  }, 'Documents page response corrected')
-    .toEqual(expectedDocumentsPageResponse);
+  await expect(documentsPageData.data, 'Documents page response is correct')
+    .toMatchObject(expectedDocumentsPageResponse);
 }
 
 async function updateDocumentsPage({

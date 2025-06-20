@@ -54,21 +54,18 @@ Strapi будет доступна по следующему url http://localhos
 
 Документации swagger доступна по следующему url http://localhost:1337/documentation
 
-
 ### Запуск тестов на Playwright
 
 После успешного запуска Strapi (его можно открыть по адресу http://localhost:1337/admin), оставив первый терминал активным в отдельной вкладке терминала, вы можете запустить тесты в headless-режиме (без пользовательского интерфейса браузера), выполнив следующий скрипт:
 
-*для успешного прохождения тестов, которые проверяют взаимодействие CMS и UI необходимо запустить проект [pelican-ui](https://github.com/TourmalineCore/pelican-ui) в режиме работы с API*
-
 ```bash
-npm run test-e2e
+npm run playwright:run
 ```
 
 Запуск тестов в режиме с интерфейсом Playwright:
 
 ```bash
-npm run test-e2e:ui
+npm run playwright:open
 ```
 
 ### Запуск в Docker

@@ -36,20 +36,18 @@ async function checkContactZooPageResponseTest({
 }: {
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
-  const expectedConcatZooPageResponse = {
-    data: {
-      blocks: [
-        MOCK_HERO,
-        MOCK_TEXT_AND_MEDIA,
-        MOCK_IMAGE_WITH_BUTTON_GRID,
-        MOCK_TICKETS,
-        {
-          ...MOCK_HOME_SERVICES.cards,
-          __component: `shared.cards`,
-        },
-      ],
-      seo: MOCK_SEO
-    }
+  const expectedContactZooPageResponse = {
+    blocks: [
+      MOCK_HERO,
+      MOCK_TEXT_AND_MEDIA,
+      MOCK_IMAGE_WITH_BUTTON_GRID,
+      MOCK_TICKETS,
+      {
+        ...MOCK_HOME_SERVICES.cards,
+        __component: `shared.cards`,
+      },
+    ],
+    seo: MOCK_SEO,
   };
 
   const queryParams = {
@@ -79,84 +77,10 @@ async function checkContactZooPageResponseTest({
   const heroBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.hero');
   const textAndMediaBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.text-and-media');
   const imageWithButtonGridBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
-  const ticketsBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.tickets');
   const servicesBlock = contactZooPageData.data.blocks.find((block) => block.__component === 'shared.cards');
 
-  await expect({
-    data: {
-      blocks: [
-        {
-          title: heroBlock.title,
-          __component: heroBlock.__component,
-          infoCard: {
-            title: heroBlock.infoCard.title,
-            description: heroBlock.infoCard.description
-          },
-          scheduleCard: {
-            title: heroBlock.scheduleCard.title,
-            timetable: [
-              {
-                days: heroBlock.scheduleCard.timetable[0].days,
-                time: heroBlock.scheduleCard.timetable[0].time,
-                ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
-              }
-            ]
-          },
-        },
-        {
-          __component: textAndMediaBlock.__component,
-          title: textAndMediaBlock.title,
-          description: textAndMediaBlock.description,
-          contentOrder: textAndMediaBlock.contentOrder,
-          viewFootsteps: textAndMediaBlock.viewFootsteps,
-        },
-        {
-          __component: imageWithButtonGridBlock.__component,
-          title: imageWithButtonGridBlock.title,
-          description: imageWithButtonGridBlock.description,
-          button: {
-            link: imageWithButtonGridBlock.button.link,
-            label: imageWithButtonGridBlock.button.label
-          }
-        },
-        {
-          __component: ticketsBlock.__component,
-          title: ticketsBlock.title,
-          description: ticketsBlock.description,
-          subsidizedTickets: [
-            {
-              category: ticketsBlock.subsidizedTickets[0].category,
-              description: ticketsBlock.subsidizedTickets[0].description,
-              price: ticketsBlock.subsidizedTickets[0].price,
-              frequency: ticketsBlock.subsidizedTickets[0].frequency,
-            },
-          ],
-          note: ticketsBlock.note,
-          link: ticketsBlock.link,
-        },
-        {
-          __component: servicesBlock.__component,
-          title: servicesBlock.title,
-          cards: [
-            {
-              title: servicesBlock.cards[0].title,
-              description: servicesBlock.cards[0].description,
-              link: servicesBlock.cards[0].link,
-              labels: [{
-                text: servicesBlock.cards[0].labels[0].text
-              }]
-            }
-          ],
-        },
-      ],
-      seo: {
-        metaTitle: contactZooPageData.data.seo.metaTitle,
-        metaDescription: contactZooPageData.data.seo.metaDescription,
-        keywords: contactZooPageData.data.seo.keywords
-      }
-    }
-  }, 'Contact zoo page response corrected')
-    .toEqual(expectedConcatZooPageResponse);
+  await expect(contactZooPageData.data, 'Contact zoo page response is correct')
+    .toMatchObject(expectedContactZooPageResponse);
 
   await expect(heroBlock.image.url)
     .not

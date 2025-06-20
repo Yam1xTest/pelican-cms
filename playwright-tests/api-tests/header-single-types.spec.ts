@@ -29,9 +29,7 @@ async function checkHeaderSingleTypeResponseTest({
 }: {
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
-  const expectedHeaderSingleTypeResponse = {
-    data: MOCK_TICKETS_POPUP
-  };
+  const expectedHeaderSingleTypeResponse = MOCK_TICKETS_POPUP;
 
   const queryParams = {
     populate: [
@@ -52,58 +50,8 @@ async function checkHeaderSingleTypeResponseTest({
 
   const ticketsPopupBlock = headerSingleTypeData.data.ticketsPopup;
 
-  await expect({
-    data: {
-      ticketsPopup: {
-        generalTicketsLink: ticketsPopupBlock.generalTicketsLink,
-        generalTickets: [
-          {
-            category: ticketsPopupBlock.generalTickets[0].category,
-            price: ticketsPopupBlock.generalTickets[0].price,
-            description: ticketsPopupBlock.generalTickets[0].description
-          },
-        ],
-        subsidizedTicket: {
-          category: ticketsPopupBlock.subsidizedTicket.category,
-          description: ticketsPopupBlock.subsidizedTicket.description,
-          categories: [
-            {
-              category: ticketsPopupBlock.subsidizedTicket.categories[0].category,
-              price: ticketsPopupBlock.subsidizedTicket.categories[0].price,
-            },
-          ],
-          button: {
-            label: ticketsPopupBlock.subsidizedTicket.button.label,
-            link: ticketsPopupBlock.subsidizedTicket.button.link,
-          },
-        },
-        visitingRulesAccordion: {
-          button: {
-            label: ticketsPopupBlock.visitingRulesAccordion.button.label,
-            link: ticketsPopupBlock.visitingRulesAccordion.button.link,
-          },
-        },
-        ticketRefundAccordion: {
-          refundHead: ticketsPopupBlock.ticketRefundAccordion.refundHead,
-          refundBody: [
-            {
-              refundReason: ticketsPopupBlock.ticketRefundAccordion.refundBody[0].refundReason,
-            },
-          ],
-          button: {
-            label: ticketsPopupBlock.ticketRefundAccordion.button.label,
-            link: ticketsPopupBlock.ticketRefundAccordion.button.link,
-          },
-        },
-        buyTicketsButton: {
-          label: ticketsPopupBlock.buyTicketsButton.label,
-          link: ticketsPopupBlock.buyTicketsButton.link,
-        },
-        note: ticketsPopupBlock.note,
-      },
-    },
-  }, 'Header single types response corrected')
-    .toEqual(expectedHeaderSingleTypeResponse);
+  await expect(headerSingleTypeData.data, 'Header single types response is correct')
+    .toMatchObject(expectedHeaderSingleTypeResponse);
 
   await expect(ticketsPopupBlock.visitingRulesAccordion.images[0].url)
     .not

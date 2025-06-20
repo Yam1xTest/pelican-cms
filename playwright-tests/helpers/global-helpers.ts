@@ -1,9 +1,10 @@
 import { ApiTestFixtures } from './api-test-fixtures';
 
-export const E2E_SMOKE_NAME_PREFIX = `[E2E-SMOKE]`;
+export const API_SMOKE_NAME_PREFIX = `[API-SMOKE]`;
+export const TEST_FILE_NAME_PREFIX = `[TEST-FILE]`;
 
 export async function getFileIdByName({
-  name = '[E2E-SMOKE]-tiger.png',
+  name = `${TEST_FILE_NAME_PREFIX}-tiger.png`,
   apiRequest
 }: {
   name?: string;

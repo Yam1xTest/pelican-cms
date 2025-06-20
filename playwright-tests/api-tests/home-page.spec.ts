@@ -38,17 +38,15 @@ async function checkHomepageResponseTest({
   apiRequest: ApiTestFixtures['apiRequest'];
 }) {
   const expectedHomepageResponse = {
-    data: {
-      blocks: [
-        MOCK_HERO,
-        MOCK_HOME_SERVICES,
-        MOCK_TEXT_AND_MEDIA,
-        MOCK_IMAGE_WITH_BUTTON_GRID,
-        MOCK_HOME_MAP_CARD,
-        MOCK_HOME_TICKETS,
-      ],
-      seo: MOCK_SEO
-    }
+    blocks: [
+      MOCK_HERO,
+      MOCK_HOME_SERVICES,
+      MOCK_TEXT_AND_MEDIA,
+      MOCK_IMAGE_WITH_BUTTON_GRID,
+      MOCK_HOME_MAP_CARD,
+      MOCK_HOME_TICKETS,
+    ],
+    seo: MOCK_SEO
   };
 
   const queryParams = {
@@ -79,106 +77,9 @@ async function checkHomepageResponseTest({
   const imageWithButtonGridBlock = homepageData.data.blocks.find((block) => block.__component === 'shared.image-with-button-grid');
   const servicesBlock = homepageData.data.blocks.find((block) => block.__component === 'home.services');
   const mapCardBlock = homepageData.data.blocks.find((block) => block.__component === 'home.map-card');
-  const homeTicketsBlock = homepageData.data.blocks.find((block) => block.__component === 'home.tickets');
 
-  await expect({
-    data: {
-      blocks: [
-        {
-          title: heroBlock.title,
-          __component: heroBlock.__component,
-          infoCard: {
-            title: heroBlock.infoCard.title,
-            description: heroBlock.infoCard.description
-          },
-          scheduleCard: {
-            title: heroBlock.scheduleCard.title,
-            timetable: [
-              {
-                days: heroBlock.scheduleCard.timetable[0].days,
-                time: heroBlock.scheduleCard.timetable[0].time,
-                ticketsOfficeTime: heroBlock.scheduleCard.timetable[0].ticketsOfficeTime
-              }
-            ]
-          },
-        },
-        {
-          __component: servicesBlock.__component,
-          phone: servicesBlock.phone,
-          email: servicesBlock.email,
-          cards: {
-            title: servicesBlock.cards.title,
-            cards: [
-              {
-                title: servicesBlock.cards.cards[0].title,
-                description: servicesBlock.cards.cards[0].description,
-                link: servicesBlock.cards.cards[0].link,
-                labels: [{
-                  text: servicesBlock.cards.cards[0].labels[0].text
-                }]
-              }
-            ],
-          }
-        },
-        {
-          __component: textAndMediaBlock.__component,
-          title: textAndMediaBlock.title,
-          description: textAndMediaBlock.description,
-          contentOrder: textAndMediaBlock.contentOrder,
-          viewFootsteps: textAndMediaBlock.viewFootsteps,
-        },
-        {
-          __component: imageWithButtonGridBlock.__component,
-          title: imageWithButtonGridBlock.title,
-          description: imageWithButtonGridBlock.description,
-          button: {
-            link: imageWithButtonGridBlock.button.link,
-            label: imageWithButtonGridBlock.button.label
-          }
-        },
-        {
-          __component: mapCardBlock.__component,
-          title: mapCardBlock.title,
-          description: mapCardBlock.description,
-          note: mapCardBlock.note
-        },
-        {
-          __component: homeTicketsBlock.__component,
-          title: homeTicketsBlock.title,
-          generalTickets: [
-            {
-              category: homeTicketsBlock.generalTickets[0].category,
-              description: homeTicketsBlock.generalTickets[0].description,
-              price: homeTicketsBlock.generalTickets[0].price,
-              frequency: homeTicketsBlock.generalTickets[0].frequency,
-              theme: homeTicketsBlock.generalTickets[0].theme
-            },
-          ],
-          generalTicketsLink: homeTicketsBlock.generalTicketsLink,
-          subsidizedTickets: {
-            title: homeTicketsBlock.subsidizedTickets.title,
-            description: homeTicketsBlock.subsidizedTickets.description,
-            ticketsList: [
-              {
-                category: homeTicketsBlock.subsidizedTickets.ticketsList[0].category,
-                description: homeTicketsBlock.subsidizedTickets.ticketsList[0].description,
-                price: homeTicketsBlock.subsidizedTickets.ticketsList[0].price,
-                frequency: homeTicketsBlock.subsidizedTickets.ticketsList[0].frequency,
-                theme: homeTicketsBlock.subsidizedTickets.ticketsList[0].theme
-              }
-            ],
-            link: homeTicketsBlock.subsidizedTickets.link,
-          }
-        },
-      ],
-      seo: {
-        metaTitle: homepageData.data.seo.metaTitle,
-        metaDescription: homepageData.data.seo.metaDescription,
-        keywords: homepageData.data.seo.keywords,
-      }
-    }
-  }, 'Home page response corrected')
-    .toEqual(expectedHomepageResponse);
+  await expect(homepageData.data, 'Home page response is correct')
+    .toMatchObject(expectedHomepageResponse);
 
   await expect(heroBlock.image.url)
     .not

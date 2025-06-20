@@ -1,9 +1,9 @@
 import { MOCK_SEO } from "../mocks";
-import { E2E_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
-import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle, getDocumentCategoryByTitle } from "../helpers/document-categories";
+import { API_SMOKE_NAME_PREFIX } from "../helpers/global-helpers";
 import { ApiTestFixtures, expect, test } from "../helpers/api-test-fixtures";
+import { deleteDocumentCategoryByTitle, createDocumentsCategoryByTitle } from "../helpers/document-categories";
 
-const DOCUMENT_CATEGORY_TITLE = `${E2E_SMOKE_NAME_PREFIX} Договора`;
+const DOCUMENT_CATEGORY_TITLE = `${API_SMOKE_NAME_PREFIX} Договора`;
 const ENDPOINT = `/api/documents-categories`;
 
 test.describe(`Documents categories response tests`, () => {
@@ -41,37 +41,18 @@ async function checkDocumentsCategoriesResponseTest({
 }: {
   apiRequest: ApiTestFixtures['apiRequest']
 }) {
-  const expectedDocumentsCategoriesResponse = {
-    data: [
-      {
-        title: DOCUMENT_CATEGORY_TITLE,
-        slug: 'e2e-smoke-dogovora',
-        seo: MOCK_SEO
-      }
-    ]
-  };
+  const expectedDocumentsCategoriesResponse = [
+    {
+      title: DOCUMENT_CATEGORY_TITLE,
+      slug: 'api-smoke-dogovora',
+      seo: MOCK_SEO
+    }
+  ];
 
   const documentsCategoriesResponse = await apiRequest(`${ENDPOINT}?populate=*`);
 
   const documentsCategoriesData = await documentsCategoriesResponse.json();
 
-  const documentCategoryTest = getDocumentCategoryByTitle({
-    documentCategories: documentsCategoriesData,
-    title: DOCUMENT_CATEGORY_TITLE
-  })!;
-
-  await expect({
-    data: [
-      {
-        title: documentCategoryTest.title,
-        slug: documentCategoryTest.slug,
-        seo: {
-          metaTitle: documentCategoryTest.seo.metaTitle,
-          metaDescription: documentCategoryTest.seo.metaDescription,
-          keywords: documentCategoryTest.seo.keywords,
-        },
-      }
-    ]
-  }, 'Documents categories response corrected')
-    .toEqual(expectedDocumentsCategoriesResponse);
+  await expect(documentsCategoriesData.data, 'Documents categories response is correct')
+    .toMatchObject(expectedDocumentsCategoriesResponse);
 }
