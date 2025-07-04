@@ -12,7 +12,6 @@ jobs:
   push_to_registry:
     uses: TourmalineCore/pelican-github-workflows/.github/workflows/docker-build-and-push.yml@master
     with:
-        prefix: ""
         build-args: |
           # this perfectly explains why this is needed https://github.com/strapi/strapi/issues/13889#issuecomment-1516194973
           SERVER_URL=/cms
