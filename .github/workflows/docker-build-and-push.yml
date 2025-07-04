@@ -10,7 +10,7 @@ on:
 
 jobs:
   push_to_registry:
-    uses: TourmalineCore/pelican-github-workflows/.github/workflows/docker-build-and-push.yml@feature/build_and_push_workflow
+    uses: TourmalineCore/pelican-github-workflows/.github/workflows/docker-build-and-push.yml@master
     with:
         prefix: ""
         build-args: |
