@@ -28,6 +28,7 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
     "slugify": "^1.6.6",
+    "strapi-5-sitemap-plugin": "^1.0.7",
     "strapi-cache": "^1.4.8",
     "strapi-plugin-init-admin-user": "^0.2.3",
     "strapi-plugin-preview-button": "^3.0.0",
