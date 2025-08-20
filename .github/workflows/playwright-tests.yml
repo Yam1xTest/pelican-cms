@@ -28,7 +28,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: TourmalineCore/pelican-local-env
-
+      - name: cat
+        run: cat deploy/helmfile.yaml
+        
       - name: Deploy Local Env to Kind k8s
         uses: devcontainers/ci@v0.3
         with:
@@ -56,6 +58,9 @@ jobs:
           env: |
               PELICAN_CMS_BRANCH=${{ github.head_ref || github.ref_name }}
 
+      - name: cat
+        run: cat deploy/helmfile.yaml
+        
       - name: Checkout repository
         uses: actions/checkout@v4
 
